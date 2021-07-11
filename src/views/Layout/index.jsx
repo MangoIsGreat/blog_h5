@@ -11,11 +11,11 @@ import NotFound from "../NotFound";
 import "../../assets/css/iconfont/iconfont.css";
 
 class Layout extends Component {
-  constructor() {
+  constructor(props) {
     super();
 
     this.state = {
-      selectedPath: "/layout/index",
+      selectedPath: props.location.pathname,
     };
   }
 
@@ -62,6 +62,10 @@ class Layout extends Component {
                 this.setState({
                   selectedPath: item.path,
                 });
+
+                if (this.state.selectedPath !== item.path) {
+                  this.props.history.push(item.path);
+                }
               }}
             ></TabBar.Item>
           );
