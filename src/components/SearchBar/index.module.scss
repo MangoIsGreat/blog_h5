@@ -1,0 +1,32 @@
+@import "../../assets/css/config/common.scss";
+
+.searchBar {
+  height: 0.54rem;
+  display: flex;
+  align-items: center;
+  background-color: #efeff4;
+
+  :global {
+    .am-search-cancel-show {
+      width: 50px;
+      margin-right: 0px !important;
+    }
+
+    .am-search-cancel-anim {
+      transition: none;
+      // transition-delay: 0.1s;
+    }
+  }
+
+  .search {
+    flex: 1;
+  }
+
+  .tag {
+    width: 0.8rem;
+    padding-left: 0.12rem;
+    box-sizing: border-box;
+    line-height: 0.54rem;
+    color: $primary-icon-gray;
+  }
+}

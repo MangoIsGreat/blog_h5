@@ -7,7 +7,7 @@ import Found from "../Found";
 import News from "../News";
 import My from "../My";
 import NotFound from "../NotFound";
-// import style from "./index.module.scss";
+import style from "./index.module.scss";
 import "../../assets/css/iconfont/iconfont.css";
 
 class Layout extends Component {
@@ -76,8 +76,8 @@ class Layout extends Component {
 
   render() {
     return (
-      <div>
-        <div style={{ height: "500px" }}>
+      <div className={style.layout}>
+        <div>
           <Switch>
             <Route path="/layout/index" component={Home} />
             <Route path="/layout/interaction" component={Interaction} />

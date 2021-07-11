@@ -13,7 +13,7 @@ import NotFound from "./views/NotFound";
 function App() {
   return (
     <Router>
-      <div>
+      <div style={{ height: "100%" }}>
         <Switch>
           <Route path="/layout" component={Layout} />
           <Redirect exact from="/" to="/layout" />
