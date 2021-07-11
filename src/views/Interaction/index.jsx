@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import style from "./index.module.scss";
 
 class Interaction extends Component {
   render() {
-    return <div> Interaction </div>;
+    return <div className={style.root}> Interaction </div>;
   }
 }
 

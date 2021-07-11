@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import style from "./index.module.scss";
 
 class Home extends Component {
   render() {
-    return <div> Home </div>;
+    return (
+      <div className={style.root}>
+        aaaa
+      </div>
+    );
   }
 }
 

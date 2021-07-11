@@ -4,6 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+// 项目使用rem实现自适应
+import "./rem";
+// 将axios挂载到Component原型上
 import "./utils/axios";
 
 ReactDOM.render(
