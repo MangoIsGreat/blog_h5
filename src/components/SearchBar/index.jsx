@@ -4,6 +4,7 @@ import { WingBlank, InputItem } from "antd-mobile";
 import styles from "./index.module.scss";
 import { Form, withFormik } from "formik";
 import * as Yup from "yup";
+import Tab from "./tabs";
 
 class Search extends Component {
   constructor(props) {
@@ -26,6 +27,10 @@ class Search extends Component {
 
   onBlur = () => {
     this.props.switchShowTag(false);
+  };
+
+  onTabClick = (tab, index) => {
+    console.log("tabclick", tab, index);
   };
 
   render() {
@@ -52,6 +57,8 @@ class Search extends Component {
             <div className={styles.cancel}>取消</div>
           )}
         </WingBlank>
+        {/* tab栏 */}
+        <Tab onTabClick={this.onTabClick} />
       </div>
     );
   }

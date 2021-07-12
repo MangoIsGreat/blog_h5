@@ -1,45 +1,34 @@
 import React, { Component } from "react";
-import Search from "../../components/SearchBar";
+import { WingBlank, InputItem } from "antd-mobile";
 import style from "./index.module.scss";
 
 class Home extends Component {
   constructor() {
     super();
 
-    this.state = {
-      searchValue: "",
-      showCancelBtn: false,
-    };
+    this.state = {};
   }
 
-  switchShowTag = (status) => {
-    this.setState({
-      showCancelBtn: status,
-    });
-  };
-
-  searchInput = (value) => {
-    this.setState({
-      searchValue: value,
-    });
-  };
-
-  search = () => {
-    console.log("搜索搜索");
-  };
+  onFocus = () => {
+    
+  }
 
   render() {
-    const { showCancelBtn, searchValue } = this.state;
+    const {} = this.state;
 
     return (
-      <div className={style.root}>
-        <Search
-          switchShowTag={this.switchShowTag}
-          searchInput={this.searchInput}
-          search={this.search}
-          value={searchValue}
-          showCancelBtn={showCancelBtn}
-        />
+      <div className={style.home}>
+        <WingBlank className={style.searchBox} size="md">
+          <InputItem
+            className={style.search}
+            placeholder="搜索得到"
+            labelNumber={1}
+            onFocus={() => this.onFocus()}
+          >
+            <i className="iconfont icon-fangdajing" />
+          </InputItem>
+          <i className="iconfont icon-shezhi">&nbsp;标签</i>
+        </WingBlank>
       </div>
     );
   }
