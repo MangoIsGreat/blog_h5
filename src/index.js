@@ -9,6 +9,9 @@ import "./rem";
 // 将axios挂载到Component原型上
 import "./utils/axios";
 
+// 开发环境使用eruda实现控制台调试
+import "./utils/console";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

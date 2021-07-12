@@ -1,32 +1,45 @@
 @import "../../assets/css/config/common.scss";
 
 .searchBar {
-  height: 0.54rem;
-  display: flex;
-  align-items: center;
   background-color: #efeff4;
 
-  :global {
-    .am-search-cancel-show {
-      width: 50px;
-      margin-right: 0px !important;
+  .searchBox {
+    height: 0.54rem;
+    display: flex;
+    align-items: center;
+
+    .search {
+      flex: 1;
     }
 
-    .am-search-cancel-anim {
-      transition: none;
-      // transition-delay: 0.1s;
+    :global {
+      .am-input-item {
+        height: 0.38rem;
+      }
+
+      .am-list-item {
+        min-height: auto;
+      }
+
+      .am-input-control {
+        input {
+          font-size: 0.16rem;
+        }
+      }
+
+      .am-input-label {
+        .icon-fangdajing {
+          color: #99a0a8;
+          font-size: 0.16rem;
+        }
+      }
+
+      .icon-shezhi {
+        width: 0.65rem;
+        line-height: 0.54rem;
+        padding-left: 0.2rem;
+        color: #acb4be;
+      }
     }
-  }
-
-  .search {
-    flex: 1;
-  }
-
-  .tag {
-    width: 0.8rem;
-    padding-left: 0.12rem;
-    box-sizing: border-box;
-    line-height: 0.54rem;
-    color: $primary-icon-gray;
   }
 }

@@ -1,48 +1,55 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { SearchBar } from "antd-mobile";
-import { withRouter } from "react-router-dom";
+import { WingBlank, InputItem } from "antd-mobile";
 import styles from "./index.module.scss";
 
-function Search({ value, showCancelBtn, switchShowTag }) {
-  const onChange = (value) => {};
+class Search extends Component {
+  constructor(props) {
+    super(props);
 
-  const onSubmit = (value) => {};
+    this.state = {};
+  }
 
-  const onFocus = () => {
-    switchShowTag(true);
+  componentDidMount() {}
+
+  onChange = (value) => {};
+
+  onSubmit = (value) => {};
+
+  onFocus = () => {
+    this.props.switchShowTag(true);
   };
 
-  const onBlur = () => {
-    switchShowTag(false);
+  onBlur = () => {
+    this.props.switchShowTag(false);
   };
 
-  console.log(!showCancelBtn);
+  render() {
+    const { value, showCancelBtn } = this.props;
 
-  return (
-    <div className={styles.searchBar}>
-      <SearchBar
-        className={styles.search}
-        value={value}
-        placeholder="搜索得到"
-        onSubmit={(value) => onSubmit()}
-        onFocus={() => onFocus()}
-        onBlur={() => onBlur()}
-        onCancel={() => console.log("onCancel")}
-        showCancelButton={showCancelBtn}
-        onChange={() => onChange()}
-        cancelText={
-          <i className={`iconfont icon-shezhi`}>&nbsp;标签</i>
-        }
-      />
-      {/* <i
-        style={{ display: !showCancelBtn ? "block" : "none" }}
-        className={`iconfont icon-shezhi ${styles.tag}`}
-      >
-        &nbsp;标签
-      </i> */}
-    </div>
-  );
+    return (
+      <div className={styles.searchBar}>
+        <WingBlank className={styles.searchBox} size="sm">
+          <InputItem
+            className={styles.search}
+            value={value}
+            placeholder="搜索得到"
+            labelNumber={1}
+            onFocus={() => this.onFocus()}
+            onChange={() => this.onChange()}
+            onBlur={() => this.onBlur()}
+          >
+            <i className="iconfont icon-fangdajing" />
+          </InputItem>
+          {!showCancelBtn ? (
+            <i className="iconfont icon-shezhi">&nbsp;标签</i>
+          ) : (
+            <div>取消</div>
+          )}
+        </WingBlank>
+      </div>
+    );
+  }
 }
 
 Search.propTypes = {
@@ -50,4 +57,4 @@ Search.propTypes = {
   showCancelBtn: PropTypes.bool.isRequired,
 };
 
-export default withRouter(Search);
+export default Search;
