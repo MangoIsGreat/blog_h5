@@ -2,19 +2,23 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { WingBlank, InputItem } from "antd-mobile";
 import styles from "./index.module.scss";
+import { Form, withFormik } from "formik";
+import * as Yup from "yup";
 
 class Search extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
   }
 
   componentDidMount() {}
 
-  onChange = (value) => {};
+  onChange = (value) => {
+    this.props.searchInput(value);
+  };
 
-  onSubmit = (value) => {};
+  onSubmit = () => {
+    this.props.search();
+  };
 
   onFocus = () => {
     this.props.switchShowTag(true);
@@ -29,22 +33,23 @@ class Search extends Component {
 
     return (
       <div className={styles.searchBar}>
-        <WingBlank className={styles.searchBox} size="sm">
-          <InputItem
-            className={styles.search}
-            value={value}
-            placeholder="搜索得到"
-            labelNumber={1}
-            onFocus={() => this.onFocus()}
-            onChange={() => this.onChange()}
-            onBlur={() => this.onBlur()}
-          >
-            <i className="iconfont icon-fangdajing" />
-          </InputItem>
+        <WingBlank className={styles.searchBox} size="md">
+          <Form className={styles.search} onSubmit={() => this.onSubmit()}>
+            <InputItem
+              value={value}
+              placeholder="搜索得到"
+              labelNumber={1}
+              onFocus={() => this.onFocus()}
+              onChange={(value) => this.onChange(value)}
+              onBlur={() => this.onBlur()}
+            >
+              <i className="iconfont icon-fangdajing" />
+            </InputItem>
+          </Form>
           {!showCancelBtn ? (
             <i className="iconfont icon-shezhi">&nbsp;标签</i>
           ) : (
-            <div>取消</div>
+            <div className={styles.cancel}>取消</div>
           )}
         </WingBlank>
       </div>
@@ -57,4 +62,4 @@ Search.propTypes = {
   showCancelBtn: PropTypes.bool.isRequired,
 };
 
-export default Search;
+export default withFormik({})(Search);

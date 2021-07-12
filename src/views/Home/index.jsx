@@ -18,6 +18,16 @@ class Home extends Component {
     });
   };
 
+  searchInput = (value) => {
+    this.setState({
+      searchValue: value,
+    });
+  };
+
+  search = () => {
+    console.log("搜索搜索");
+  };
+
   render() {
     const { showCancelBtn, searchValue } = this.state;
 
@@ -25,6 +35,8 @@ class Home extends Component {
       <div className={style.root}>
         <Search
           switchShowTag={this.switchShowTag}
+          searchInput={this.searchInput}
+          search={this.search}
           value={searchValue}
           showCancelBtn={showCancelBtn}
         />
