@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import store from "./store";
+import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -10,12 +12,19 @@ import "./rem";
 import "./utils/axios";
 
 // 开发环境使用eruda实现控制台调试
-import "./utils/console";
+// import "./utils/console";
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// );
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );
 
