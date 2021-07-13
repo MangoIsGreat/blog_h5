@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView } from "antd-mobile";
+import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
 
 const data = [
   {
@@ -96,7 +96,7 @@ class list extends Component {
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
-    console.log("reach end", event);
+
     this.setState({ isLoading: true });
     setTimeout(() => {
       this.rData = [...this.rData, ...genData(++pageIndex)];
@@ -108,85 +108,143 @@ class list extends Component {
   };
 
   render() {
+    // 每行数据下方分割内容
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
         style={{
-          backgroundColor: "#F5F5F9",
+          backgroundColor: "#eff2f5",
           height: 8,
           borderTop: "1px solid #ECECED",
           borderBottom: "1px solid #ECECED",
         }}
       />
     );
-    let index = data.length - 1;
+
+    // let index = data.length - 1;
     const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = data.length - 1;
-      }
-      const obj = data[index--];
+      //   if (index < 0) {
+      //     index = data.length - 1;
+      //   }
+      //   const obj = data[index--];
       return (
-        <div
-          key={rowID}
+        <WingBlank
+          size="md"
           style={{
-            padding: "0 15px",
-            backgroundColor: "white",
+            backgroundColor: "#fff",
+            padding: "0.15rem 0",
           }}
         >
           <div
             style={{
-              height: "50px",
-              lineHeight: "50px",
-              color: "#888",
-              fontSize: "18px",
-              borderBottom: "1px solid #ddd",
+              width: "calc(100vw - 0.4rem)",
+              marginBottom: "0.05rem",
+              fontSize: "0.16rem",
+              color: "#222528",
+              fontWeight: "600",
+              lineHeight: "0.22rem",
             }}
           >
-            {obj.title}
+            延迟执行与不可变，系统讲解JavaStream数据处理延迟执行与
           </div>
-          <div
-            style={{ display: "-webkit-box", display: "flex", padding: "15px" }}
-          >
-            <img
-              style={{ height: "63px", width: "63px", marginRight: "15px" }}
-              src={obj.img}
-              alt=""
-            />
-            <div style={{ display: "inline-block" }}>
+          <div style={{ display: "flex", marginBottom: "0.08rem" }}>
+            <div style={{ flex: 1, paddingRight: "0.08rem" }}>
               <div
                 style={{
-                  marginBottom: "8px",
-                  color: "#000",
-                  fontSize: "16px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: "250px",
+                  display: "flex",
+                  marginBottom: "0.05rem",
+                  color: "#6C7584",
+                  fontSize: "0.12rem",
+                  lineHeight: "0.16rem",
                 }}
               >
-                {obj.des}-{rowData}
+                <div
+                  style={{
+                    paddingRight: "0.08rem",
+                  }}
+                >
+                  橘松JAVA
+                </div>
+                |<div style={{ padding: "0 0.08rem" }}>1小时前</div>
               </div>
-              <div style={{ fontSize: "16px" }}>
-                <span style={{ fontSize: "30px", color: "#FF6E27" }}>
-                  {rowID}
-                </span>{" "}
-                元/任务
+              <div
+                style={{
+                  color: "#495261",
+                  fontSize: "0.14rem",
+                  lineHeight: "0.21rem",
+                  wordBreak: "break-all",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  webkitLineClamp: "2",
+                  webkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候
               </div>
             </div>
+            <img
+              style={{ width: "0.84rem", height: "0.65rem" }}
+              src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ff1d144fe84758b74a6f444b997279~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
+              alt=""
+            />
           </div>
-        </div>
+          <Flex
+            style={{
+              fontSize: "0.12rem",
+              color: "#6C7583",
+            }}
+          >
+            <Flex.Item>
+              <i
+                style={{ marginRight: "0.13rem", color: "#6C7583" }}
+                className="iconfont icon-dianzan"
+              >
+                &nbsp;7
+              </i>
+              <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
+                &nbsp;1
+              </i>
+            </Flex.Item>
+            <Flex.Item align="end">
+              <span
+                style={{
+                  padding: "0.05rem 0.06rem",
+                  backgroundColor: "#F4F5F5",
+                  borderRadius: "0.05rem",
+                }}
+              >
+                后端
+              </span>
+            </Flex.Item>
+          </Flex>
+        </WingBlank>
       );
     };
+
+    const header = (
+      <div style={{ display: "flex", height: "0.26rem" }}>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          综合排序&nbsp;<i className="iconfont icon-dianzan"></i>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          时间不限&nbsp;<i className="iconfont icon-dianzan"></i>
+        </div>
+      </div>
+    );
+
     return (
       <div>
         <ListView
+        className="aaaaa"
+          style={{ border: "none" }}
           key={this.state.useBodyScroll ? "0" : "1"}
           ref={(el) => (this.lv = el)}
           dataSource={this.state.dataSource}
-          renderHeader={() => <span>Pull to refresh</span>}
+          renderHeader={() => header}
           renderFooter={() => (
-            <div style={{ padding: 30, textAlign: "center" }}>
-              {this.state.isLoading ? "Loading..." : "Loaded"}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Icon type="loading" />
             </div>
           )}
           renderRow={row}
