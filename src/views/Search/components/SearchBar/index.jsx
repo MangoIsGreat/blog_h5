@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { WingBlank, InputItem } from "antd-mobile";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as searchActionCreator from "../../../../store/actionCreators/searchActionCreator";
+import { WingBlank, InputItem, Flex } from "antd-mobile";
 import styles from "./index.module.scss";
 import { Form, withFormik } from "formik";
 import * as Yup from "yup";
@@ -13,20 +16,16 @@ class Search extends Component {
 
   componentDidMount() {}
 
-  onChange = (value) => {
-    this.props.searchInput(value);
-  };
+  onChange = (value) => {};
 
-  onSubmit = () => {
-    this.props.search();
-  };
+  onSubmit = () => {};
 
-  onFocus = () => {
-    this.props.switchShowTag(true);
-  };
+  onFocus = () => {};
 
-  onBlur = () => {
-    this.props.switchShowTag(false);
+  onBlur = () => {};
+
+  cancel = () => {
+    this.props.triggerShowState(false);
   };
 
   onTabClick = (tab, index) => {
@@ -34,7 +33,7 @@ class Search extends Component {
   };
 
   render() {
-    const { value, showCancelBtn } = this.props;
+    const { value } = this.props;
 
     return (
       <div className={styles.searchBar}>
@@ -51,14 +50,21 @@ class Search extends Component {
               <i className="iconfont icon-fangdajing" />
             </InputItem>
           </Form>
-          {!showCancelBtn ? (
-            <i className="iconfont icon-shezhi">&nbsp;标签</i>
-          ) : (
-            <div className={styles.cancel}>取消</div>
-          )}
+          <div onClick={this.cancel} className={styles.cancel}>
+            取消
+          </div>
         </WingBlank>
         {/* tab栏 */}
         <Tab onTabClick={this.onTabClick} />
+        {/* 历史面板 */}
+        <WingBlank size="lg" className={styles.history}>
+          <Flex style={{ height: "100%" }}>
+            <Flex.Item>搜索历史</Flex.Item>
+            <Flex.Item align="end">
+              <i className="iconfont icon-shezhi"></i>
+            </Flex.Item>
+          </Flex>
+        </WingBlank>
       </div>
     );
   }
@@ -69,4 +75,16 @@ Search.propTypes = {
   showCancelBtn: PropTypes.bool.isRequired,
 };
 
-export default withFormik({})(Search);
+const mapStateToProps = (state) => {
+  return {
+    isShowSearchPage: state.search.isShowSearchPage,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(searchActionCreator, dispatch);
+};
+
+export default withFormik({})(
+  connect(mapStateToProps, mapDispatchToProps)(Search)
+);

@@ -34,7 +34,7 @@ class Home extends Component {
           <i className="iconfont icon-shezhi">&nbsp;标签</i>
         </WingBlank>
         {/* 搜索页 */}
-        {isShowSearchPage ? <SearchPage /> : null}
+        <SearchPage />
       </div>
     );
   }

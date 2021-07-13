@@ -1,4 +1,4 @@
-@import "../../../assets/css/config/common.scss";
+@import "../../../../assets/css/config/common.scss";
 
 .searchBar {
   background-color: #efeff4;
@@ -19,6 +19,7 @@
 
       .am-list-item {
         min-height: auto;
+        padding-left: 0.15rem;
       }
 
       .am-input-control {
@@ -34,6 +35,14 @@
         }
       }
 
+      .am-list-line {
+        padding-right: 0.15rem;
+      }
+
+      .iconfont {
+        font-size: 0.16rem;
+      }
+
       .icon-shezhi {
         width: 0.55rem;
         line-height: 0.54rem;
@@ -43,12 +52,41 @@
     }
 
     .cancel {
-      width: 0.45rem;
+      width: 0.55rem;
       line-height: 0.54rem;
-      padding-left: 0.3rem;
+      padding-left: 0.2rem;
       font-size: 0.16rem;
       color: $primary-color;
       font-weight: 600;
     }
+  }
+
+  .tag {
+    width: 100%;
+    height: 0.4rem;
+    padding: 0 0.04rem;
+    line-height: 0.4rem;
+    align-items: center;
+    display: flex;
+    font-size: 0.16rem;
+    color: #939ba4;
+    border-bottom: 1px solid #ecf0f4;
+
+    :global {
+      .tag-item {
+        padding: 0 0.16rem;
+      }
+
+      .active {
+        color: $primary-color;
+        border-bottom: 1px solid $primary-color;
+      }
+    }
+  }
+
+  .history {
+    height: 0.4rem;
+    font-size: 0.16rem;
+    color: #939ba4;
   }
 }

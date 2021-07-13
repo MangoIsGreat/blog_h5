@@ -1,0 +1,12 @@
+@import "../../assets/css/config/common.scss";
+
+.search {
+  width: 100vw;
+  background-color: #f9f9f9;
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  transition: height 0.3s;
+}
