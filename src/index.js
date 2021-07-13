@@ -12,7 +12,7 @@ import "./rem";
 import "./utils/axios";
 
 // 开发环境使用eruda实现控制台调试
-// import "./utils/console";
+import "./utils/console";
 
 // ReactDOM.render(
 //   <React.StrictMode>

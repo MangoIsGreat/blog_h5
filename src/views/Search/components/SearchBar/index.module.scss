@@ -1,8 +1,6 @@
 @import "../../../../assets/css/config/common.scss";
 
 .searchBar {
-  background-color: #efeff4;
-
   .searchBox {
     height: 0.54rem;
     display: flex;
@@ -70,7 +68,7 @@
     display: flex;
     font-size: 0.16rem;
     color: #939ba4;
-    border-bottom: 1px solid #ecf0f4;
+    border-bottom: 1px solid #eff2f5;
 
     :global {
       .tag-item {
@@ -88,5 +86,22 @@
     height: 0.4rem;
     font-size: 0.16rem;
     color: #939ba4;
+
+    .list {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .listItem {
+        padding: 0.05rem;
+
+        .innerBox {
+          padding: 0.03rem 0.1rem;
+          border-radius: 0.14rem;
+          line-height: 0.24rem;
+          background-color: #eff2f5;
+        }
+      }
+    }
   }
 }

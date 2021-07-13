@@ -3,22 +3,35 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as searchActionCreator from "../../../../store/actionCreators/searchActionCreator";
-import { WingBlank, InputItem, Flex } from "antd-mobile";
+import { WingBlank, InputItem } from "antd-mobile";
 import styles from "./index.module.scss";
 import { Form, withFormik } from "formik";
 import * as Yup from "yup";
 import Tab from "./tabs";
+import History from "./history";
+import { setHistory } from "../../../../utils/store";
 
 class Search extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      searchValue: "",
+    };
   }
 
   componentDidMount() {}
 
-  onChange = (value) => {};
+  onChange = (value) => {
+    this.setState({
+      searchValue: value,
+    });
+  };
 
-  onSubmit = () => {};
+  onSubmit = () => {
+    // 保存历史记录
+    setHistory(this.state.searchValue);
+  };
 
   onFocus = () => {};
 
@@ -33,14 +46,14 @@ class Search extends Component {
   };
 
   render() {
-    const { value } = this.props;
+    const { searchValue } = this.state;
 
     return (
       <div className={styles.searchBar}>
         <WingBlank className={styles.searchBox} size="md">
           <Form className={styles.search} onSubmit={() => this.onSubmit()}>
             <InputItem
-              value={value}
+              value={searchValue}
               placeholder="搜索得到"
               labelNumber={1}
               onFocus={() => this.onFocus()}
@@ -57,14 +70,7 @@ class Search extends Component {
         {/* tab栏 */}
         <Tab onTabClick={this.onTabClick} />
         {/* 历史面板 */}
-        <WingBlank size="lg" className={styles.history}>
-          <Flex style={{ height: "100%" }}>
-            <Flex.Item>搜索历史</Flex.Item>
-            <Flex.Item align="end">
-              <i className="iconfont icon-shezhi"></i>
-            </Flex.Item>
-          </Flex>
-        </WingBlank>
+        <History />
       </div>
     );
   }
