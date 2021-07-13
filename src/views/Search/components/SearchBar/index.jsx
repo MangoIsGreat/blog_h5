@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import Tab from "./tabs";
 import History from "./history";
 import { setHistory } from "../../../../utils/store";
+import List from "./list";
 
 class Search extends Component {
   constructor(props) {
@@ -70,7 +71,9 @@ class Search extends Component {
         {/* tab栏 */}
         <Tab onTabClick={this.onTabClick} />
         {/* 历史面板 */}
-        <History />
+        {/* <History /> */}
+        {/* 数据列表 */}
+        <List />
       </div>
     );
   }
