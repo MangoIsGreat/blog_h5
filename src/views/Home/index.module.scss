@@ -19,6 +19,7 @@
 
       .am-list-item {
         min-height: auto;
+        padding-left: 0.15rem;
       }
 
       .am-input-control {
@@ -32,6 +33,14 @@
           color: #99a0a8;
           font-size: 0.16rem;
         }
+      }
+
+      .am-list-line {
+        padding-right: 0.15rem;
+      }
+
+      .iconfont {
+        font-size: 0.16rem;
       }
 
       .icon-shezhi {

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
 import { WingBlank, InputItem } from "antd-mobile";
 import style from "./index.module.scss";
+import SearchPage from "../Search/index";
 
 class Home extends Component {
   constructor() {
@@ -10,11 +14,11 @@ class Home extends Component {
   }
 
   onFocus = () => {
-    
-  }
+    this.props.triggerShowState(true);
+  };
 
   render() {
-    const {} = this.state;
+    const { isShowSearchPage } = this.props;
 
     return (
       <div className={style.home}>
@@ -29,9 +33,21 @@ class Home extends Component {
           </InputItem>
           <i className="iconfont icon-shezhi">&nbsp;标签</i>
         </WingBlank>
+        {/* 搜索页 */}
+        {isShowSearchPage ? <SearchPage /> : null}
       </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    isShowSearchPage: state.search.isShowSearchPage,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(searchActionCreator, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
