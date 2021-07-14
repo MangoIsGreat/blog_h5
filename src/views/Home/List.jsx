@@ -226,7 +226,7 @@ class List extends Component {
     };
 
     const header = (
-      <div style={{borderBottom: "0.07rem solid #EFF2F5"}}>
+      <div style={{ borderBottom: "0.07rem solid #EFF2F5" }}>
         <Flex
           style={{
             height: "0.4rem",
@@ -253,7 +253,7 @@ class List extends Component {
                   display: "flex",
                   padding: "0.2rem 0.2rem",
                   boxSizing: "border-box",
-                  borderBottom: "0.01rem solid #EBEEF2"
+                  borderBottom: "0.01rem solid #EBEEF2",
                 }}
               >
                 <div style={{ flex: 1 }}>
@@ -298,7 +298,7 @@ class List extends Component {
     );
 
     return (
-      <div>
+      <div style={{ overflow: "hidden" }}>
         <ListView
           contentContainerStyle={{ backgroundColor: "#fff" }}
           key={this.state.useBodyScroll ? "0" : "1"}

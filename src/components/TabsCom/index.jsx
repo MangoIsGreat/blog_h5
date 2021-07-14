@@ -29,13 +29,14 @@ class TabsCom extends Component {
 
   render() {
     const { classifyActiveTab } = this.state;
-    const { tabs, tabSize } = this.props;
+    const { tabs, tabSize, swipeable } = this.props;
 
     return (
       <Tabs
         tabs={tabs}
         onTabClick={this.tabClick}
         onChange={this.onChange}
+        swipeable={swipeable}
         tabBarUnderlineStyle={{
           width: `${100 / tabSize}vw`,
           left: `calc(${classifyActiveTab} * ${100 / tabSize}%)`,
@@ -58,6 +59,7 @@ TabsCom.propTypes = {
   tabs: PropTypes.array.isRequired,
   tabSize: PropTypes.number.isRequired,
   renderTabsContent: PropTypes.func.isRequired,
+  swipeable: PropTypes.bool.isRequired,
 };
 
 export default TabsCom;

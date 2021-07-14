@@ -43,7 +43,7 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      hotListData: [1, 1, 1],
+      publicInfoData: [1, 1, 1],
     };
   }
 
@@ -109,7 +109,7 @@ class List extends Component {
   };
 
   render() {
-    const { hotListData } = this.state;
+    const { publicInfoData } = this.state;
 
     // 每行数据下方分割内容
     const separator = (sectionID, rowID) => (
@@ -226,13 +226,18 @@ class List extends Component {
     };
 
     const header = (
-      <div style={{height: "1.16rem", overflowX: "auto"}}>
-        <div style={{height: "100%", width: "1000px"}}></div>
+      <div className="swiper-box">
+        <div className="swiper-innerBox">
+          {publicInfoData.length > 0 &&
+            publicInfoData.map((item, index) => {
+              return <div className="swiper-item" key={index}></div>;
+            })}
+        </div>
       </div>
     );
 
     return (
-      <div>
+      <div style={{ overflowX: "hidden" }}>
         <ListView
           contentContainerStyle={{ backgroundColor: "#fff" }}
           key={this.state.useBodyScroll ? "0" : "1"}

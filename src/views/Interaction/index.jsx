@@ -35,8 +35,10 @@ class Interaction extends Component {
         <TabsCom
           tabs={tabs}
           tabSize={4}
+          swipeable={false}
           renderTabsContent={this.renderTabsContent}
         />
+        <List />
       </div>
     );
   }

@@ -57,6 +57,7 @@ class Home extends Component {
         <TabsCom
           tabs={tabs}
           tabSize={5}
+          swipeable={true}
           renderTabsContent={this.renderTabsContent}
         />
       </div>
