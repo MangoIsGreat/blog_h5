@@ -110,6 +110,20 @@ class List extends Component {
     }, 1000);
   };
 
+  renderSeparator = () => {
+    return (sectionID, rowID) => (
+      <div
+        key={`${sectionID}-${rowID}`}
+        style={{
+          backgroundColor: "#eff2f5",
+          height: 8,
+          borderTop: "1px solid #ECECED",
+          borderBottom: "1px solid #ECECED",
+        }}
+      />
+    );
+  };
+
   renderHeader = () => {
     const { publicInfoData } = this.state;
 
@@ -196,21 +210,8 @@ class List extends Component {
   render() {
     const { originData } = this.state;
 
-    // 每行数据下方分割内容
-    const separator = (sectionID, rowID) => (
-      <div
-        key={`${sectionID}-${rowID}`}
-        style={{
-          backgroundColor: "#eff2f5",
-          height: 8,
-          borderTop: "1px solid #ECECED",
-          borderBottom: "1px solid #ECECED",
-        }}
-      />
-    );
-
     return (
-      <div>
+      <>
         {originData ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
@@ -224,7 +225,7 @@ class List extends Component {
               </div>
             )}
             renderRow={this.renderRow()}
-            renderSeparator={separator}
+            renderSeparator={this.renderSeparator()}
             useBodyScroll={this.state.useBodyScroll}
             style={
               this.state.useBodyScroll
@@ -247,7 +248,7 @@ class List extends Component {
         ) : (
           <NoData />
         )}
-      </div>
+      </>
     );
   }
 }

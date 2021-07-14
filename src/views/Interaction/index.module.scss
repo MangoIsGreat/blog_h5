@@ -5,12 +5,9 @@
 
   :global {
     .am-list-view-scrollview {
-      border: none !important;
-
       .am-list-header {
         width: 100vw;
         height: 1.16rem;
-        padding: 0;
         padding: 0.08rem;
         box-sizing: border-box;
         background-color: $bg-color;

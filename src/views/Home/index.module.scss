@@ -18,28 +18,25 @@
     :global {
       .am-input-item {
         height: 0.38rem;
-      }
-
-      .am-list-item {
         min-height: auto;
         padding-left: 0.15rem;
-      }
 
-      .am-input-control {
-        input {
-          font-size: 0.16rem;
+        .am-list-line {
+          padding-right: 0.15rem;
+
+          .am-input-control {
+            input {
+              font-size: 0.16rem;
+            }
+          }
+
+          .am-input-label {
+            .icon-fangdajing {
+              color: #99a0a8;
+              font-size: 0.16rem;
+            }
+          }
         }
-      }
-
-      .am-input-label {
-        .icon-fangdajing {
-          color: #99a0a8;
-          font-size: 0.16rem;
-        }
-      }
-
-      .am-list-line {
-        padding-right: 0.15rem;
       }
 
       .iconfont {
@@ -52,16 +49,6 @@
         padding-left: 0.2rem;
         color: #acb4be;
       }
-    }
-  }
-
-  :global {
-    .am-list-view-scrollview {
-      border: none !important;
-    }
-
-    .am-list-header {
-      padding: 0;
     }
   }
 }

@@ -2,6 +2,8 @@
 
 .find {
   .searchBox {
+    display: flex;
+    align-items: center;
     height: 0.54rem;
     padding: 0 0.1rem;
     box-sizing: border-box;
@@ -10,33 +12,27 @@
 
     :global {
       .am-input-item {
+        flex: 1;
         height: 0.38rem;
-      }
-
-      .am-list-item {
         min-height: auto;
         padding-left: 0.15rem;
-      }
 
-      .am-input-control {
-        input {
-          font-size: 0.16rem;
+        .am-list-line {
+          padding-right: 0.15rem;
+
+          .am-input-control {
+            input {
+              font-size: 0.16rem;
+            }
+          }
+
+          .am-input-label {
+            .icon-fangdajing {
+              color: #99a0a8;
+              font-size: 0.16rem;
+            }
+          }
         }
-      }
-
-      .am-input-label {
-        .icon-fangdajing {
-          color: #99a0a8;
-          font-size: 0.16rem;
-        }
-      }
-
-      .am-list-line {
-        padding-right: 0.15rem;
-      }
-
-      .iconfont {
-        font-size: 0.16rem;
       }
     }
   }

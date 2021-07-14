@@ -90,20 +90,4 @@
       }
     }
   }
-
-  :global {
-    .am-list-view-scrollview {
-      border: none !important;
-    }
-
-    .am-list-header {
-      padding: 0;
-    }
-
-    // 隐藏最后一个空Tab
-    // .am-tabs-default-bar-tab:nth-last-child(2),
-    // .am-tabs-pane-wrap:nth-last-child(1) {
-    //   display: none;
-    // }
-  }
 }

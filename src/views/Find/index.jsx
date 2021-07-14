@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
 import SearchPage from "../Search/index";
+import List from "./List";
 
 class Found extends Component {
   onFocus = () => {
@@ -24,6 +25,8 @@ class Found extends Component {
             <i className="iconfont icon-fangdajing" />
           </InputItem>
         </div>
+        {/* 列表页 */}
+        <List />
         {/* 搜索页 */}
         <SearchPage />
       </div>

@@ -26,5 +26,14 @@
     .am-input-item {
       background-color: #eff2f5;
     }
+
+    // 清除“ListView”长列表组件默认边框及header的padding
+    .am-list-view-scrollview {
+      border: none !important;
+    }
+
+    .am-list-header {
+      padding: 0;
+    }
   }
 }

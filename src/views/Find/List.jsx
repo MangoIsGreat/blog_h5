@@ -44,7 +44,6 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      hotListData: [1, 1, 1],
       originData: [1, 1, 1], // 数据源
     };
   }
@@ -125,76 +124,83 @@ class List extends Component {
   };
 
   renderHeader = () => {
-    const { hotListData } = this.state;
-
     return (
-      <div style={{ borderBottom: "0.07rem solid #EFF2F5" }}>
-        <Flex
+      <div
+        style={{
+          borderBottom: "0.07rem solid #EFF2F5",
+          backgroundColor: "#EFF2F5",
+        }}
+      >
+        <div
           style={{
+            display: "flex",
+            height: "0.92rem",
+            backgroundColor: "#fff",
+            margin: "0.08rem 0",
+          }}
+        >
+          <div style={{ flex: 1 }}>
+            <i
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: ".3rem",
+                textAlign: "center",
+                color: "#f09140",
+              }}
+              className="iconfont icon-huati"
+            ></i>
+            <div>招聘</div>
+          </div>
+          <div style={{ flex: 1 }}>
+            <i
+              style={{
+                lineHeight: "0.92rem",
+                fontSize: ".3rem",
+                textAlign: "center",
+                color: "#f09140",
+              }}
+              className="iconfont iconfont icon-gonggao"
+            ></i>
+          </div>
+          <div style={{ flex: 1 }}>
+            <i
+              style={{
+                lineHeight: "0.92rem",
+                fontSize: ".3rem",
+                textAlign: "center",
+                color: "#f09140",
+              }}
+              className="iconfont icon-huati"
+            ></i>
+          </div>
+          <div style={{ flex: 1 }}>
+            <i
+              style={{
+                lineHeight: "0.92rem",
+                fontSize: ".3rem",
+                textAlign: "center",
+                color: "#f09140",
+              }}
+              className="iconfont iconfont icon-gonggao"
+            ></i>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
             height: "0.4rem",
             borderBottom: "0.01rem solid #EBEEF2",
             paddingBottom: "0.1rem",
             padding: "0 0.2rem",
             boxSizing: "border-box",
+            backgroundColor: "#fff",
           }}
         >
-          <Flex.Item>
-            <i className="iconfont icon-tubiaozhuanqu-05">&nbsp;热门推荐</i>
-          </Flex.Item>
-          <Flex.Item align="end">
-            文章榜&nbsp;<i className="iconfont icon-xiangyou"></i>
-          </Flex.Item>
-        </Flex>
-        {hotListData.length > 0 &&
-          hotListData.map((item, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  padding: "0.2rem 0.2rem",
-                  boxSizing: "border-box",
-                  borderBottom: "0.01rem solid #EBEEF2",
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      width: "calc(100vw - 1.2rem)",
-                      fontSize: "0.16rem",
-                      color: "#000206",
-                      lineHeight: "0.24rem",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                    }}
-                  >
-                    拖拽竟然还能这样玩拖拽竟然还能这样玩拖拽竟然还能这样玩
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.12rem",
-                      color: "#A0A6AE",
-                      lineHeight: "0.24rem",
-                    }}
-                  >
-                    41&nbsp;赞&nbsp;·&nbsp;30&nbsp;评论&nbsp;·&nbsp;yck
-                  </div>
-                </div>
-                <div
-                  style={{
-                    width: "0.65rem",
-                    height: "0.65rem",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    backgroundImage:
-                      "url('https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b43e630c545e47d186085fbcb0576e78~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp')",
-                  }}
-                ></div>
-              </div>
-            );
-          })}
+          <i className="iconfont icon-tubiaozhuanqu-05">&nbsp;热门推荐</i>
+        </div>
       </div>
     );
   };
