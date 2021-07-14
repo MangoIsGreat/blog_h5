@@ -38,7 +38,10 @@ class Interaction extends Component {
           swipeable={false}
           renderTabsContent={this.renderTabsContent}
         />
-        <List />
+        {/* 写动态快捷入口 */}
+        <div className={style.write}>
+          <i className="iconfont icon-pinglun1"></i>
+        </div>
       </div>
     );
   }
