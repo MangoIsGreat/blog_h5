@@ -14,13 +14,6 @@ import "./utils/axios";
 // 开发环境使用eruda实现控制台调试
 import "./utils/console";
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById("root")
-// );
-
 ReactDOM.render(
   <Provider store={store}>
     <App />
