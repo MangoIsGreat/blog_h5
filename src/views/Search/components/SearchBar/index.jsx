@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import Tab from "./tabs";
 import History from "./history";
 import { setHistory } from "../../../../utils/store";
-import List from "./list";
+import List from "./List";
 
 class Search extends Component {
   constructor(props) {
@@ -81,7 +81,6 @@ class Search extends Component {
 
 Search.propTypes = {
   value: PropTypes.string,
-  showCancelBtn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
