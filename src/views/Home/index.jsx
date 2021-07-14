@@ -68,15 +68,15 @@ class Home extends Component {
     const { isShowSearchPage } = this.props;
 
     const tabs = [
-      { title: "1st Tab" },
-      { title: "2nd Tab" },
-      { title: "3rd Tab" },
-      { title: "4th Tab" },
-      { title: "5th Tab" },
-      { title: "6th Tab" },
-      { title: "7th Tab" },
-      { title: "8th Tab" },
-      { title: "9th Tab" },
+      { title: "关注" },
+      { title: "推荐" },
+      { title: "热榜" },
+      { title: "头条精选" },
+      { title: "后端" },
+      { title: "前端" },
+      { title: "Android" },
+      { title: "iOS" },
+      { title: "人工智能" },
     ];
 
     return (
@@ -99,14 +99,14 @@ class Home extends Component {
           tabs={tabs}
           onTabClick={this.tabClick}
           tabBarUnderlineStyle={{
-            width: "0.6rem",
-            left: `calc(${classifyActiveTab} * 33.333333% + 0.35rem)`,
+            width: "0.78rem",
+            left: `calc(${classifyActiveTab} * 20%)`,
             border: "1px #00c58e solid",
           }}
           tabBarBackgroundColor="#F9F9F9"
           tabBarActiveTextColor="#00c58e"
           tabBarInactiveTextColor="#A0A6AF"
-          renderTabBar={(props) => <Tabs.DefaultTabBar {...props} page={3} />}
+          renderTabBar={(props) => <Tabs.DefaultTabBar {...props} page={5} />}
         ></Tabs>
         {/* 数据列表 */}
         <List />

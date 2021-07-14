@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { WingBlank, Flex, Modal } from "antd-mobile";
-import { getHistory, removeHistory } from "../../../../utils/store";
+import { getHistory, removeHistory } from "../../utils/store";
 import styles from "./index.module.scss";
 
 const alert = Modal.alert;
