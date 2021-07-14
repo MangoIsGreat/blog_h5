@@ -68,16 +68,6 @@
     }
   }
 
-  .tabs {
-    height: 0.45rem;
-
-    :global {
-      .am-tabs-default-bar-tab:nth-last-child(2) {
-        display: none;
-      }
-    }
-  }
-
   .history {
     height: 0.4rem;
     font-size: 0.16rem;
@@ -99,5 +89,21 @@
         }
       }
     }
+  }
+
+  :global {
+    .am-list-view-scrollview {
+      border: none !important;
+    }
+
+    .am-list-header {
+      padding: 0;
+    }
+
+    // 隐藏最后一个空Tab
+    // .am-tabs-default-bar-tab:nth-last-child(2),
+    // .am-tabs-pane-wrap:nth-last-child(1) {
+    //   display: none;
+    // }
   }
 }

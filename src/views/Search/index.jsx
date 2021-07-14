@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import History from "./history";
 import { setHistory } from "../../utils/store";
 import List from "./List";
+import TabsCom from "../../components/TabsCom";
 
 class Search extends Component {
   constructor(props) {
@@ -17,7 +18,6 @@ class Search extends Component {
 
     this.state = {
       searchValue: "",
-      classifyActiveTab: 0,
     };
   }
 
@@ -26,7 +26,6 @@ class Search extends Component {
     { title: "文章" },
     { title: "资讯" },
     { title: "用户" },
-    { title: "" },
   ];
 
   componentDidMount() {}
@@ -50,14 +49,12 @@ class Search extends Component {
     this.props.triggerShowState(false);
   };
 
-  tabClick = (tab, index) => {
-    this.setState({
-      classifyActiveTab: index,
-    });
+  renderTabsContent = () => {
+    return <List />;
   };
 
   render() {
-    const { searchValue, classifyActiveTab } = this.state;
+    const { searchValue } = this.state;
     const { isShowSearchPage } = this.props;
 
     return (
@@ -83,25 +80,14 @@ class Search extends Component {
           </div>
         </WingBlank>
         {/* tab栏 */}
-        <div className={styles.tabs}>
-          <Tabs
-            tabs={this.tabs}
-            onTabClick={this.tabClick}
-            tabBarUnderlineStyle={{
-              width: "0.78rem",
-              left: `calc(${classifyActiveTab} * 20%)`,
-              border: "1px #00c58e solid",
-            }}
-            tabBarBackgroundColor="#F9F9F9"
-            tabBarActiveTextColor="#00c58e"
-            tabBarInactiveTextColor="#A0A6AF"
-            renderTabBar={(props) => <Tabs.DefaultTabBar {...props} page={5} />}
-          ></Tabs>
-        </div>
+        <TabsCom
+          tabs={this.tabs}
+          tabSize={4}
+          swipeable={true}
+          renderTabsContent={this.renderTabsContent}
+        />
         {/* 历史面板 */}
         {/* <History /> */}
-        {/* 数据列表 */}
-        <List />
       </div>
     );
   }

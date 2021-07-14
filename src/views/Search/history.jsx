@@ -30,17 +30,13 @@ class history extends Component {
 
   clearHistory = () => {
     //   debugger
-    // alert("提示", "你确认删除所有的历史吗?", [
-    //   { text: "取消", onPress: () => console.log("cancel") },
-    //   {
-    //     text: "确定",
-    //     onPress: () => removeHistory(),
-    //   },
-    // ]);
-    alert('Delete', 'Are you sure???', [
-        { text: 'Cancel', onPress: () => console.log('cancel'), style: 'default' },
-        { text: 'OK', onPress: () => console.log('ok') },
-      ]);
+    alert("提示", "你确认删除所有的历史吗?", [
+      { text: "取消", onPress: () => console.log("cancel") },
+      {
+        text: "确定",
+        onPress: () => removeHistory(),
+      },
+    ]);
   };
 
   render() {

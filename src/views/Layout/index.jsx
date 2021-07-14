@@ -3,7 +3,7 @@ import { TabBar } from "antd-mobile";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "../Home";
 import Interaction from "../Interaction";
-import Found from "../Found";
+import Find from "../Find";
 import News from "../News";
 import My from "../My";
 import NotFound from "../NotFound";
@@ -33,7 +33,7 @@ class Layout extends Component {
     {
       title: "发现",
       icon: "icon-fangdajing",
-      path: "/layout/found",
+      path: "/layout/find",
     },
     {
       title: "资讯",
@@ -81,7 +81,7 @@ class Layout extends Component {
           <Switch>
             <Route path="/layout/index" component={Home} />
             <Route path="/layout/interaction" component={Interaction} />
-            <Route path="/layout/found" component={Found} />
+            <Route path="/layout/find" component={Find} />
             <Route path="/layout/news" component={News} />
             <Route path="/layout/my" component={My} />
             <Redirect exact from="/layout" to="/layout/index" />

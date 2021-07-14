@@ -1,19 +1,12 @@
 @import "../../assets/css/config/common.scss";
 
-.home {
-  background-color: $bg-color;
-
-  .homeSearchBox {
+.find {
+  .searchBox {
     height: 0.54rem;
-    display: flex;
     padding: 0 0.1rem;
     box-sizing: border-box;
     align-items: center;
     background-color: #f9f9f9;
-
-    .search {
-      flex: 1;
-    }
 
     :global {
       .am-input-item {
@@ -45,23 +38,6 @@
       .iconfont {
         font-size: 0.16rem;
       }
-
-      .icon-shezhi {
-        width: 0.55rem;
-        line-height: 0.54rem;
-        padding-left: 0.2rem;
-        color: #acb4be;
-      }
-    }
-  }
-
-  :global {
-    .am-list-view-scrollview {
-      border: none !important;
-    }
-
-    .am-list-header {
-      padding: 0;
     }
   }
 }
