@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
-import { WingBlank, InputItem, Tabs } from "antd-mobile";
+import { InputItem, Tabs } from "antd-mobile";
 import style from "./index.module.scss";
 import SearchPage from "../Search/index";
 import List from "./List";
@@ -81,7 +81,7 @@ class Home extends Component {
 
     return (
       <div className={style.home}>
-        <WingBlank className={style.searchBox} size="md">
+        <div className={style.homeSearchBox}>
           <InputItem
             className={style.search}
             placeholder="搜索得到"
@@ -91,7 +91,7 @@ class Home extends Component {
             <i className="iconfont icon-fangdajing" />
           </InputItem>
           <i className="iconfont icon-shezhi">&nbsp;标签</i>
-        </WingBlank>
+        </div>
         {/* 搜索页 */}
         <SearchPage />
         {/* tab栏 */}

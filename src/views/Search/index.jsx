@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
-import { WingBlank, InputItem } from "antd-mobile";
+import { WingBlank, InputItem, Tabs } from "antd-mobile";
 import styles from "./index.module.scss";
 import { Form, withFormik } from "formik";
 import * as Yup from "yup";
-import Tab from "./tabs";
 import History from "./history";
 import { setHistory } from "../../utils/store";
 import List from "./List";
@@ -18,8 +17,17 @@ class Search extends Component {
 
     this.state = {
       searchValue: "",
+      classifyActiveTab: 0,
     };
   }
+
+  tabs = [
+    { title: "综合" },
+    { title: "文章" },
+    { title: "资讯" },
+    { title: "用户" },
+    { title: "" },
+  ];
 
   componentDidMount() {}
 
@@ -42,18 +50,20 @@ class Search extends Component {
     this.props.triggerShowState(false);
   };
 
-  onTabClick = (tab, index) => {
-    console.log("tabclick", tab, index);
+  tabClick = (tab, index) => {
+    this.setState({
+      classifyActiveTab: index,
+    });
   };
 
   render() {
-    const { searchValue } = this.state;
+    const { searchValue, classifyActiveTab } = this.state;
     const { isShowSearchPage } = this.props;
 
     return (
       <div
         className={styles.searchBar}
-        style={{ height: isShowSearchPage ? "100vh" : "0" }}
+        style={{ height: isShowSearchPage ? "100vh" : "0", overflow: "auto" }}
       >
         <WingBlank className={styles.searchBox} size="md">
           <Form className={styles.search} onSubmit={() => this.onSubmit()}>
@@ -73,7 +83,21 @@ class Search extends Component {
           </div>
         </WingBlank>
         {/* tab栏 */}
-        <Tab onTabClick={this.onTabClick} />
+        <div className={styles.tabs}>
+          <Tabs
+            tabs={this.tabs}
+            onTabClick={this.tabClick}
+            tabBarUnderlineStyle={{
+              width: "0.78rem",
+              left: `calc(${classifyActiveTab} * 20%)`,
+              border: "1px #00c58e solid",
+            }}
+            tabBarBackgroundColor="#F9F9F9"
+            tabBarActiveTextColor="#00c58e"
+            tabBarInactiveTextColor="#A0A6AF"
+            renderTabBar={(props) => <Tabs.DefaultTabBar {...props} page={5} />}
+          ></Tabs>
+        </div>
         {/* 历史面板 */}
         {/* <History /> */}
         {/* 数据列表 */}

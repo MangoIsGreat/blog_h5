@@ -223,7 +223,7 @@ class List extends Component {
     };
 
     const header = (
-      <div style={{ display: "flex", height: "0.26rem" }}>
+      <div style={{ display: "flex", height: "0.4rem", lineHeight: "0.4rem" }}>
         <div style={{ flex: 1, textAlign: "center" }}>
           综合排序&nbsp;<i className="iconfont icon-dianzan"></i>
         </div>

@@ -3,9 +3,11 @@
 .home {
   background-color: #EFF2F5;
 
-  .searchBox {
+  .homeSearchBox {
     height: 0.54rem;
     display: flex;
+    padding: 0 0.1rem;
+    box-sizing: border-box;
     align-items: center;
     background-color: #F9F9F9;
 
@@ -51,15 +53,6 @@
         color: #acb4be;
       }
     }
-
-    .cancel {
-      width: 0.45rem;
-      line-height: 0.54rem;
-      padding-left: 0.3rem;
-      font-size: 0.16rem;
-      color: $primary-color;
-      font-weight: 600;
-    }
   }
 
   :global {
@@ -70,5 +63,11 @@
     .am-list-header {
       padding: 0;
     }
+  }
+}
+
+:global {
+  .am-input-item {
+    background-color: #EFF2F5;
   }
 }
