@@ -3,6 +3,7 @@ import Interaction from "../views/Interaction";
 import Find from "../views/Find";
 import News from "../views/News";
 import My from "../views/My";
+import UserInfo from "../views/UserInfo";
 
 const routeRules = [
   {
@@ -24,6 +25,10 @@ const routeRules = [
   {
     path: "/layout/my",
     component: My,
+  },
+  {
+    path: "/layout/my/userInfo",
+    component: UserInfo,
   },
 ];
 

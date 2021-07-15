@@ -7,6 +7,10 @@ const Item = List.Item;
 const Brief = Item.Brief;
 
 class My extends Component {
+  linkNewPage = (path) => {
+    this.props.history.push(path);
+  };
+
   render() {
     return (
       <div className={style.my}>
@@ -17,7 +21,7 @@ class My extends Component {
             arrow="horizontal"
             thumb="https://user-gold-cdn.xitu.io/2020/1/18/16fb901f1bac3975?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
             multipleLine
-            onClick={() => {}}
+            onClick={() => this.linkNewPage("/layout/my/userInfo")}
           >
             <div className="name">橘猫很方</div> <Brief>前端开发工程师</Brief>
           </Item>
