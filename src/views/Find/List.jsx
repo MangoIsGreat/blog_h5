@@ -175,6 +175,7 @@ class List extends Component {
           })}
         </div>
         <div className="ranking-list">
+          <div className="line"></div>
           {this.headerData.rankingType.map((item, index) => {
             return (
               <div className="ranking-list-item" key={index}>

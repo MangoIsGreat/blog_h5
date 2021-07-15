@@ -83,11 +83,20 @@
 
           .ranking-list {
             display: flex;
+            position: relative;
             height: 0.58rem;
             margin-bottom: 0.08rem;
             padding: 0.1rem 0rem;
             box-sizing: border-box;
             background-color: #fff;
+
+            .line {
+              position: absolute;
+              width: 0.01rem;
+              height: 0.38rem;
+              background-color: #ededed;
+              left: 50%;
+            }
 
             .ranking-list-item {
               flex: 1;
@@ -118,7 +127,7 @@
               }
 
               .pic {
-                @include setBgImg(0.65rem, 0.4rem);
+                @include setBgImg(0.65rem, 0.38rem);
               }
             }
           }

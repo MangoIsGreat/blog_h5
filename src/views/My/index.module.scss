@@ -14,7 +14,7 @@
 
         .am-list-item {
           border-bottom: $borderLine;
-          
+
           &:active {
             background-color: rgb(221, 221, 221);
           }
@@ -28,6 +28,10 @@
           }
 
           .am-list-line {
+            .am-list-extra {
+              font-size: 0.14rem;
+            }
+
             &::after {
               display: none;
             }
