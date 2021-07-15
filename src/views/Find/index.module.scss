@@ -98,6 +98,7 @@
               .content {
                 width: 0.64rem;
                 padding-right: 0.12rem;
+                text-align: right;
 
                 .title {
                   @include setTitle(0.14rem, #000408, 0.2rem, 600);
@@ -141,7 +142,6 @@
             }
 
             .recommend-group-body {
-              //   width: 100%;
               width: 3.62rem;
               height: 1.04rem;
               box-sizing: border-box;
@@ -162,7 +162,7 @@
                   display: inline-block;
                   height: 0.92rem;
                   width: 0.92rem;
-                  border-radius: 0.03rem;
+                  border-radius: 0.05rem;
                   border: 0.01rem solid #d0d0d0;
                   margin-right: 0.14rem;
 
