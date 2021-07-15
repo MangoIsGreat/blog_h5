@@ -8,7 +8,7 @@ $primary-icon-gray: #8f918f;
 $bg-color: #eff2f5;
 
 // 边框线
-$borderLine: 1px solid #ededed;
+$borderLine: 0.01rem solid #ededed;
 
 @mixin setTitle(
   $fontSize: 0.14rem,

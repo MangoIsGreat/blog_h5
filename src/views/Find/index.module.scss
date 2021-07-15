@@ -36,4 +36,70 @@
       }
     }
   }
+
+  :global {
+    .am-list-view-scrollview {
+      .am-list-header {
+        .header-content {
+          border-bottom: 0.07rem solid #eff2f5;
+          background-color: #eff2f5;
+
+          .content-type {
+            display: flex;
+            justify-content: center;
+            height: 0.92rem;
+            background-color: #fff;
+            margin: 0.08rem 0;
+
+            .content-type-item {
+              flex: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .item-body {
+                width: 0.3rem;
+
+                .iconfont {
+                  display: block;
+                  font-size: 0.3rem;
+                  margin-bottom: 0.16rem;
+                }
+
+                .icon-huati {
+                  color: #f09140;
+                }
+
+                .icon-gonggao {
+                  color: #f7ce45;
+                }
+
+                .name {
+                  @include setTitle(0.12rem, #2d2f33, 0.12rem);
+                }
+              }
+            }
+          }
+
+          .hot-recommend {
+            display: flex;
+            align-items: center;
+            height: 0.4rem;
+            border-bottom: $borderLine;
+            padding-bottom: 0.1rem;
+            padding: 0 0.2rem;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .icon-tubiaozhuanqu-05 {
+              color: #ea4e47;
+            }
+          }
+        }
+      }
+
+      .am-list-body {
+      }
+    }
+  }
 }

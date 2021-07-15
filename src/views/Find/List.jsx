@@ -125,81 +125,35 @@ class List extends Component {
 
   renderHeader = () => {
     return (
-      <div
-        style={{
-          borderBottom: "0.07rem solid #EFF2F5",
-          backgroundColor: "#EFF2F5",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            height: "0.92rem",
-            backgroundColor: "#fff",
-            margin: "0.08rem 0",
-          }}
-        >
-          <div style={{ flex: 1 }}>
-            <i
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: ".3rem",
-                textAlign: "center",
-                color: "#f09140",
-              }}
-              className="iconfont icon-huati"
-            ></i>
-            <div>招聘</div>
+      <div className="header-content">
+        <div className="content-type">
+          <div className="content-type-item">
+            <div className="item-body">
+              <i className="iconfont icon-huati"></i>
+              <div className="name">招聘</div>
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <i
-              style={{
-                lineHeight: "0.92rem",
-                fontSize: ".3rem",
-                textAlign: "center",
-                color: "#f09140",
-              }}
-              className="iconfont iconfont icon-gonggao"
-            ></i>
+          <div className="content-type-item">
+            <div className="item-body">
+              <i className="iconfont icon-gonggao"></i>
+              <div className="name">招聘</div>
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <i
-              style={{
-                lineHeight: "0.92rem",
-                fontSize: ".3rem",
-                textAlign: "center",
-                color: "#f09140",
-              }}
-              className="iconfont icon-huati"
-            ></i>
+          <div className="content-type-item">
+            <div className="item-body">
+              <i className="iconfont icon-huati"></i>
+              <div className="name">招聘</div>
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <i
-              style={{
-                lineHeight: "0.92rem",
-                fontSize: ".3rem",
-                textAlign: "center",
-                color: "#f09140",
-              }}
-              className="iconfont iconfont icon-gonggao"
-            ></i>
+          <div className="content-type-item">
+            <div className="item-body">
+              <i className="iconfont icon-gonggao"></i>
+              <div className="name">招聘</div>
+            </div>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            height: "0.4rem",
-            borderBottom: "0.01rem solid #EBEEF2",
-            paddingBottom: "0.1rem",
-            padding: "0 0.2rem",
-            boxSizing: "border-box",
-            backgroundColor: "#fff",
-          }}
-        >
-          <i className="iconfont icon-tubiaozhuanqu-05">&nbsp;热门推荐</i>
+        <div className="hot-recommend">
+          <i className="iconfont icon-tubiaozhuanqu-05"></i>&nbsp;热门推荐
         </div>
       </div>
     );
