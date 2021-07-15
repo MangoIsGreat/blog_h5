@@ -81,6 +81,99 @@
             }
           }
 
+          .ranking-list {
+            display: flex;
+            height: 0.58rem;
+            margin-bottom: 0.08rem;
+            padding: 0.1rem 0rem;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .ranking-list-item {
+              flex: 1;
+              display: flex;
+              padding: 0 0.24rem;
+              box-sizing: border-box;
+
+              .content {
+                width: 0.64rem;
+                padding-right: 0.12rem;
+
+                .title {
+                  @include setTitle(0.14rem, #000408, 0.2rem, 600);
+
+                  .icon-bangdan {
+                    color: #e7bc29;
+                  }
+
+                  .icon-huangguan {
+                    color: #fae04d;
+                  }
+                }
+
+                .desc {
+                  @include setTitle(0.12rem, #9ea4ac);
+                }
+              }
+
+              .pic {
+                @include setBgImg(0.65rem, 0.4rem);
+              }
+            }
+          }
+
+          .recommend-group {
+            padding: 0.14rem;
+            margin-bottom: 0.08rem;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .recommend-group-header {
+              margin-bottom: 0.1rem;
+
+              .recommend-group-header-start {
+                @include setTitle(0.14rem, #000408, 0.2rem, 700);
+              }
+
+              .recommend-group-header-end {
+                @include setTitle(0.14rem, #00c58e, 0.2rem, 500);
+              }
+            }
+
+            .recommend-group-body {
+              //   width: 100%;
+              width: 3.62rem;
+              height: 1.04rem;
+              box-sizing: border-box;
+              padding: 0.05rem 0;
+              overflow-x: auto;
+              overflow-y: hidden;
+
+              // 隐藏滚动条
+              &::-webkit-scrollbar {
+                display: none;
+              }
+
+              .recommend-group-body-innerBox {
+                width: 6.34rem;
+                height: 100%;
+
+                .group-item {
+                  display: inline-block;
+                  height: 0.92rem;
+                  width: 0.92rem;
+                  border-radius: 0.03rem;
+                  border: 0.01rem solid #d0d0d0;
+                  margin-right: 0.14rem;
+
+                  &:nth-last-child(1) {
+                    margin-right: 0;
+                  }
+                }
+              }
+            }
+          }
+
           .hot-recommend {
             display: flex;
             align-items: center;
