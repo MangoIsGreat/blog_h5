@@ -1,6 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 const style = {
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "0 0.13rem",
+  boxSizing: "border-box",
   height: "0.45rem",
   textAlign: "center",
   lineHeight: "0.45rem",
@@ -11,8 +17,31 @@ const style = {
   fontWeight: 700,
 };
 
-function Header() {
-  return <div style={style}>我的</div>;
+function Header({ title, isBack, isShare, history }) {
+  return (
+    <div style={style}>
+      <div>
+        <div
+          style={{ display: isBack ? "block" : "none" }}
+          className="iconfont icon-xiangzuo"
+          onClick={() => history.goBack()}
+        ></div>
+      </div>
+      <div>{title}</div>
+      <div>
+        <div
+          style={{ display: isShare ? "block" : "none" }}
+          className="iconfont icon-shenglvehao"
+        ></div>
+      </div>
+    </div>
+  );
 }
 
-export default Header;
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
+  isBack: PropTypes.bool,
+  isShare: PropTypes.bool,
+};
+
+export default withRouter(Header);

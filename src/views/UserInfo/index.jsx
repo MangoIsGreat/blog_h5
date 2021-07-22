@@ -2,10 +2,23 @@ import React, { Component } from "react";
 import style from "./index.module.scss";
 import { Flex, Button } from "antd-mobile";
 import ClassName from "classnames";
+import TabsCom from "../../components/TabsCom";
+import List from "./List";
 
 class AuthorInfo extends Component {
+  tabs = [
+    { title: "动态" },
+    { title: "文章" },
+    { title: "互动" },
+    { title: "其他" },
+  ];
+
   goback = () => {
     this.props.history.go(-1);
+  };
+
+  renderTabsContent = () => {
+    return <List />;
   };
 
   render() {
@@ -13,10 +26,10 @@ class AuthorInfo extends Component {
       <div className={style.userInfo}>
         <div className={style.bgImg}></div>
         <div className={style.goBack}>
-          <Flex>
+          <Flex style={{ height: "100%" }}>
             <Flex.Item onClick={() => this.goback()}>
               <i
-                className={ClassName(style.icon, "iconfont", "icon-xiangyou")}
+                className={ClassName(style.icon, "iconfont", "icon-xiangzuo")}
               ></i>
             </Flex.Item>
             <Flex.Item align="end">
@@ -60,7 +73,13 @@ class AuthorInfo extends Component {
             </div>
           </div>
         </div>
-        <div className={style.listWrapper}></div>
+        {/* Tabs栏 */}
+        <TabsCom
+          tabs={this.tabs}
+          tabSize={4}
+          swipeable={true}
+          renderTabsContent={this.renderTabsContent}
+        />
       </div>
     );
   }

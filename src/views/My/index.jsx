@@ -14,7 +14,7 @@ class My extends Component {
   render() {
     return (
       <div className={style.my}>
-        <Header />
+        <Header title="我的" />
         <List className={style.myList}>
           <Item
             className={style.author}
@@ -25,8 +25,8 @@ class My extends Component {
           >
             <div className="name">橘猫很方</div> <Brief>前端开发工程师</Brief>
           </Item>
-          {}
           <Item
+            onClick={() => this.linkNewPage("/layout/my/messageCenter")}
             thumb={
               <i
                 style={{ color: "#3274F6" }}
@@ -52,7 +52,7 @@ class My extends Component {
             thumb={
               <i
                 style={{ color: "#f6c55f" }}
-                className="iconfont icon-yanjing"
+                className="iconfont icon-xingxing"
               ></i>
             }
           >

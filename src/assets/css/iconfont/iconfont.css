@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2666177 */
-  src: url('iconfont.woff2?t=1625989546698') format('woff2'),
-       url('iconfont.woff?t=1625989546698') format('woff'),
-       url('iconfont.ttf?t=1625989546698') format('truetype');
+  src: url('iconfont.woff2?t=1626919838126') format('woff2'),
+       url('iconfont.woff?t=1626919838126') format('woff'),
+       url('iconfont.ttf?t=1626919838126') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,42 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ico:before {
+  content: "\e647";
+}
+
+.icon-lianjie:before {
+  content: "\e628";
+}
+
+.icon-jiahao:before {
+  content: "\e62f";
+}
+
+.icon-lingdai:before {
+  content: "\e607";
+}
+
+.icon-shenglvehao:before {
+  content: "\e708";
+}
+
+.icon-gengduo:before {
+  content: "\e608";
+}
+
+.icon-pencil-draw-svgrepo-com:before {
+  content: "\e70b";
+}
+
+.icon-xiangzuo:before {
+  content: "\e682";
+}
+
+.icon-xingxing:before {
+  content: "\e606";
 }
 
 .icon-dianzan1:before {
@@ -83,10 +119,6 @@
 
 .icon-huangguan:before {
   content: "\f057";
-}
-
-.icon-shoucang:before {
-  content: "\e629";
 }
 
 .icon-tubiaozhuanqu-05:before {
