@@ -1,14 +1,27 @@
 import React, { Component } from "react";
 import Header from "../../components/Header";
-import { List } from "antd-mobile";
+import { List, Modal } from "antd-mobile";
 import style from "./index.module.scss";
 
 const Item = List.Item;
 const Brief = Item.Brief;
 
+const alert = Modal.alert;
+
 class My extends Component {
   linkNewPage = (path) => {
     this.props.history.push(path);
+  };
+
+  logOut = () => {
+    alert("您确定要退出吗？", "", [
+      {
+        text: "取消",
+        onPress: () => console.log("cancel"),
+        style: "default",
+      },
+      { text: "确定", onPress: () => console.log("ok") },
+    ]);
   };
 
   render() {
@@ -37,6 +50,7 @@ class My extends Component {
             消息中心
           </Item>
           <Item
+            onClick={() => this.linkNewPage("/layout/my/likedList")}
             extra="180篇"
             thumb={
               <i
@@ -48,6 +62,7 @@ class My extends Component {
             我赞过的
           </Item>
           <Item
+            onClick={() => this.linkNewPage("/layout/my/collection")}
             extra="20个"
             thumb={
               <i
@@ -59,6 +74,7 @@ class My extends Component {
             收藏集
           </Item>
           <Item
+            onClick={() => this.linkNewPage("/layout/my/readArticle")}
             extra="657篇"
             thumb={
               <i
@@ -70,6 +86,7 @@ class My extends Component {
             阅读过的文章
           </Item>
           <Item
+            onClick={() => this.linkNewPage("/layout/my/tagManagement")}
             extra="20个"
             thumb={
               <i
@@ -80,16 +97,8 @@ class My extends Component {
           >
             标签管理
           </Item>
-          <Item
-            className="config"
-            thumb={
-              <i
-                style={{ color: "#acb4be" }}
-                className="iconfont icon-shezhi"
-              ></i>
-            }
-          >
-            设置
+          <Item onClick={this.logOut} className="config">
+            退出登录
           </Item>
         </List>
       </div>

@@ -9,6 +9,11 @@ import CommentListPage from "../views/CommentListPage";
 import DianzanListPage from "../views/DianzanListPage";
 import AttentionListPage from "../views/AttentionListPage";
 import SysListPage from "../views/SysListPage";
+import LikedListPage from "../views/LikedListPage";
+import ReadArticle from "../views/ReadArticle";
+import Collection from "../views/Collection";
+import ArtListPage from "../views/ArtListPage";
+import TagManage from "../views/TagManage";
 
 const routeRules = [
   {
@@ -54,6 +59,26 @@ const routeRules = [
   {
     path: "/layout/my/messageCenter/system",
     component: SysListPage,
+  },
+  {
+    path: "/layout/my/likedList",
+    component: LikedListPage,
+  },
+  {
+    path: "/layout/my/readArticle",
+    component: ReadArticle,
+  },
+  {
+    path: "/layout/my/collection",
+    component: Collection,
+  },
+  {
+    path: "/layout/my/artListPage",
+    component: ArtListPage,
+  },
+  {
+    path: "/layout/my/tagManagement",
+    component: TagManage,
   },
 ];
 

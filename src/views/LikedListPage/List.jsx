@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, Icon } from "antd-mobile";
+import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
 import NoData from "../../components/NoData";
 
 const NUM_ROWS = 20;
@@ -27,7 +27,7 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      publicInfoData: [1, 1, 1], // 热门推荐数据
+      hotListData: [1, 1, 1],
       originData: [1, 1, 1], // 数据源
     };
   }
@@ -98,87 +98,100 @@ class List extends Component {
     );
   };
 
-  renderHeader = () => {
-    const { publicInfoData } = this.state;
-
-    return (
-      <div className="swiper-box">
-        <div className="swiper-innerBox">
-          {publicInfoData.length > 0 &&
-            publicInfoData.map((item, index) => {
-              return (
-                <div className="swiper-item" key={index}>
-                  <div className="swiper-item-innerBox">
-                    <div className="content">
-                      <div className="title">
-                        <span className="tag">热</span>
-                        【毕业季活动-你好，社会人开奖贴】你好，社会人你好，社会人你好，社会人你好，社会人
-                      </div>
-                      <div className="line">
-                        沸点小助手&nbsp;·&nbsp;点赞2&nbsp;·&nbsp;评论26
-                      </div>
-                    </div>
-                    <div
-                      className="pic"
-                      style={{
-                        backgroundImage:
-                          "url('https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/280f473c5c98480fb126994efbc882ba~tplv-k3u1fbpfcp-watermark.image')",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
+  renderRowList = () => {
+    return (rowData, sectionID, rowID) => (
+      <WingBlank
+        size="md"
+        style={{
+          backgroundColor: "#fff",
+          padding: "0.15rem 0",
+        }}
+      >
+        <div
+          style={{
+            width: "calc(100vw - 0.4rem)",
+            marginBottom: "0.05rem",
+            fontSize: "0.16rem",
+            color: "#222528",
+            fontWeight: "600",
+            lineHeight: "0.22rem",
+          }}
+        >
+          延迟执行与不可变，系统讲解JavaStream数据处理延迟执行与
         </div>
-      </div>
-    );
-  };
-
-  renderRow = () => {
-    const imgList = [1, 1, 1];
-
-    return (rowData, sectionID, rowID) => {
-      return (
-        <div className="list-row">
-          <div className="list-row-top">
-            <div className="list-row-header">
-              <img
-                className="avatar"
-                src="https://user-gold-cdn.xitu.io/2018/3/1/161e04b44304bed1?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
-                alt=""
-              />
-              <div className="list-row-header-content">
-                <div className="list-row-header-content-tit">进击的小将</div>
-                <div className="list-row-header-content-desc">
-                  iOS菜鸡&nbsp;·&nbsp;57分钟前
-                </div>
+        <div style={{ display: "flex", marginBottom: "0.08rem" }}>
+          <div style={{ flex: 1, paddingRight: "0.08rem" }}>
+            <div
+              style={{
+                display: "flex",
+                marginBottom: "0.05rem",
+                color: "#6C7584",
+                fontSize: "0.12rem",
+                lineHeight: "0.16rem",
+              }}
+            >
+              <div
+                style={{
+                  paddingRight: "0.08rem",
+                }}
+              >
+                橘松JAVA
               </div>
+              |<div style={{ padding: "0 0.08rem" }}>1小时前</div>
             </div>
-            <div className="list-row-content">
-              今天的走势也符合之前的预期，两市又转换到了普跌行情，从日K线上看，仍然是横盘震荡格局，成交量继续萎缩，表明多空力量都比较谨慎。短期会在3550点附近横盘震荡，既不会持续大涨，也不会持续大跌，结构性行情还会持续，所以我觉得择股更重要！但是对于个股要放低收益预期，不然就是被套。
-            </div>
-            <div className="list-row-pic">
-              {imgList.length > 0 &&
-                imgList.map((item, index) => {
-                  return (
-                    <img
-                      className="list-row-pic-item"
-                      key={index}
-                      src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/152425cab25f49389c7b1ad2964d5833~tplv-k3u1fbpfcp-zoom-mark-crop-v2:460:460:0:0.awebp"
-                      alt=""
-                    />
-                  );
-                })}
+            <div
+              style={{
+                color: "#495261",
+                fontSize: "0.14rem",
+                lineHeight: "0.21rem",
+                wordBreak: "break-all",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "2",
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候
             </div>
           </div>
-          <div className="list-row-bottom">
-            <i className="iconfont icon-dianzan">&nbsp;点赞</i>
-            <i className="iconfont icon-pinglun">&nbsp;评论</i>
-            <i className="iconfont icon-fenxiang">&nbsp;分享</i>
-          </div>
+          <img
+            style={{ width: "0.84rem", height: "0.65rem" }}
+            src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ff1d144fe84758b74a6f444b997279~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
+            alt=""
+          />
         </div>
-      );
-    };
+        <Flex
+          style={{
+            fontSize: "0.12rem",
+            color: "#6C7583",
+          }}
+        >
+          <Flex.Item>
+            <i
+              style={{ marginRight: "0.13rem", color: "#6C7583" }}
+              className="iconfont icon-dianzan"
+            >
+              &nbsp;7
+            </i>
+            <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
+              &nbsp;1
+            </i>
+          </Flex.Item>
+          <Flex.Item align="end">
+            <span
+              style={{
+                padding: "0.05rem 0.06rem",
+                backgroundColor: "#F4F5F5",
+                borderRadius: "0.05rem",
+              }}
+            >
+              后端
+            </span>
+          </Flex.Item>
+        </Flex>
+      </WingBlank>
+    );
   };
 
   render() {
@@ -192,13 +205,12 @@ class List extends Component {
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
             dataSource={this.state.dataSource}
-            renderHeader={() => this.renderHeader()}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Icon type="loading" />
               </div>
             )}
-            renderRow={this.renderRow()}
+            renderRow={this.renderRowList()}
             renderSeparator={this.renderSeparator()}
             useBodyScroll={this.state.useBodyScroll}
             style={

@@ -12,14 +12,18 @@ const style = {
   lineHeight: "0.45rem",
   fontSize: "0.16rem",
   color: "#24272B",
-  borderBottom: "0.01rem solid #D2D2D7",
   backgroundColor: "#F9F9F9",
   fontWeight: 700,
 };
 
-function Header({ title, isBack, isShare, history }) {
+function Header({ title, isBack, isShare, history, noBorder }) {
   return (
-    <div style={style}>
+    <div
+      style={{
+        ...style,
+        borderBottom: noBorder ? "none" : "0.01rem solid #D2D2D7",
+      }}
+    >
       <div>
         <div
           style={{ display: isBack ? "block" : "none" }}
@@ -42,6 +46,7 @@ Header.propTypes = {
   title: PropTypes.string.isRequired,
   isBack: PropTypes.bool,
   isShare: PropTypes.bool,
+  noBorder: PropTypes.bool,
 };
 
 export default withRouter(Header);

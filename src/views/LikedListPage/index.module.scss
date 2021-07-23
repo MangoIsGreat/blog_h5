@@ -1,0 +1,94 @@
+@import "../../assets/css/config/common.scss";
+
+.home {
+  background-color: $bg-color;
+
+  :global {
+    .am-list-view-scrollview {
+      .am-list-header {
+        width: 100vw;
+        height: 1.16rem;
+        padding: 0.08rem;
+        box-sizing: border-box;
+        background-color: $bg-color;
+      }
+
+      .am-list-body {
+        .list-row {
+          .list-row-top {
+            box-sizing: border-box;
+            padding: 0.12rem;
+            border: $borderLine;
+
+            .list-row-header {
+              display: flex;
+              margin-bottom: 0.1rem;
+
+              .avatar {
+                @include setAvatar(0.4rem, 0.4rem);
+              }
+
+              .list-row-header-content {
+                .list-row-header-content-tit {
+                  @include setTitle(0.16rem);
+                }
+
+                .list-row-header-content-desc {
+                  @include setTitle(0.12rem, #9ca2ab, 0.24rem);
+                }
+              }
+            }
+
+            .list-row-content {
+              margin-bottom: 0.12rem;
+              @include setWord();
+            }
+
+            .list-row-pic {
+              display: flex;
+              justify-content: space-around;
+              margin-bottom: 0.12rem;
+
+              .list-row-pic-item {
+                width: 1.1rem;
+                height: 1.1rem;
+              }
+            }
+          }
+
+          .list-row-bottom {
+            display: flex;
+
+            i {
+              flex: 1;
+              line-height: 0.37rem;
+              text-align: center;
+              font-size: 0.14rem;
+              color: #6e8194;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .write {
+    position: fixed;
+    bottom: 0.8rem;
+    right: 0.2rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $primary-color;
+
+    i {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 0.5rem;
+      color: #fff;
+      font-size: 0.2rem;
+    }
+  }
+}

@@ -3,6 +3,23 @@ import ReactDOM from "react-dom";
 import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
 import NoData from "../../components/NoData";
 
+const data = [
+  {
+    img: "https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
+    title: "Meet hotel",
+    des: "不是所有的兼职汪都需要风吹日晒",
+  },
+  {
+    img: "https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png",
+    title: "McDonald's invites you",
+    des: "不是所有的兼职汪都需要风吹日晒",
+  },
+  {
+    img: "https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png",
+    title: "Eat the week",
+    des: "不是所有的兼职汪都需要风吹日晒",
+  },
+];
 const NUM_ROWS = 20;
 let pageIndex = 0;
 
@@ -28,42 +45,17 @@ class List extends Component {
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
       originData: [1, 1, 1], // 数据源
-      groupList: [1, 1, 1, 1, 1, 1], // 推荐技术团队
     };
   }
 
-  headerData = {
-    activityType: [
-      {
-        type: "招聘",
-        icon: "icon-huati",
-      },
-      {
-        type: "话题",
-        icon: "icon-gonggao",
-      },
-      {
-        type: "字学",
-        icon: "icon-huati",
-      },
-      {
-        type: "活动",
-        icon: "icon-gonggao",
-      },
-    ],
-    rankingType: [
-      {
-        type: "文章榜",
-        pic: "../../assets/img/ranking-list01.png",
-        icon: "icon-bangdan",
-      },
-      {
-        type: "作者榜",
-        pic: "../../assets/img/ranking-list02.png",
-        icon: "icon-huangguan",
-      },
-    ],
-  };
+  // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.dataSource !== this.props.dataSource) {
+  //     this.setState({
+  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
+  //     });
+  //   }
+  // }
 
   componentDidUpdate() {
     if (this.state.useBodyScroll) {
@@ -132,68 +124,23 @@ class List extends Component {
   };
 
   renderHeader = () => {
-    const { groupList } = this.state;
-
     return (
-      <div className="header-content">
-        <div className="content-type">
-          {this.headerData.activityType.map((item, index) => {
-            return (
-              <div key={index} className="content-type-item">
-                <div className="item-body">
-                  <i className={`iconfont ${item.icon}`}></i>
-                  <div className="name">{item.type}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="ranking-list">
-          <div className="line"></div>
-          {this.headerData.rankingType.map((item, index) => {
-            return (
-              <div className="ranking-list-item" key={index}>
-                <div className="content">
-                  <div className="title">
-                    <i className={`iconfont ${item.icon}`}></i>
-                    <span>&nbsp;{item.type}</span>
-                  </div>
-                  <div className="desc">每日更新</div>
-                </div>
-                <img src={item.pic} alt="" className="pic" />
-              </div>
-            );
-          })}
-        </div>
-        <div className="recommend-group">
-          <Flex className="recommend-group-header">
-            <Flex.Item className="recommend-group-header-start">
-              推荐技术大牛
-            </Flex.Item>
-            <Flex.Item
-              className="recommend-group-header-end"
-              align="end"
-            ></Flex.Item>
-          </Flex>
-          <div className="recommend-group-body">
-            <div className="recommend-group-body-innerBox">
-              {groupList.length > 0 &&
-                groupList.map((item, index) => {
-                  return (
-                    <img
-                      key={index}
-                      className="group-item"
-                      src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/62e7ebab4c6c4546492a231a1619ce2c~300x300.image"
-                    />
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-        <div className="hot-recommend">
-          <i className="iconfont icon-tubiaozhuanqu-05"></i>&nbsp;热门推荐
-        </div>
-      </div>
+      <Flex
+        style={{
+          height: "0.4rem",
+          borderBottom: "0.04rem solid #EFF2F5",
+          paddingBottom: "0.1rem",
+          padding: "0 0.2rem",
+          boxSizing: "border-box",
+        }}
+      >
+        <Flex.Item align="center" className="recommend-group-header-start">
+          最新&nbsp;<i style={{color: "#6097F2"}} className="iconfont icon-zixun"></i>
+        </Flex.Item>
+        <Flex.Item align="center" className="recommend-group-header-start">
+          热榜&nbsp;<i style={{color: "#ea4e47"}} className="iconfont icon-tubiaozhuanqu-05"></i>
+        </Flex.Item>
+      </Flex>
     );
   };
 

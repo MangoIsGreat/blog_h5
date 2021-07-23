@@ -10,6 +10,12 @@
 
         .config {
           margin-top: 0.2rem;
+
+          .am-list-content {
+            text-align: center;
+            font-weight: 500;
+            color: #e94f4f;
+          }
         }
 
         .am-list-item {

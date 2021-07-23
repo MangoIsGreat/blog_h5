@@ -98,42 +98,6 @@ class List extends Component {
     );
   };
 
-  renderHeader = () => {
-    const { publicInfoData } = this.state;
-
-    return (
-      <div className="swiper-box">
-        <div className="swiper-innerBox">
-          {publicInfoData.length > 0 &&
-            publicInfoData.map((item, index) => {
-              return (
-                <div className="swiper-item" key={index}>
-                  <div className="swiper-item-innerBox">
-                    <div className="content">
-                      <div className="title">
-                        <span className="tag">热</span>
-                        【毕业季活动-你好，社会人开奖贴】你好，社会人你好，社会人你好，社会人你好，社会人
-                      </div>
-                      <div className="line">
-                        沸点小助手&nbsp;·&nbsp;点赞2&nbsp;·&nbsp;评论26
-                      </div>
-                    </div>
-                    <div
-                      className="pic"
-                      style={{
-                        backgroundImage:
-                          "url('https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/280f473c5c98480fb126994efbc882ba~tplv-k3u1fbpfcp-watermark.image')",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-      </div>
-    );
-  };
-
   renderRow = () => {
     const imgList = [1, 1, 1];
 
@@ -192,7 +156,6 @@ class List extends Component {
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
             dataSource={this.state.dataSource}
-            renderHeader={() => this.renderHeader()}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Icon type="loading" />

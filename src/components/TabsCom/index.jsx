@@ -25,6 +25,8 @@ class TabsCom extends Component {
     this.setState({
       classifyActiveTab: index,
     });
+
+    this.props.onChange(tab, index);
   };
 
   render() {
