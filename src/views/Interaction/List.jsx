@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, Icon } from "antd-mobile";
+import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
+import { relativeTime } from "../../utils/day";
 
 const NUM_ROWS = 20;
-let pageIndex = 0;
-
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
+let pageIndex = 1;
 
 class List extends Component {
   constructor(props) {
@@ -27,7 +20,7 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      publicInfoData: [1, 1, 1], // 热门推荐数据
+      publicInfoData: [], // 热门推荐数据
       originData: [1, 1, 1], // 数据源
     };
   }
@@ -40,48 +33,124 @@ class List extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        height: hei,
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 1500);
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
+    });
+
+    // 获取热门留言
+    this.getFavList();
   }
 
-  onRefresh = () => {
-    this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
+  async componentWillReceiveProps(nextProps) {
+    const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
+
+    if (nextProps.type !== this.props.type) {
+      // 重置pageIndex
+      pageIndex = 1;
+
+      const listData = await this.$axios.get("/dynamic/list", {
+        params: {
+          pageSize: NUM_ROWS,
+          pageIndex: pageIndex,
+          theme: nextProps.type,
+          type: "",
+        },
       });
-    }, 600);
+
+      if (listData.error_code === 0) {
+        listData.data.forEach((item) => {
+          if (item.picUrl) {
+            item.picUrl = JSON.parse(item.picUrl);
+          }
+        });
+
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(listData.data),
+          height: hei,
+          refreshing: false,
+          isLoading: false,
+        });
+      } else {
+        Toast.info("数据获取失败", 1.5);
+      }
+    }
+  }
+
+  onRefresh = async () => {
+    this.setState({ refreshing: true, isLoading: true });
+
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
   };
 
-  onEndReached = (event) => {
-    // load new data
-    // hasMore: from backend data, indicates whether it is the last page, here is false
+  onEndReached = async (event) => {
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
+    this.newData = await this.genData(++pageIndex);
+    this.rData = [...this.rData, ...this.newData];
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
+    });
+  };
+
+  // 获取列表数据
+  genData = async () => {
+    const { type } = this.props;
+
+    const listData = await this.$axios.get("/dynamic/list", {
+      params: {
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+        theme: type,
+        type: "",
+      },
+    });
+
+    if (listData.error_code === 0) {
+      listData.data.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
       });
-    }, 1000);
+
+      return listData.data;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
+
+  // 获取热门留言
+  getFavList = async () => {
+    const listData = await this.$axios.get("/dynamic/favlist");
+
+    if (listData.error_code === 0) {
+      listData.data.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
+
+      this.setState({
+        publicInfoData: listData.data,
+      });
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
   };
 
   renderSeparator = () => {
@@ -112,17 +181,16 @@ class List extends Component {
                     <div className="content">
                       <div className="title">
                         <span className="tag">热</span>
-                        【毕业季活动-你好，社会人开奖贴】你好，社会人你好，社会人你好，社会人你好，社会人
+                        {item.content}
                       </div>
                       <div className="line">
-                        沸点小助手&nbsp;·&nbsp;点赞2&nbsp;·&nbsp;评论26
+                        点赞{item.likeNum}&nbsp;·&nbsp;评论{item.commNum}
                       </div>
                     </div>
                     <div
                       className="pic"
                       style={{
-                        backgroundImage:
-                          "url('https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/280f473c5c98480fb126994efbc882ba~tplv-k3u1fbpfcp-watermark.image')",
+                        backgroundImage: `url('${item.picUrl[0]}')`,
                       }}
                     ></div>
                   </div>
@@ -144,27 +212,39 @@ class List extends Component {
             <div className="list-row-header">
               <img
                 className="avatar"
-                src="https://user-gold-cdn.xitu.io/2018/3/1/161e04b44304bed1?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
+                src={rowData.userInfo && rowData.userInfo.avatar}
                 alt=""
               />
               <div className="list-row-header-content">
-                <div className="list-row-header-content-tit">进击的小将</div>
+                <div className="list-row-header-content-tit">
+                  {rowData.userInfo && rowData.userInfo.nickname}
+                </div>
                 <div className="list-row-header-content-desc">
-                  iOS菜鸡&nbsp;·&nbsp;57分钟前
+                  {rowData.userInfo && rowData.userInfo.profession}
+                  &nbsp;·&nbsp;{relativeTime(rowData.created_at)}
                 </div>
               </div>
             </div>
             <div className="list-row-content">
-              今天的走势也符合之前的预期，两市又转换到了普跌行情，从日K线上看，仍然是横盘震荡格局，成交量继续萎缩，表明多空力量都比较谨慎。短期会在3550点附近横盘震荡，既不会持续大涨，也不会持续大跌，结构性行情还会持续，所以我觉得择股更重要！但是对于个股要放低收益预期，不然就是被套。
+              <span
+                style={{
+                  color: "#00c58e",
+                  display: rowData.theme ? "inline" : "none",
+                }}
+              >
+                #{rowData.theme}#
+              </span>
+              {rowData.content}
             </div>
             <div className="list-row-pic">
-              {imgList.length > 0 &&
-                imgList.map((item, index) => {
+              {rowData.picUrl &&
+                rowData.picUrl.length > 0 &&
+                rowData.picUrl.map((item, index) => {
                   return (
                     <img
                       className="list-row-pic-item"
                       key={index}
-                      src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/152425cab25f49389c7b1ad2964d5833~tplv-k3u1fbpfcp-zoom-mark-crop-v2:460:460:0:0.awebp"
+                      src={item}
                       alt=""
                     />
                   );

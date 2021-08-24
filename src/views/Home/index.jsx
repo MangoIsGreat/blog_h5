@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
-import { InputItem } from "antd-mobile";
+import { InputItem, Toast } from "antd-mobile";
 import style from "./index.module.scss";
 import SearchPage from "../Search/index";
 import List from "./List";
@@ -38,6 +38,8 @@ class Home extends Component {
         tabs: listData,
         tag_type: listData[0].tag_type,
       });
+    } else {
+      Toast.info("数据请求失败", 1.5);
     }
   };
 

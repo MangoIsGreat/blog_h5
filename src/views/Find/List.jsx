@@ -1,10 +1,19 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
+import {
+  PullToRefresh,
+  ListView,
+  WingBlank,
+  Flex,
+  Icon,
+  Toast,
+} from "antd-mobile";
 import NoData from "../../components/NoData";
+import pic1 from "../../assets/img/ranking-list01.png";
+import pic2 from "../../assets/img/ranking-list02.png";
 
 const NUM_ROWS = 20;
-let pageIndex = 0;
+let pageIndex = 1;
 
 function genData(pIndex = 0) {
   const dataArr = [];
@@ -27,8 +36,7 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      originData: [1, 1, 1], // 数据源
-      groupList: [1, 1, 1, 1, 1, 1], // 推荐技术团队
+      groupList: [], // 推荐技术团队
     };
   }
 
@@ -54,12 +62,12 @@ class List extends Component {
     rankingType: [
       {
         type: "文章榜",
-        pic: "../../assets/img/ranking-list01.png",
+        pic: "pic1",
         icon: "icon-bangdan",
       },
       {
         type: "作者榜",
-        pic: "../../assets/img/ranking-list02.png",
+        pic: "pic2",
         icon: "icon-huangguan",
       },
     ],
@@ -76,45 +84,77 @@ class List extends Component {
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        height: hei,
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 1500);
+    this.rData = genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(genData()),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
+    });
+
+    // 获取推荐技术大牛
+    this.getRecommend();
   }
+
+  // 获取列表数据
+  genData = async () => {
+    const { type } = this.props;
+    const listData = await this.$axios.get("/blog/list", {
+      params: {
+        tag: type,
+        rankingType: "new",
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+      },
+    });
+
+    if (listData.error_code === 0) {
+      return listData.data.rows;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
+
+  // 获取推荐技术大牛
+  getRecommend = async () => {
+    const data = await this.$axios.get("/author/ranking", {
+      params: {
+        pageSize: 6,
+        pageIndex: 1,
+      },
+    });
+
+    if (data.error_code === 0) {
+      this.setState({
+        groupList: data.data.rows,
+      });
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
 
   onRefresh = () => {
     this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 600);
+
+    this.rData = genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
   };
 
   onEndReached = (event) => {
-    // load new data
-    // hasMore: from backend data, indicates whether it is the last page, here is false
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 1000);
+    this.rData = [...this.rData, ...genData(++pageIndex)];
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
+    });
   };
 
   renderSeparator = () => {
@@ -131,6 +171,10 @@ class List extends Component {
     );
   };
 
+  onActive = () => {
+    return Toast.info("需求正在规划中，敬请期待！", 1.5);
+  };
+
   renderHeader = () => {
     const { groupList } = this.state;
 
@@ -139,7 +183,11 @@ class List extends Component {
         <div className="content-type">
           {this.headerData.activityType.map((item, index) => {
             return (
-              <div key={index} className="content-type-item">
+              <div
+                onClick={this.onActive}
+                key={index}
+                className="content-type-item"
+              >
                 <div className="item-body">
                   <i className={`iconfont ${item.icon}`}></i>
                   <div className="name">{item.type}</div>
@@ -160,7 +208,11 @@ class List extends Component {
                   </div>
                   <div className="desc">每日更新</div>
                 </div>
-                <img src={item.pic} alt="" className="pic" />
+                <img
+                  src={item.pic === "pic1" ? pic1 : pic2}
+                  alt=""
+                  className="pic"
+                />
               </div>
             );
           })}
@@ -180,11 +232,7 @@ class List extends Component {
               {groupList.length > 0 &&
                 groupList.map((item, index) => {
                   return (
-                    <img
-                      key={index}
-                      className="group-item"
-                      src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/62e7ebab4c6c4546492a231a1619ce2c~300x300.image"
-                    />
+                    <img key={index} className="group-item" src={item.avatar} />
                   );
                 })}
             </div>
@@ -294,16 +342,16 @@ class List extends Component {
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderHeader={() => this.renderHeader()}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>

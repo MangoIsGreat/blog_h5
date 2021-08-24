@@ -28,10 +28,6 @@ class List extends Component {
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
       hotListData: [],
-      originData: [1, 1, 1], // 数据源
-      timer1: null,
-      timer2: null,
-      timer3: null,
     };
   }
 
@@ -43,30 +39,27 @@ class List extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    const timer1 = setTimeout(async () => {
-      this.rData = await this.genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        height: hei,
-        refreshing: false,
-        isLoading: false,
-      });
-
-      this.genHotData();
-    }, 300);
-
+    this.rData = await this.genData();
     this.setState({
-      timer1,
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
     });
+
+    this.genHotData();
   }
 
   async componentWillReceiveProps(nextProps) {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
     if (nextProps.type !== this.props.type) {
+      // 重置pageIndex
+      pageIndex = 1;
+
       const listData = await this.$axios.get("/blog/list", {
         params: {
           tag: nextProps.type,
@@ -85,39 +78,27 @@ class List extends Component {
     }
   }
 
-  onRefresh = () => {
+  onRefresh = async () => {
     this.setState({ refreshing: true, isLoading: true });
-    const timer2 = setTimeout(async () => {
-      this.rData = await this.genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 400);
-
+    this.rData = await this.genData();
     this.setState({
-      timer2,
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
     });
   };
 
-  onEndReached = (event) => {
+  onEndReached = async (event) => {
     if (this.state.isLoading) {
       return;
     }
 
     this.setState({ isLoading: true });
-    const timer3 = setTimeout(async () => {
-      const newData = await this.genData(++pageIndex);
-      this.rData = [...this.rData, ...newData];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 400);
-
+    const newData = await this.genData(++pageIndex);
+    this.rData = [...this.rData, ...newData];
     this.setState({
-      timer3,
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
     });
   };
 
@@ -177,12 +158,6 @@ class List extends Component {
       />
     );
   };
-
-  componentWillUnmount() {
-    clearTimeout(this.timer1);
-    clearTimeout(this.timer2);
-    clearTimeout(this.timer3);
-  }
 
   renderHeader = () => {
     const { hotListData } = this.state;
@@ -374,19 +349,19 @@ class List extends Component {
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
     const { type } = this.props;
 
     const renderHeader = type === 10000 ? this.renderHeader() : null;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderHeader={() => renderHeader}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
