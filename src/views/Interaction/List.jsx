@@ -4,7 +4,7 @@ import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import { relativeTime } from "../../utils/day";
 
-const NUM_ROWS = 20;
+const NUM_ROWS = 15;
 let pageIndex = 1;
 
 class List extends Component {

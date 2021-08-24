@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import {
-  PullToRefresh,
-  ListView,
-  WingBlank,
-  Flex,
-  Icon,
-  Toast,
-} from "antd-mobile";
+import { PullToRefresh, ListView, Flex, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
-import { relativeTime } from "../../utils/day";
+import BlogItem from "../../components/BlogItem";
 
-const NUM_ROWS = 20; // 页容量
+const NUM_ROWS = 15; // 页容量
 let pageIndex = 1; // 当前页数
 
 class List extends Component {
@@ -240,112 +233,7 @@ class List extends Component {
   };
 
   renderRowList = () => {
-    return (rowData, sectionID, rowID) => (
-      <WingBlank
-        size="md"
-        style={{
-          backgroundColor: "#fff",
-          padding: "0.15rem 0",
-        }}
-      >
-        <div
-          style={{
-            width: "calc(100vw - 0.4rem)",
-            marginBottom: "0.05rem",
-            fontSize: "0.16rem",
-            color: "#222528",
-            fontWeight: "600",
-            lineHeight: "0.22rem",
-          }}
-        >
-          {rowData.title}
-        </div>
-        <div style={{ display: "flex", marginBottom: "0.08rem" }}>
-          <div style={{ flex: 1, paddingRight: "0.08rem" }}>
-            <div
-              style={{
-                display: "flex",
-                marginBottom: "0.05rem",
-                color: "#6C7584",
-                fontSize: "0.12rem",
-                lineHeight: "0.16rem",
-              }}
-            >
-              <div
-                style={{
-                  paddingRight: "0.08rem",
-                }}
-              >
-                {rowData.User && rowData.User.nickname}
-              </div>
-              |
-              <div style={{ padding: "0 0.08rem" }}>
-                {relativeTime(rowData.created_at)}
-              </div>
-            </div>
-            <div
-              style={{
-                color: "#495261",
-                fontSize: "0.14rem",
-                lineHeight: "0.21rem",
-                wordBreak: "break-all",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              {rowData.description}
-            </div>
-          </div>
-          <img
-            style={{
-              width: "0.84rem",
-              height: "0.65rem",
-              display: rowData.titlePic ? "block" : "none",
-            }}
-            src={rowData.titlePic}
-            alt=""
-          />
-        </div>
-        <Flex
-          style={{
-            fontSize: "0.12rem",
-            color: "#6C7583",
-          }}
-        >
-          <Flex.Item>
-            <i
-              style={{ marginRight: "0.13rem", color: "#6C7583" }}
-              className="iconfont icon-yanjing"
-            >
-              &nbsp;{rowData.blogReadNum}
-            </i>
-            <i
-              style={{ marginRight: "0.13rem", color: "#6C7583" }}
-              className="iconfont icon-dianzan"
-            >
-              &nbsp;{rowData.blogLikeNum}
-            </i>
-            <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
-              &nbsp;{rowData.commentNum}
-            </i>
-          </Flex.Item>
-          <Flex.Item align="end">
-            <span
-              style={{
-                padding: "0.05rem 0.06rem",
-                backgroundColor: "#F4F5F5",
-                borderRadius: "0.05rem",
-              }}
-            >
-              {rowData.Tag && rowData.Tag.tagName}
-            </span>
-          </Flex.Item>
-        </Flex>
-      </WingBlank>
-    );
+    return (rowData, sectionID, rowID) => <BlogItem listData={rowData} />;
   };
 
   render() {
