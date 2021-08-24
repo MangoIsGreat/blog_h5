@@ -15,14 +15,6 @@ import pic2 from "../../assets/img/ranking-list02.png";
 const NUM_ROWS = 20;
 let pageIndex = 1;
 
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
-
 class List extends Component {
   constructor(props) {
     super(props);
@@ -81,12 +73,12 @@ class List extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    this.rData = genData();
+    this.rData = await this.genData();
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(genData()),
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
       height: hei,
       refreshing: false,
       isLoading: false,
@@ -133,10 +125,10 @@ class List extends Component {
     }
   };
 
-  onRefresh = () => {
+  onRefresh = async () => {
     this.setState({ refreshing: true, isLoading: true });
 
-    this.rData = genData();
+    this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
       refreshing: false,
@@ -144,13 +136,14 @@ class List extends Component {
     });
   };
 
-  onEndReached = (event) => {
-    if (this.state.isLoading && !this.state.hasMore) {
+  onEndReached = async (event) => {
+    if (this.state.isLoading) {
       return;
     }
 
     this.setState({ isLoading: true });
-    this.rData = [...this.rData, ...genData(++pageIndex)];
+    const newData = await this.genData(++pageIndex);
+    this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
       isLoading: false,

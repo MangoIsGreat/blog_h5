@@ -95,7 +95,7 @@ class List extends Component {
   };
 
   onEndReached = async (event) => {
-    if (this.state.isLoading && !this.state.hasMore) {
+    if (this.state.isLoading) {
       return;
     }
 
