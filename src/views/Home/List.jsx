@@ -233,7 +233,7 @@ class List extends Component {
   };
 
   renderRowList = () => {
-    return (rowData, sectionID, rowID) => <BlogItem listData={rowData} />;
+    return (rowData) => <BlogItem listData={rowData} />;
   };
 
   render() {

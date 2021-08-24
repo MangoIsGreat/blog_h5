@@ -8,13 +8,13 @@ import IList from "./IList";
 import TabsCom from "../../components/TabsCom";
 import Header from "../../components/Header";
 
-class Home extends Component {
+class LikeList extends Component {
   constructor() {
     super();
 
     this.state = {
       tabs: [{ title: "文章" }, { title: "动态" }],
-      tabStatus: -1,
+      tabStatus: 0,
     };
   }
 
@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(searchActionCreator, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(null, mapDispatchToProps)(LikeList);

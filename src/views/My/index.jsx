@@ -79,12 +79,16 @@ class My extends Component {
               multipleLine
               onClick={() => this.linkNewPage("/layout/login")}
             >
-              <div className="name">登录 / 注册</div>
+              <div className="name">登录&nbsp;/&nbsp;注册</div>
             </Item>
           )}
 
           <Item
-            onClick={() => this.linkNewPage("/layout/my/messageCenter")}
+            onClick={() =>
+              this.linkNewPage(
+                token ? "/layout/my/messageCenter" : "/layout/login"
+              )
+            }
             thumb={
               <i
                 style={{ color: "#3274F6" }}
@@ -95,7 +99,9 @@ class My extends Component {
             消息中心
           </Item>
           <Item
-            onClick={() => this.linkNewPage("/layout/my/likedList")}
+            onClick={() =>
+              this.linkNewPage(token ? "/layout/my/likedList" : "/layout/login")
+            }
             thumb={
               <i
                 style={{ color: "#66C439" }}
@@ -106,7 +112,11 @@ class My extends Component {
             我赞过的
           </Item>
           <Item
-            onClick={() => this.linkNewPage("/layout/my/collection")}
+            onClick={() =>
+              this.linkNewPage(
+                token ? "/layout/my/collection" : "/layout/login"
+              )
+            }
             thumb={
               <i
                 style={{ color: "#f6c55f" }}
@@ -117,7 +127,11 @@ class My extends Component {
             收藏集
           </Item>
           <Item
-            onClick={() => this.linkNewPage("/layout/my/readArticle")}
+            onClick={() =>
+              this.linkNewPage(
+                token ? "/layout/my/readArticle" : "/layout/login"
+              )
+            }
             thumb={
               <i
                 style={{ color: "#abb3be" }}
@@ -128,7 +142,11 @@ class My extends Component {
             阅读过的文章
           </Item>
           <Item
-            onClick={() => this.linkNewPage("/layout/my/tagManagement")}
+            onClick={() =>
+              this.linkNewPage(
+                token ? "/layout/my/tagManagement" : "/layout/login"
+              )
+            }
             thumb={
               <i
                 style={{ color: "#acb4be" }}

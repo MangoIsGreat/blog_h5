@@ -13,6 +13,15 @@ class AuthorInfo extends Component {
     { title: "其他" },
   ];
 
+  componentDidMount() {
+    this.getUserInfo();
+  }
+
+  // 获取用户信息
+  getUserInfo = async () => {
+    
+  };
+
   goback = () => {
     this.props.history.go(-1);
   };

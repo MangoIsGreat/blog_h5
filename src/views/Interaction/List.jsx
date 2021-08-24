@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
-import { relativeTime } from "../../utils/day";
+import DynItem from "../../components/DynItem";
 
 const NUM_ROWS = 15;
 let pageIndex = 1;
@@ -203,61 +203,8 @@ class List extends Component {
   };
 
   renderRow = () => {
-    const imgList = [1, 1, 1];
-
     return (rowData, sectionID, rowID) => {
-      return (
-        <div className="list-row">
-          <div className="list-row-top">
-            <div className="list-row-header">
-              <img
-                className="avatar"
-                src={rowData.userInfo && rowData.userInfo.avatar}
-                alt=""
-              />
-              <div className="list-row-header-content">
-                <div className="list-row-header-content-tit">
-                  {rowData.userInfo && rowData.userInfo.nickname}
-                </div>
-                <div className="list-row-header-content-desc">
-                  {rowData.userInfo && rowData.userInfo.profession}
-                  &nbsp;·&nbsp;{relativeTime(rowData.created_at)}
-                </div>
-              </div>
-            </div>
-            <div className="list-row-content">
-              <span
-                style={{
-                  color: "#00c58e",
-                  display: rowData.theme ? "inline" : "none",
-                }}
-              >
-                #{rowData.theme}#
-              </span>
-              {rowData.content}
-            </div>
-            <div className="list-row-pic">
-              {rowData.picUrl &&
-                rowData.picUrl.length > 0 &&
-                rowData.picUrl.map((item, index) => {
-                  return (
-                    <img
-                      className="list-row-pic-item"
-                      key={index}
-                      src={item}
-                      alt=""
-                    />
-                  );
-                })}
-            </div>
-          </div>
-          <div className="list-row-bottom">
-            <i className="iconfont icon-dianzan">&nbsp;点赞</i>
-            <i className="iconfont icon-pinglun">&nbsp;评论</i>
-            <i className="iconfont icon-fenxiang">&nbsp;分享</i>
-          </div>
-        </div>
-      );
+      return <DynItem listData={rowData} />;
     };
   };
 

@@ -1,21 +1,13 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, List, Icon } from "antd-mobile";
+import { withRouter } from "react-router-dom";
+import { PullToRefresh, ListView, List, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 
 const Item = List.Item;
-const Brief = Item.Brief;
 
 const NUM_ROWS = 20;
-let pageIndex = 0;
-
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
+let pageIndex = 1;
 
 class CList extends Component {
   constructor(props) {
@@ -30,8 +22,7 @@ class CList extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      originData: [1, 1, 1], // 数据源
-      groupList: [1, 1, 1, 1, 1, 1], // 推荐技术团队
+      userInfo: JSON.parse(localStorage.getItem("user_info")) || {}, // 用户信息
     };
   }
 
@@ -43,31 +34,45 @@ class CList extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        height: hei,
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 1500);
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
+    });
   }
+
+  // 获取列表数据
+  genData = async () => {
+    const { userInfo } = this.state;
+
+    const listData = await this.$axios.get("/author/collection", {
+      params: {
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+        uid: userInfo.id,
+      },
+    });
+
+    if (listData.error_code === 0) {
+      return listData.data.list;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
 
   onRefresh = () => {
     this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 600);
+    this.rData = this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
   };
 
   onEndReached = (event) => {
@@ -76,13 +81,12 @@ class CList extends Component {
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 1000);
+    const newData = this.genData(++pageIndex);
+    this.rData = [...this.rData, ...newData];
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
+    });
   };
 
   renderRowList = () => {
@@ -92,29 +96,32 @@ class CList extends Component {
       <List
         className="my-list"
         onClick={() => {
-          that.toArtList();
+          that.toArtList(rowData);
         }}
       >
-        <Item arrow="horizontal" multipleLine onClick={() => {}}>
-          资源 <Brief>6篇 · 0人关注 · 橘猫很方</Brief>
+        <Item arrow="horizontal" multipleLine>
+          <span style={{ fontSize: "18px" }}>{rowData.type}</span>&nbsp;
+          <span style={{ color: "#888", fontSize: "15px" }}>
+            ({rowData.number}篇)
+          </span>
         </Item>
       </List>
     );
   };
 
-  toArtList = () => {
-    console.log("=====>");
-    console.log(this);
-
-    // this.props.history.push("/layout/my/artListPage");
+  toArtList = (value) => {
+    this.props.history.push({
+      pathname: "/layout/my/artListPage",
+      query: { name: value.type, id: value.id },
+    });
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
@@ -153,4 +160,4 @@ class CList extends Component {
   }
 }
 
-export default CList;
+export default withRouter(CList);

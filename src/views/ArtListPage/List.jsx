@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
+import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
+import BlogItem from "../../components/BlogItem";
 
 const NUM_ROWS = 20;
-let pageIndex = 0;
-
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
+let pageIndex = 1;
 
 class List extends Component {
   constructor(props) {
@@ -27,8 +20,6 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      originData: [1, 1, 1], // 数据源
-      groupList: [1, 1, 1, 1, 1, 1], // 推荐技术团队
     };
   }
 
@@ -40,46 +31,58 @@ class List extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
-        height: hei,
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 1500);
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
+    });
   }
 
-  onRefresh = () => {
-    this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 600);
+  // 获取列表数据
+  genData = async () => {
+    const { cId } = this.props;
+    const listData = await this.$axios.get("/collect/blog/list", {
+      params: {
+        collectionId: cId,
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+      },
+    });
+
+    if (listData.error_code === 0) {
+      return listData.data;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
   };
 
-  onEndReached = (event) => {
+  onRefresh = async () => {
+    this.setState({ refreshing: true, isLoading: true });
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
+  };
+
+  onEndReached = async (event) => {
     if (this.state.isLoading) {
       return;
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 1000);
+    const newData = await this.genData(++pageIndex);
+    this.rData = [...this.rData, ...newData];
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
+    });
   };
 
   renderSeparator = () => {
@@ -97,107 +100,15 @@ class List extends Component {
   };
 
   renderRowList = () => {
-    return (rowData, sectionID, rowID) => (
-      <WingBlank
-        size="md"
-        style={{
-          backgroundColor: "#fff",
-          padding: "0.15rem 0",
-        }}
-      >
-        <div
-          style={{
-            width: "calc(100vw - 0.4rem)",
-            marginBottom: "0.05rem",
-            fontSize: "0.16rem",
-            color: "#222528",
-            fontWeight: "600",
-            lineHeight: "0.22rem",
-          }}
-        >
-          延迟执行与不可变，系统讲解JavaStream数据处理延迟执行与
-        </div>
-        <div style={{ display: "flex", marginBottom: "0.08rem" }}>
-          <div style={{ flex: 1, paddingRight: "0.08rem" }}>
-            <div
-              style={{
-                display: "flex",
-                marginBottom: "0.05rem",
-                color: "#6C7584",
-                fontSize: "0.12rem",
-                lineHeight: "0.16rem",
-              }}
-            >
-              <div
-                style={{
-                  paddingRight: "0.08rem",
-                }}
-              >
-                橘松JAVA
-              </div>
-              |<div style={{ padding: "0 0.08rem" }}>1小时前</div>
-            </div>
-            <div
-              style={{
-                color: "#495261",
-                fontSize: "0.14rem",
-                lineHeight: "0.21rem",
-                wordBreak: "break-all",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候
-            </div>
-          </div>
-          <img
-            style={{ width: "0.84rem", height: "0.65rem" }}
-            src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ff1d144fe84758b74a6f444b997279~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-            alt=""
-          />
-        </div>
-        <Flex
-          style={{
-            fontSize: "0.12rem",
-            color: "#6C7583",
-          }}
-        >
-          <Flex.Item>
-            <i
-              style={{ marginRight: "0.13rem", color: "#6C7583" }}
-              className="iconfont icon-dianzan"
-            >
-              &nbsp;7
-            </i>
-            <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
-              &nbsp;1
-            </i>
-          </Flex.Item>
-          <Flex.Item align="end">
-            <span
-              style={{
-                padding: "0.05rem 0.06rem",
-                backgroundColor: "#F4F5F5",
-                borderRadius: "0.05rem",
-              }}
-            >
-              后端
-            </span>
-          </Flex.Item>
-        </Flex>
-      </WingBlank>
-    );
+    return (rowData, sectionID, rowID) => <BlogItem listData={rowData.Blog} />;
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
