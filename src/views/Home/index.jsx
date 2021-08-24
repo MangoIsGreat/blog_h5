@@ -13,26 +13,48 @@ class Home extends Component {
     super();
 
     this.state = {
-      tabs: [
-        { title: "关注" },
-        { title: "推荐" },
-        { title: "热榜" },
-        { title: "头条精选" },
-        { title: "后端" },
-        { title: "前端" },
-        { title: "Android" },
-        { title: "iOS" },
-        { title: "人工智能" },
-      ],
+      tabs: [],
+      tag_type: "", // 当前选中的文章类型
     };
   }
+
+  componentDidMount() {
+    // 获取tabs信息
+    this.getTabs();
+  }
+
+  getTabs = async () => {
+    const data = await this.$axios.get("/tag/list");
+
+    if (data.error_code === 0) {
+      const listData = data.data.rows;
+
+      listData.forEach((item) => {
+        item.title = item.tag_name;
+        item.key = item.tag_type;
+      });
+
+      this.setState({
+        tabs: listData,
+        tag_type: listData[0].tag_type,
+      });
+    }
+  };
 
   onFocus = () => {
     this.props.triggerShowState(true);
   };
 
+  onChange = (tab, index) => {
+    this.setState({
+      tag_type: tab.tag_type,
+    });
+  };
+
   renderTabsContent = () => {
-    return <List />;
+    const { tag_type } = this.state;
+
+    return <List type={tag_type} />;
   };
 
   render() {
@@ -49,7 +71,6 @@ class Home extends Component {
           >
             <i className="iconfont icon-fangdajing" />
           </InputItem>
-          <i className="iconfont icon-shezhi">&nbsp;标签</i>
         </div>
         {/* 搜索页 */}
         <SearchPage />
@@ -59,6 +80,7 @@ class Home extends Component {
           tabSize={5}
           swipeable={true}
           renderTabsContent={this.renderTabsContent}
+          onChange={this.onChange}
         />
       </div>
     );

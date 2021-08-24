@@ -14,6 +14,8 @@ import ReadArticle from "../views/ReadArticle";
 import Collection from "../views/Collection";
 import ArtListPage from "../views/ArtListPage";
 import TagManage from "../views/TagManage";
+import Login from "../views/Login";
+import Register from "../views/Register";
 
 const routeRules = [
   {
@@ -79,6 +81,14 @@ const routeRules = [
   {
     path: "/layout/my/tagManagement",
     component: TagManage,
+  },
+  {
+    path: "/layout/login",
+    component: Login,
+  },
+  {
+    path: "/layout/register",
+    component: Register,
   },
 ];
 

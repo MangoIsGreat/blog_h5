@@ -1,35 +1,18 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
+import {
+  PullToRefresh,
+  ListView,
+  WingBlank,
+  Flex,
+  Icon,
+  Toast,
+} from "antd-mobile";
 import NoData from "../../components/NoData";
+import { relativeTime } from "../../utils/day";
 
-const data = [
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
-    title: "Meet hotel",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png",
-    title: "McDonald's invites you",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png",
-    title: "Eat the week",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-];
-const NUM_ROWS = 20;
-let pageIndex = 0;
-
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
+const NUM_ROWS = 20; // 页容量
+let pageIndex = 1; // 当前页数
 
 class List extends Component {
   constructor(props) {
@@ -44,19 +27,13 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      hotListData: [1, 1, 1],
+      hotListData: [],
       originData: [1, 1, 1], // 数据源
+      timer1: null,
+      timer2: null,
+      timer3: null,
     };
   }
-
-  // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.dataSource !== this.props.dataSource) {
-  //     this.setState({
-  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
-  //     });
-  //   }
-  // }
 
   componentDidUpdate() {
     if (this.state.useBodyScroll) {
@@ -69,45 +46,122 @@ class List extends Component {
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
+    const timer1 = setTimeout(async () => {
+      this.rData = await this.genData();
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
+        dataSource: this.state.dataSource.cloneWithRows(this.rData),
         height: hei,
         refreshing: false,
         isLoading: false,
       });
-    }, 1500);
+
+      this.genHotData();
+    }, 300);
+
+    this.setState({
+      timer1,
+    });
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
+
+    if (nextProps.type !== this.props.type) {
+      const listData = await this.$axios.get("/blog/list", {
+        params: {
+          tag: nextProps.type,
+          rankingType: "new",
+          pageSize: NUM_ROWS,
+          pageIndex: pageIndex,
+        },
+      });
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(listData.data.rows),
+        height: hei,
+        refreshing: false,
+        isLoading: false,
+      });
+    }
   }
 
   onRefresh = () => {
     this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
+    const timer2 = setTimeout(async () => {
+      this.rData = await this.genData();
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.rData),
         refreshing: false,
         isLoading: false,
       });
-    }, 600);
+    }, 400);
+
+    this.setState({
+      timer2,
+    });
   };
 
   onEndReached = (event) => {
-    // load new data
-    // hasMore: from backend data, indicates whether it is the last page, here is false
-    if (this.state.isLoading && !this.state.hasMore) {
+    if (this.state.isLoading) {
       return;
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
+    const timer3 = setTimeout(async () => {
+      const newData = await this.genData(++pageIndex);
+      this.rData = [...this.rData, ...newData];
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.rData),
         isLoading: false,
       });
-    }, 1000);
+    }, 400);
+
+    this.setState({
+      timer3,
+    });
+  };
+
+  // 获取列表数据
+  genData = async () => {
+    const { type } = this.props;
+    const listData = await this.$axios.get("/blog/list", {
+      params: {
+        tag: type,
+        rankingType: "new",
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+      },
+    });
+
+    if (listData.error_code === 0) {
+      return listData.data.rows;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
+
+  // 获取热门推荐数据
+  genHotData = async () => {
+    const { type } = this.props;
+
+    if (type !== 10000) return;
+
+    const listData = await this.$axios.get("/blog/list", {
+      params: {
+        tag: type,
+        rankingType: "hot",
+        pageSize: 3,
+        pageIndex: 1,
+      },
+    });
+
+    if (listData.error_code === 0) {
+      this.setState({
+        hotListData: listData.data.rows,
+      });
+    } else {
+      Toast.info("热门推荐数据获取失败", 1.5);
+    }
   };
 
   renderSeparator = () => {
@@ -124,6 +178,12 @@ class List extends Component {
     );
   };
 
+  componentWillUnmount() {
+    clearTimeout(this.timer1);
+    clearTimeout(this.timer2);
+    clearTimeout(this.timer3);
+  }
+
   renderHeader = () => {
     const { hotListData } = this.state;
 
@@ -139,14 +199,15 @@ class List extends Component {
           }}
         >
           <Flex.Item>
-            <i style={{ color: "#EB534C" }} className="iconfont icon-tubiaozhuanqu-05"></i>&nbsp;热门推荐
+            <i
+              style={{ color: "#EB534C" }}
+              className="iconfont icon-tubiaozhuanqu-05"
+            ></i>
+            &nbsp;热门推荐
           </Flex.Item>
           <Flex.Item align="end">
             文章榜&nbsp;
-            <i
-              
-              className="iconfont icon-xiangyou"
-            ></i>
+            <i className="iconfont icon-xiangyou"></i>
           </Flex.Item>
         </Flex>
         {hotListData.length > 0 &&
@@ -173,7 +234,7 @@ class List extends Component {
                       overflow: "hidden",
                     }}
                   >
-                    拖拽竟然还能这样玩拖拽竟然还能这样玩拖拽竟然还能这样玩
+                    {item.title}
                   </div>
                   <div
                     style={{
@@ -182,7 +243,8 @@ class List extends Component {
                       lineHeight: "0.24rem",
                     }}
                   >
-                    41&nbsp;赞&nbsp;·&nbsp;30&nbsp;评论&nbsp;·&nbsp;yck
+                    {item.blogLikeNum}&nbsp;赞&nbsp;·&nbsp;{item.commentNum}
+                    &nbsp;评论&nbsp;·&nbsp;{item.User && item.User.nickname}
                   </div>
                 </div>
                 <div
@@ -192,8 +254,7 @@ class List extends Component {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     backgroundSize: "cover",
-                    backgroundImage:
-                      "url('https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b43e630c545e47d186085fbcb0576e78~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp')",
+                    backgroundImage: `url('${item.titlePic}')`,
                   }}
                 ></div>
               </div>
@@ -222,7 +283,7 @@ class List extends Component {
             lineHeight: "0.22rem",
           }}
         >
-          延迟执行与不可变，系统讲解JavaStream数据处理延迟执行与
+          {rowData.title}
         </div>
         <div style={{ display: "flex", marginBottom: "0.08rem" }}>
           <div style={{ flex: 1, paddingRight: "0.08rem" }}>
@@ -240,9 +301,12 @@ class List extends Component {
                   paddingRight: "0.08rem",
                 }}
               >
-                橘松JAVA
+                {rowData.User && rowData.User.nickname}
               </div>
-              |<div style={{ padding: "0 0.08rem" }}>1小时前</div>
+              |
+              <div style={{ padding: "0 0.08rem" }}>
+                {relativeTime(rowData.created_at)}
+              </div>
             </div>
             <div
               style={{
@@ -257,12 +321,16 @@ class List extends Component {
                 overflow: "hidden",
               }}
             >
-              又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候
+              {rowData.description}
             </div>
           </div>
           <img
-            style={{ width: "0.84rem", height: "0.65rem" }}
-            src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ff1d144fe84758b74a6f444b997279~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
+            style={{
+              width: "0.84rem",
+              height: "0.65rem",
+              display: rowData.titlePic ? "block" : "none",
+            }}
+            src={rowData.titlePic}
             alt=""
           />
         </div>
@@ -275,12 +343,18 @@ class List extends Component {
           <Flex.Item>
             <i
               style={{ marginRight: "0.13rem", color: "#6C7583" }}
+              className="iconfont icon-yanjing"
+            >
+              &nbsp;{rowData.blogReadNum}
+            </i>
+            <i
+              style={{ marginRight: "0.13rem", color: "#6C7583" }}
               className="iconfont icon-dianzan"
             >
-              &nbsp;7
+              &nbsp;{rowData.blogLikeNum}
             </i>
             <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
-              &nbsp;1
+              &nbsp;{rowData.commentNum}
             </i>
           </Flex.Item>
           <Flex.Item align="end">
@@ -291,7 +365,7 @@ class List extends Component {
                 borderRadius: "0.05rem",
               }}
             >
-              后端
+              {rowData.Tag && rowData.Tag.tagName}
             </span>
           </Flex.Item>
         </Flex>
@@ -301,6 +375,9 @@ class List extends Component {
 
   render() {
     const { originData } = this.state;
+    const { type } = this.props;
+
+    const renderHeader = type === 10000 ? this.renderHeader() : null;
 
     return (
       <>
@@ -310,7 +387,7 @@ class List extends Component {
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
             dataSource={this.state.dataSource}
-            renderHeader={() => this.renderHeader()}
+            renderHeader={() => renderHeader}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Icon type="loading" />

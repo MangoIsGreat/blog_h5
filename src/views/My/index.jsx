@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "../../components/Header";
 import { List, Modal } from "antd-mobile";
 import style from "./index.module.scss";
+import avatar from "../../assets/img/avatar.png";
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -9,6 +10,27 @@ const Brief = Item.Brief;
 const alert = Modal.alert;
 
 class My extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      token: "", // token
+      userInfo: {}, // 用户信息
+    };
+  }
+
+  componentDidMount() {
+    // 获取登录信息
+    this.getUserInfo();
+  }
+
+  getUserInfo = () => {
+    this.setState({
+      token: localStorage.getItem("user_token"),
+      userInfo: JSON.parse(localStorage.getItem("user_info")),
+    });
+  };
+
   linkNewPage = (path) => {
     this.props.history.push(path);
   };
@@ -17,27 +39,50 @@ class My extends Component {
     alert("您确定要退出吗？", "", [
       {
         text: "取消",
-        onPress: () => console.log("cancel"),
         style: "default",
       },
-      { text: "确定", onPress: () => console.log("ok") },
+      {
+        text: "确定",
+        onPress: () => {
+          localStorage.removeItem("user_token");
+          localStorage.removeItem("user_info");
+
+          this.getUserInfo();
+        },
+      },
     ]);
   };
 
   render() {
+    const { token, userInfo } = this.state;
+
     return (
       <div className={style.my}>
         <Header title="我的" />
         <List className={style.myList}>
-          <Item
-            className={style.author}
-            arrow="horizontal"
-            thumb="https://user-gold-cdn.xitu.io/2020/1/18/16fb901f1bac3975?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1"
-            multipleLine
-            onClick={() => this.linkNewPage("/layout/my/userInfo")}
-          >
-            <div className="name">橘猫很方</div> <Brief>前端开发工程师</Brief>
-          </Item>
+          {token ? (
+            <Item
+              className={style.author}
+              arrow="horizontal"
+              thumb={userInfo.avatar}
+              multipleLine
+              onClick={() => this.linkNewPage("/layout/my/userInfo")}
+            >
+              <div className="name">{userInfo.nickname}</div>{" "}
+              <Brief>{userInfo.profession}</Brief>
+            </Item>
+          ) : (
+            <Item
+              className={style.author}
+              arrow="horizontal"
+              thumb={avatar}
+              multipleLine
+              onClick={() => this.linkNewPage("/layout/login")}
+            >
+              <div className="name">登录 / 注册</div>
+            </Item>
+          )}
+
           <Item
             onClick={() => this.linkNewPage("/layout/my/messageCenter")}
             thumb={
@@ -51,7 +96,6 @@ class My extends Component {
           </Item>
           <Item
             onClick={() => this.linkNewPage("/layout/my/likedList")}
-            extra="180篇"
             thumb={
               <i
                 style={{ color: "#66C439" }}
@@ -63,7 +107,6 @@ class My extends Component {
           </Item>
           <Item
             onClick={() => this.linkNewPage("/layout/my/collection")}
-            extra="20个"
             thumb={
               <i
                 style={{ color: "#f6c55f" }}
@@ -75,7 +118,6 @@ class My extends Component {
           </Item>
           <Item
             onClick={() => this.linkNewPage("/layout/my/readArticle")}
-            extra="657篇"
             thumb={
               <i
                 style={{ color: "#abb3be" }}
@@ -87,7 +129,6 @@ class My extends Component {
           </Item>
           <Item
             onClick={() => this.linkNewPage("/layout/my/tagManagement")}
-            extra="20个"
             thumb={
               <i
                 style={{ color: "#acb4be" }}
@@ -97,9 +138,11 @@ class My extends Component {
           >
             标签管理
           </Item>
-          <Item onClick={this.logOut} className="config">
-            退出登录
-          </Item>
+          {token ? (
+            <Item onClick={this.logOut} className="config">
+              退出登录
+            </Item>
+          ) : null}
         </List>
       </div>
     );
