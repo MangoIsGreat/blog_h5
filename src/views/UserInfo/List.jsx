@@ -1,35 +1,13 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, WingBlank, Flex, Icon } from "antd-mobile";
+import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
+import BlogItem from "../../components/BlogItem";
+import DynItem from "../../components/DynItem";
+import DynamicItem from "./DynamicItem";
 
-const data = [
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
-    title: "Meet hotel",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png",
-    title: "McDonald's invites you",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-  {
-    img: "https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png",
-    title: "Eat the week",
-    des: "不是所有的兼职汪都需要风吹日晒",
-  },
-];
-const NUM_ROWS = 20;
-let pageIndex = 0;
-
-function genData(pIndex = 0) {
-  const dataArr = [];
-  for (let i = 0; i < NUM_ROWS; i++) {
-    dataArr.push(`row - ${pIndex * NUM_ROWS + i}`);
-  }
-  return dataArr;
-}
+const NUM_ROWS = 15; // 页容量
+let pageIndex = 1; // 当前页数
 
 class List extends Component {
   constructor(props) {
@@ -44,19 +22,8 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      hotListData: [1, 1, 1],
-      originData: [1, 1, 1], // 数据源
     };
   }
-
-  // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.dataSource !== this.props.dataSource) {
-  //     this.setState({
-  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
-  //     });
-  //   }
-  // }
 
   componentDidUpdate() {
     if (this.state.useBodyScroll) {
@@ -66,46 +33,124 @@ class List extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    setTimeout(() => {
-      this.rData = genData();
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      height: hei,
+      refreshing: false,
+      isLoading: false,
+    });
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
+
+    if (nextProps.type !== this.props.type) {
+      // 重置pageIndex
+      pageIndex = 1;
+
+      const { uid } = this.props;
+
+      const params = {
+        pageSize: NUM_ROWS,
+        pageIndex: pageIndex,
+        uid,
+      };
+
+      let path = "";
+      if (nextProps.type === 0) {
+        path = "/author/dynamic";
+      } else if (nextProps.type === 1) {
+        path = "/author/artlist";
+        params.type = "new";
+      } else {
+        path = "/author/dynlist";
+      }
+
+      const listData = await this.$axios.get(path, { params });
+
+      if (listData.error_code !== 0) {
+        return Toast.info("数据获取失败", 1.5);
+      }
+
+      listData.data.list.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
+
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(genData()),
+        dataSource: this.state.dataSource.cloneWithRows(listData.data.list),
         height: hei,
         refreshing: false,
         isLoading: false,
       });
-    }, 1500);
+    }
   }
 
-  onRefresh = () => {
+  onRefresh = async () => {
     this.setState({ refreshing: true, isLoading: true });
-    // simulate initial Ajax
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        refreshing: false,
-        isLoading: false,
-      });
-    }, 600);
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
   };
 
-  onEndReached = (event) => {
+  onEndReached = async (event) => {
     if (this.state.isLoading) {
       return;
     }
 
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = [...this.rData, ...genData(++pageIndex)];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
+    const newData = await this.genData(++pageIndex);
+    this.rData = [...this.rData, ...newData];
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      isLoading: false,
+    });
+  };
+
+  // 获取列表数据
+  genData = async () => {
+    const { type, uid } = this.props;
+    const params = {
+      pageSize: NUM_ROWS,
+      pageIndex: pageIndex,
+      uid,
+    };
+
+    let path = "";
+    if (type === 0) {
+      path = "/author/dynamic";
+    } else if (type === 1) {
+      path = "/author/artlist";
+      params.type = "new";
+    } else {
+      path = "/author/dynlist";
+    }
+
+    const listData = await this.$axios.get(path, { params });
+
+    if (listData.error_code === 0) {
+      listData.data.list.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+
+        if (item.Dynamic && item.Dynamic.picUrl) {
+          item.picUrl = JSON.parse(item.Dynamic.picUrl);
+        }
       });
-    }, 1000);
+
+      return listData.data.list;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
   };
 
   renderSeparator = () => {
@@ -123,112 +168,30 @@ class List extends Component {
   };
 
   renderRowList = () => {
-    return (rowData, sectionID, rowID) => (
-      <WingBlank
-        size="md"
-        style={{
-          backgroundColor: "#fff",
-          padding: "0.15rem 0",
-        }}
-      >
-        <div
-          style={{
-            width: "calc(100vw - 0.4rem)",
-            marginBottom: "0.05rem",
-            fontSize: "0.16rem",
-            color: "#222528",
-            fontWeight: "600",
-            lineHeight: "0.22rem",
-          }}
-        >
-          延迟执行与不可变，系统讲解JavaStream数据处理延迟执行与
-        </div>
-        <div style={{ display: "flex", marginBottom: "0.08rem" }}>
-          <div style={{ flex: 1, paddingRight: "0.08rem" }}>
-            <div
-              style={{
-                display: "flex",
-                marginBottom: "0.05rem",
-                color: "#6C7584",
-                fontSize: "0.12rem",
-                lineHeight: "0.16rem",
-              }}
-            >
-              <div
-                style={{
-                  paddingRight: "0.08rem",
-                }}
-              >
-                橘松JAVA
-              </div>
-              |<div style={{ padding: "0 0.08rem" }}>1小时前</div>
-            </div>
-            <div
-              style={{
-                color: "#495261",
-                fontSize: "0.14rem",
-                lineHeight: "0.21rem",
-                wordBreak: "break-all",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
-            >
-              又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候又写bug呢？当我们线上遇到bug的时候
-            </div>
-          </div>
-          <img
-            style={{ width: "0.84rem", height: "0.65rem" }}
-            src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28ff1d144fe84758b74a6f444b997279~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-            alt=""
-          />
-        </div>
-        <Flex
-          style={{
-            fontSize: "0.12rem",
-            color: "#6C7583",
-          }}
-        >
-          <Flex.Item>
-            <i
-              style={{ marginRight: "0.13rem", color: "#6C7583" }}
-              className="iconfont icon-dianzan"
-            >
-              &nbsp;7
-            </i>
-            <i style={{ color: "#6C7583" }} className="iconfont icon-pinglun">
-              &nbsp;1
-            </i>
-          </Flex.Item>
-          <Flex.Item align="end">
-            <span
-              style={{
-                padding: "0.05rem 0.06rem",
-                backgroundColor: "#F4F5F5",
-                borderRadius: "0.05rem",
-              }}
-            >
-              后端
-            </span>
-          </Flex.Item>
-        </Flex>
-      </WingBlank>
-    );
+    const { type } = this.props;
+
+    return (rowData) => {
+      if (type === 0) {
+        return <DynamicItem listData={rowData} />;
+      } else if (type === 1) {
+        return <BlogItem listData={rowData} />;
+      } else {
+        return <DynItem listData={rowData} />;
+      }
+    };
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Icon type="loading" />

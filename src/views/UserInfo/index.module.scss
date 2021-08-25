@@ -21,9 +21,9 @@
     box-sizing: border-box;
 
     .icon {
-        font-size: 0.21rem;
-        font-weight: 700;
-        color: #8f918f;
+      font-size: 0.21rem;
+      font-weight: 700;
+      color: #8f918f;
     }
   }
 
@@ -70,6 +70,65 @@
         .word {
           @include setTitle(0.12rem, #aeb4bb, 0.2rem);
         }
+      }
+    }
+  }
+}
+
+.myList {
+  background-color: #f5f5f9;
+
+  :global {
+    .am-list-body {
+      background-color: #f5f5f9;
+
+      .config {
+        margin-top: 0.2rem;
+
+        .am-list-content {
+          text-align: center;
+          font-weight: 500;
+          color: #e94f4f;
+        }
+      }
+
+      .am-list-item {
+        border-bottom: $borderLine;
+
+        .am-list-line-multiple {
+          padding: 0;
+        }
+
+        &:active {
+          background-color: rgb(221, 221, 221);
+        }
+
+        .am-list-thumb {
+          .iconfont {
+            font-size: 0.18rem;
+            width: 0.18rem;
+            height: 0.18rem;
+          }
+        }
+
+        .am-list-line {
+          .am-list-extra {
+            font-size: 0.14rem;
+          }
+
+          &::after {
+            display: none;
+          }
+
+          .am-list-content {
+            padding: 0.15rem 0;
+          }
+        }
+      }
+
+      .am-list-item-middle {
+        padding-left: 0.15rem;
+        box-sizing: border-box;
       }
     }
   }

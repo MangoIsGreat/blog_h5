@@ -1,11 +1,23 @@
 import React, { Component } from "react";
 import style from "./index.module.scss";
-import { Flex, Button } from "antd-mobile";
+import { Flex, Button, Toast, List } from "antd-mobile";
 import ClassName from "classnames";
 import TabsCom from "../../components/TabsCom";
-import List from "./List";
+import ListBox from "./List";
+
+const Item = List.Item;
 
 class AuthorInfo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      userInfo: {},
+      checkedTab: 0,
+      uid: this.props.match.params.uid, // 用户id
+    };
+  }
+
   tabs = [
     { title: "动态" },
     { title: "文章" },
@@ -19,18 +31,67 @@ class AuthorInfo extends Component {
 
   // 获取用户信息
   getUserInfo = async () => {
-    
+    const { uid } = this.state;
+
+    const data = await this.$axios.get("/author/userinfo", {
+      params: {
+        uid,
+      },
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("用户信息请求错误", 1.5);
+    }
+
+    this.setState({
+      userInfo: data.data,
+    });
   };
 
   goback = () => {
     this.props.history.go(-1);
   };
 
+  onChange = (tab, index) => {
+    this.setState({
+      checkedTab: index,
+    });
+  };
+
+  linkNewPage = (path) => {
+    this.props.history.push({
+      pathname: `${path}`,
+    });
+  };
+
   renderTabsContent = () => {
-    return <List />;
+    const { checkedTab, uid } = this.state;
+
+    return checkedTab !== 3 ? (
+      <ListBox type={checkedTab} uid={uid} />
+    ) : (
+      <List className={style.myList}>
+        <Item
+          arrow="horizontal"
+          multipleLine
+          onClick={() => this.linkNewPage("/layout/my/likedList")}
+        >
+          赞过的
+        </Item>
+        <Item
+          arrow="horizontal"
+          multipleLine
+          onClick={() => this.linkNewPage("/layout/my/collection")}
+        >
+          收藏集
+        </Item>
+      </List>
+    );
   };
 
   render() {
+    const { userInfo } = this.state;
+
     return (
       <div className={style.userInfo}>
         <div className={style.bgImg}></div>
@@ -50,15 +111,15 @@ class AuthorInfo extends Component {
         </div>
         <div
           style={{
-            backgroundImage: `url('https://user-gold-cdn.xitu.io/2020/1/18/16fb901f1bac3975?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1')`,
+            backgroundImage: `url('${userInfo.avatar}')`,
           }}
           className={style.avatar}
         ></div>
         <div className={style.detailInfo}>
           <Flex className={style.nameLine}>
             <Flex.Item>
-              <div className={style.name}>橘猫很方</div>
-              <div className={style.job}>前端开发工程师</div>
+              <div className={style.name}>{userInfo.nickname}</div>
+              <div className={style.job}>{userInfo.profession}</div>
             </Flex.Item>
             <Flex.Item align="end">
               <Button type="ghost" inline size="small">
@@ -66,19 +127,23 @@ class AuthorInfo extends Component {
               </Button>
             </Flex.Item>
           </Flex>
-          <div className={style.desc}>你会变强的！</div>
+          <div className={style.desc}>{userInfo.signature}</div>
           <div className={style.fansBox}>
             <div className={ClassName(style.item, style.like)}>
-              <div className={style.num}>25</div>
+              <div className={style.num}>{userInfo.idolNum}</div>
               <div className={style.word}>关注</div>
             </div>
             <div className={ClassName(style.item, style.fans)}>
-              <div className={style.num}>25</div>
+              <div className={style.num}>{userInfo.fansNum}</div>
               <div className={style.word}>关注者</div>
             </div>
             <div className={ClassName(style.item, style.value)}>
-              <div className={style.num}>1</div>
-              <div className={style.word}>活跃值</div>
+              <div className={style.num}>{userInfo.blogLikeNum}</div>
+              <div className={style.word}>获赞</div>
+            </div>
+            <div className={ClassName(style.item, style.value)}>
+              <div className={style.num}>{userInfo.blogReadNum}</div>
+              <div className={style.word}>被阅读</div>
             </div>
           </div>
         </div>
@@ -88,6 +153,7 @@ class AuthorInfo extends Component {
           tabSize={4}
           swipeable={true}
           renderTabsContent={this.renderTabsContent}
+          onChange={this.onChange}
         />
       </div>
     );

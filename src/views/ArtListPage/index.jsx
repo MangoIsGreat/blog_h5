@@ -7,13 +7,13 @@ import * as searchActionCreator from "../../store/actionCreators/searchActionCre
 import List from "./List";
 import Header from "../../components/Header";
 
-class Found extends Component {
+class ArtListPage extends Component {
   render() {
-    const { name, id } = this.props.location.query;
+    const { type, id } = this.props.match.params;
 
     return (
       <div className={style.artListPage}>
-        <Header title={`收藏集 ${name} 文章列表`} isBack />
+        <Header title={`收藏集 ${type} 文章列表`} isBack />
         {/* 列表页 */}
         <List cId={id} />
       </div>
@@ -25,4 +25,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(searchActionCreator, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(Found));
+export default connect(null, mapDispatchToProps)(withRouter(ArtListPage));

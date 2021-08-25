@@ -40,7 +40,7 @@ const routeRules = [
     component: My,
   },
   {
-    path: "/layout/my/userInfo",
+    path: "/layout/my/userInfo/:uid",
     component: UserInfo,
   },
   {
@@ -76,7 +76,7 @@ const routeRules = [
     component: Collection,
   },
   {
-    path: "/layout/my/artListPage",
+    path: "/layout/my/artListPage/:type/:id",
     component: ArtListPage,
   },
   {
@@ -84,7 +84,7 @@ const routeRules = [
     component: TagManage,
   },
   {
-    path: "/layout/my/tagArtList",
+    path: "/layout/my/tagArtList/:type/:name",
     component: TagArtList,
   },
   {

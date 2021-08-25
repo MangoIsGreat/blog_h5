@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 
 class TagArtList extends Component {
   render() {
-    const { type, name } = this.props.location.query;
+    const { type, name } = this.props.match.params;
 
     return (
       <div className={style.news}>

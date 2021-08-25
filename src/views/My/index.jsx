@@ -31,8 +31,16 @@ class My extends Component {
     });
   };
 
+  linkUserPage = (path) => {
+    this.props.history.push({
+      pathname: `${path}/${this.state.userInfo.id}`,
+    });
+  };
+
   linkNewPage = (path) => {
-    this.props.history.push(path);
+    this.props.history.push({
+      pathname: path,
+    });
   };
 
   logOut = () => {
@@ -66,9 +74,9 @@ class My extends Component {
               arrow="horizontal"
               thumb={userInfo.avatar}
               multipleLine
-              onClick={() => this.linkNewPage("/layout/my/userInfo")}
+              onClick={() => this.linkUserPage("/layout/my/userInfo")}
             >
-              <div className="name">{userInfo.nickname}</div>{" "}
+              <div className="name">{userInfo.nickname}</div>
               <Brief>{userInfo.profession}</Brief>
             </Item>
           ) : (

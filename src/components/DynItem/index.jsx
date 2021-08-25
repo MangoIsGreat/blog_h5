@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { relativeTime } from "../../utils/day";
-import "./index.module.scss";
+import style from "./index.module.scss";
 
 function DynItem({ listData }) {
   return (
-    <div className="list-row">
+    <div className={style.listRow}>
       <div className="list-row-top">
         <div className="list-row-header">
           <img
