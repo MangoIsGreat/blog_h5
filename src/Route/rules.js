@@ -17,6 +17,9 @@ import TagManage from "../views/TagManage";
 import TagArtList from "../views/TagArtList";
 import Login from "../views/Login";
 import Register from "../views/Register";
+import EditUserInfo from "../views/EditUserInfo";
+import ArticleRanking from "../views/ArticleRanking";
+import AuthorRanking from "../views/AuthorRanking";
 
 const routeRules = [
   {
@@ -94,6 +97,18 @@ const routeRules = [
   {
     path: "/layout/register",
     component: Register,
+  },
+  {
+    path: "/layout/editinfo/:uid",
+    component: EditUserInfo,
+  },
+  {
+    path: "/layout/article/ranking",
+    component: ArticleRanking,
+  },
+  {
+    path: "/layout/author/ranking",
+    component: AuthorRanking,
   },
 ];
 

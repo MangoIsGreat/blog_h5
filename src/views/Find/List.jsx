@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { withRouter } from "react-router-dom";
 import { PullToRefresh, ListView, Flex, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import pic1 from "../../assets/img/ranking-list01.png";
@@ -50,11 +51,13 @@ class List extends Component {
         type: "文章榜",
         pic: "pic1",
         icon: "icon-bangdan",
+        path: "/layout/article/ranking",
       },
       {
         type: "作者榜",
         pic: "pic2",
         icon: "icon-huangguan",
+        path: "/layout/author/ranking",
       },
     ],
   };
@@ -162,6 +165,10 @@ class List extends Component {
     return Toast.info("需求正在规划中，敬请期待！", 1.5);
   };
 
+  linkToNewPage = (path) => {
+    this.props.history.push(path);
+  };
+
   renderHeader = () => {
     const { groupList } = this.state;
 
@@ -187,7 +194,11 @@ class List extends Component {
           <div className="line"></div>
           {this.headerData.rankingType.map((item, index) => {
             return (
-              <div className="ranking-list-item" key={index}>
+              <div
+                onClick={() => this.linkToNewPage(item.path)}
+                className="ranking-list-item"
+                key={index}
+              >
                 <div className="content">
                   <div className="title">
                     <i className={`iconfont ${item.icon}`}></i>
@@ -282,4 +293,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default withRouter(List);

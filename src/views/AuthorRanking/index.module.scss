@@ -1,0 +1,43 @@
+@import "../../assets/css/config/common.scss";
+
+.authorRanking {
+  .listItem {
+    display: flex;
+    padding: 0.15rem;
+    box-sizing: border-box;
+
+    .avatar {
+      width: 0.4rem;
+      height: 0.4rem;
+      margin-right: 0.1rem;
+      border-radius: 50%;
+    }
+
+    .content {
+      flex: 1;
+
+      .user {
+        display: flex;
+        justify-content: space-between;
+
+        .name {
+          font-weight: 700;
+          font-size: 0.15rem;
+          line-height: 0.2rem;
+          margin-bottom: 0.01rem;
+        }
+
+        .profession {
+          font-size: 0.12rem;
+          color: $article-desc-color;
+          margin-bottom: 0.01rem;
+        }
+      }
+
+      .bottom {
+        font-size: 0.12rem;
+        color: $article-desc-color;
+      }
+    }
+  }
+}

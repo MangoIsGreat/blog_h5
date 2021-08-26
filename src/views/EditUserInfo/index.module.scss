@@ -1,0 +1,46 @@
+@import "../../assets/css/config/common.scss";
+
+.editUserPage {
+  :global {
+    .am-list-body {
+      background-color: #f5f5f9;
+    }
+  }
+
+  .myList {
+    padding-top: 0.2rem;
+    box-sizing: border-box;
+
+    :global {
+      .am-list-extra {
+        font-size: 0.15rem;
+      }
+    }
+
+    .avatar {
+      margin-bottom: 0.2rem;
+
+      .name {
+        font-weight: 700;
+      }
+
+      :global {
+        .am-list-thumb > img {
+          width: 0.48rem;
+          height: 0.48rem;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .save {
+      margin-top: 0.2rem;
+
+      :global {
+        .am-list-content {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

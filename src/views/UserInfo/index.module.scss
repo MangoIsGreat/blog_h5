@@ -42,6 +42,19 @@
     .nameLine {
       margin-bottom: 0.12rem;
 
+      .start {
+        flex: 9;
+      }
+
+      .end {
+        flex: 2;
+
+        .btn {
+          color: $primary-color;
+          border: 0.01rem solid $primary-color;
+        }
+      }
+
       .name {
         @include setTitle(0.16rem, #000408, 0.24rem, 600);
       }

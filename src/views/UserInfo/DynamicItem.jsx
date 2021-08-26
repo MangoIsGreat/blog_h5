@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import style from "./dynamic.module.scss";
 import PropTypes from "prop-types";
-import { Flex, Button, Toast, List } from "antd-mobile";
-import ClassName from "classnames";
 import { relativeTime } from "../../utils/day";
 
 class DynamicItem extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
   }
-
-  componentDidMount() {}
 
   render() {
     const { listData } = this.props;
@@ -244,6 +238,31 @@ class DynamicItem extends Component {
               #{listData.theme}#
             </span>
             {listData.content}
+          </div>
+        </div>
+        <div
+          className={style.attentionItem}
+          style={{ display: listData.type === 700 ? "flex" : "none" }}
+        >
+          <img
+            className={style.avatar}
+            src={listData.attention && listData.attention.avatar}
+            alt=""
+          />
+          <div className={style.content}>
+            <div className={style.user}>
+              <div className={style.name}>
+                {listData.attention && listData.attention.nickname}
+              </div>
+              &nbsp;关注了&nbsp;
+              <div className={style.name}>
+                {listData.beAttention && listData.beAttention.nickname}
+              </div>
+            </div>
+            <div className={style.info}>
+              {listData.attention && listData.attention.profession}&nbsp;
+              {relativeTime(listData.created_at)}
+            </div>
           </div>
         </div>
       </div>

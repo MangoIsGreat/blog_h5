@@ -14,7 +14,7 @@ class AuthorInfo extends Component {
     this.state = {
       userInfo: {},
       checkedTab: 0,
-      uid: this.props.match.params.uid, // 用户id
+      uid: props.match.params.uid, // 用户id
     };
   }
 
@@ -89,6 +89,10 @@ class AuthorInfo extends Component {
     );
   };
 
+  goNewPage = (id) => {
+    this.props.history.push(`/layout/editinfo/${id}`);
+  };
+
   render() {
     const { userInfo } = this.state;
 
@@ -117,13 +121,29 @@ class AuthorInfo extends Component {
         ></div>
         <div className={style.detailInfo}>
           <Flex className={style.nameLine}>
-            <Flex.Item>
+            <Flex.Item className={style.start}>
               <div className={style.name}>{userInfo.nickname}</div>
               <div className={style.job}>{userInfo.profession}</div>
             </Flex.Item>
-            <Flex.Item align="end">
-              <Button type="ghost" inline size="small">
+            <Flex.Item className={style.end} align="end">
+              <Button
+                className={style.btn}
+                style={{ display: userInfo.isSelf ? "block" : "none" }}
+                type="ghost"
+                inline
+                size="small"
+                onClick={() => this.goNewPage(userInfo.id)}
+              >
                 编辑
+              </Button>
+              <Button
+                className={style.btn}
+                style={{ display: !userInfo.isSelf ? "block" : "none" }}
+                type="ghost"
+                inline
+                size="small"
+              >
+                关注
               </Button>
             </Flex.Item>
           </Flex>
