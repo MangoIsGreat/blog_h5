@@ -21,6 +21,7 @@ import EditUserInfo from "../views/EditUserInfo";
 import ArticleRanking from "../views/ArticleRanking";
 import AuthorRanking from "../views/AuthorRanking";
 import Article from "../views/Article";
+import PublishComm from "../views/PublishComm";
 
 const routeRules = [
   {
@@ -114,6 +115,10 @@ const routeRules = [
   {
     path: "/layout/article/:blogId",
     component: Article,
+  },
+  {
+    path: "/layout/comment/publish/:id/:type",
+    component: PublishComm,
   },
 ];
 

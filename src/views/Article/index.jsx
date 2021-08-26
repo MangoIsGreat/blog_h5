@@ -5,6 +5,7 @@ import classnames from "classnames";
 import Header from "../../components/Header";
 import style from "./index.module.scss";
 import { relativeTime } from "../../utils/day";
+import Comment from "../../components/Comment";
 
 class Article extends Component {
   constructor(props) {
@@ -105,6 +106,102 @@ class Article extends Component {
     this.props.history.push(`/layout/article/${id}`);
   };
 
+  // 点赞评论
+  likeComment = async (id) => {
+    const { commentList } = this.state;
+
+    const data = await this.$axios.post("/clike/like", {
+      commentId: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("点赞失败!", 0.3);
+    }
+
+    if (data.data === "ok") {
+      commentList.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = true;
+          item.likeNum++;
+        }
+      });
+    } else if (data.data === "cancel") {
+      commentList.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = false;
+          item.likeNum--;
+        }
+      });
+    }
+
+    this.setState({
+      commentList,
+    });
+  };
+
+  // 点赞博客
+  makeLike = async () => {
+    const { blogInfo } = this.state;
+
+    const data = await this.$axios.post("/blike/like", {
+      blog: blogInfo.id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("点赞失败!", 0.3);
+    }
+
+    if (data.data === "ok") {
+      blogInfo.isLike = true;
+      blogInfo.blogLikeNum += 1;
+    } else if (data.data === "cancel") {
+      blogInfo.isLike = false;
+      blogInfo.blogLikeNum -= 1;
+    }
+
+    this.setState({
+      blogInfo,
+    });
+  };
+
+  // 回复博客评论
+  replyToComment = (blogId, commentId, replyCommentId) => {
+    // 将commentId和replyCommentId先缓存到本地
+    localStorage.setItem("commentId", commentId);
+    localStorage.setItem("replyCommentId", replyCommentId);
+
+    this.props.history.push(`/layout/comment/publish/${blogId}/replyToComment`);
+  };
+
+  follow = async (id) => {
+    const { blogInfo } = this.state;
+
+    const data = await this.$axios.post("/fans/follow", {
+      leader: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("关注失败!", 0.3);
+    }
+
+    if (data.data.data === "ok") {
+      blogInfo.User.isAttention = true;
+    } else if (data.data.data === "cancel") {
+      blogInfo.User.isAttention = false;
+    }
+
+    this.setState({
+      blogInfo,
+    });
+  };
+
+  // 进入用户信息页
+  toUserPage = (e, id) => {
+    e.stopPropagation();
+
+    this.props.history.push(`/layout/my/userInfo/${id}`);
+  };
+
   render() {
     const { blogInfo, mdContent, moreArt, commentList } = this.state;
 
@@ -116,6 +213,9 @@ class Article extends Component {
             <div className={style.user}>
               <div className={style.userInfo}>
                 <img
+                  onClick={(e) =>
+                    this.toUserPage(e, blogInfo.User && blogInfo.User.id)
+                  }
                   className={style.avatar}
                   src={blogInfo.User && blogInfo.User.avatar}
                   alt=""
@@ -129,8 +229,36 @@ class Article extends Component {
                   </div>
                 </div>
               </div>
-              <Button type="ghost" inline size="small">
-                关注
+              <Button
+                onClick={() => this.follow(blogInfo.User && blogInfo.User.id)}
+                style={{
+                  display:
+                    blogInfo.User && !blogInfo.User.isSelf ? "block" : "none",
+                }}
+                inline
+                size="small"
+              >
+                <span
+                  style={{
+                    color: "#00c58e",
+                    display:
+                      blogInfo.User && !blogInfo.User.isAttention
+                        ? "block"
+                        : "none",
+                  }}
+                >
+                  +&nbsp;关注
+                </span>
+                <span
+                  style={{
+                    display:
+                      blogInfo.User && blogInfo.User.isAttention
+                        ? "block"
+                        : "none",
+                  }}
+                >
+                  未关注
+                </span>
               </Button>
             </div>
             <div className={style.title}>{blogInfo.title}</div>
@@ -170,6 +298,9 @@ class Article extends Component {
               return (
                 <div key={index} className={style.commentItem}>
                   <img
+                    onClick={(e) =>
+                      this.toUserPage(e, item.comment && item.comment.id)
+                    }
                     className={style.avatar}
                     src={item.comment && item.comment.avatar}
                     alt=""
@@ -186,10 +317,25 @@ class Article extends Component {
                         </div>
                       </div>
                       <div className={style.operate}>
-                        <i className="iconfont icon-dianzan">
+                        <i
+                          onClick={() => this.likeComment(item.id)}
+                          className={classnames(
+                            "iconfont",
+                            { "icon-dianzan_": item.isLike },
+                            { "icon-dianzan": !item.isLike }
+                          )}
+                          style={{ color: item.isLike ? "#00c58e" : "#96909c" }}
+                        >
                           {item.likeNum ? item.likeNum : ""}
                         </i>
                         <i
+                          onClick={() =>
+                            this.replyToComment(
+                              blogInfo.id,
+                              item.id,
+                              item.comment && item.comment.id
+                            )
+                          }
                           className={classnames(
                             style.pinlun,
                             "iconfont icon-pinglun"
@@ -207,8 +353,26 @@ class Article extends Component {
                       {item.child.length > 0 &&
                         item.child.map((item2, index2) => {
                           return (
-                            <div className={style.replyItem} key={index2}>
-                              <span className={style.name}>
+                            <div
+                              onClick={() =>
+                                this.replyToComment(
+                                  blogInfo.id,
+                                  item.id,
+                                  item2.from && item2.from.id
+                                )
+                              }
+                              className={style.replyItem}
+                              key={index2}
+                            >
+                              <span
+                                onClick={(e) =>
+                                  this.toUserPage(
+                                    e,
+                                    item2.from && item2.from.id
+                                  )
+                                }
+                                className={style.name}
+                              >
                                 {item2.from && item2.from.nickname}
                                 {blogInfo.User &&
                                 item2.from &&
@@ -217,8 +381,19 @@ class Article extends Component {
                                   : ""}
                               </span>
                               &nbsp;回复&nbsp;
-                              <span className={style.name}>
-                                {item2.to && item2.to.nickname}:&nbsp;
+                              <span
+                                onClick={(e) =>
+                                  this.toUserPage(e, item2.to && item2.to.id)
+                                }
+                                className={style.name}
+                              >
+                                {item2.to && item2.to.nickname}
+                                {blogInfo.User &&
+                                item2.to &&
+                                blogInfo.User.id === item2.to.id
+                                  ? "(作者)"
+                                  : ""}
+                                :&nbsp;
                               </span>
                               <span>{item2.content}</span>
                             </div>
@@ -231,6 +406,12 @@ class Article extends Component {
             })}
           </div>
         </div>
+        {/* 评论组件 */}
+        <Comment
+          infoData={blogInfo}
+          type="blogComment"
+          makeLike={this.makeLike}
+        />
       </div>
     );
   }

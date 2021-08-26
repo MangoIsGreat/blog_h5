@@ -16,7 +16,22 @@ const style = {
   fontWeight: 700,
 };
 
-function Header({ title, isBack, isShare, history, noBorder }) {
+const titleStyle = {
+  width: "2.8rem",
+  textOverflow: "ellipsis" /*省略号 */,
+  whiteSpace: "nowrap" /*溢出时不换行 */,
+  overflow: "hidden" /*溢出时隐藏 */,
+};
+
+function Header({
+  title,
+  isBack,
+  isShare,
+  history,
+  noBorder,
+  isPublish,
+  publish,
+}) {
   return (
     <div
       style={{
@@ -31,12 +46,20 @@ function Header({ title, isBack, isShare, history, noBorder }) {
           onClick={() => history.goBack()}
         ></div>
       </div>
-      <div>{title}</div>
+      <div style={titleStyle}>{title}</div>
       <div>
         <div
           style={{ display: isShare ? "block" : "none" }}
           className="iconfont icon-shenglvehao"
         ></div>
+      </div>
+      <div>
+        <div
+          style={{ display: isPublish ? "block" : "none", color: "#00c58e" }}
+          onClick={() => publish()}
+        >
+          发送
+        </div>
       </div>
     </div>
   );
@@ -47,6 +70,7 @@ Header.propTypes = {
   isBack: PropTypes.bool,
   isShare: PropTypes.bool,
   noBorder: PropTypes.bool,
+  isPublish: PropTypes.bool,
 };
 
 export default withRouter(Header);
