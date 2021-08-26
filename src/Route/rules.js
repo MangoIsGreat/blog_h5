@@ -20,6 +20,7 @@ import Register from "../views/Register";
 import EditUserInfo from "../views/EditUserInfo";
 import ArticleRanking from "../views/ArticleRanking";
 import AuthorRanking from "../views/AuthorRanking";
+import Article from "../views/Article";
 
 const routeRules = [
   {
@@ -109,6 +110,10 @@ const routeRules = [
   {
     path: "/layout/author/ranking",
     component: AuthorRanking,
+  },
+  {
+    path: "/layout/article/:blogId",
+    component: Article,
   },
 ];
 

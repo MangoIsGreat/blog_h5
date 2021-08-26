@@ -43,7 +43,7 @@ function Header({ title, isBack, isShare, history, noBorder }) {
 }
 
 Header.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   isBack: PropTypes.bool,
   isShare: PropTypes.bool,
   noBorder: PropTypes.bool,

@@ -190,6 +190,9 @@ class List extends Component {
             return (
               <div
                 key={index}
+                onClick={() =>
+                  this.props.history.push(`/layout/article/${item.id}`)
+                }
                 style={{
                   display: "flex",
                   padding: "0.2rem 0.2rem",
