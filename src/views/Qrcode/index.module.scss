@@ -1,0 +1,10 @@
+@import "../../assets/css/config/common.scss";
+
+.qrcodeWrapper {
+  .content {
+    height: calc(100vh - 0.45rem);
+    display: flex;
+    // justify-content: center;
+    background-color: #fff;
+  }
+}

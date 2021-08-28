@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { PullToRefresh, ListView, Icon, Toast, Button } from "antd-mobile";
 import NoData from "../../components/NoData";
 import style from "./index.module.scss";
+import { withRouter } from "react-router-dom";
 
 const NUM_ROWS = 20;
 let pageIndex = 1;
@@ -97,9 +98,35 @@ class List extends Component {
     );
   };
 
+  // 进入用户信息页
+  toUserPage = (id) => {
+    this.props.history.push(`/layout/my/userInfo/${id}`);
+  };
+
+  // 关注
+  follow = async (id) => {
+    const data = await this.$axios.post("/fans/follow", {
+      leader: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
+  };
+
   renderRowList = () => {
     return (rowData) => (
-      <div className={style.listItem}>
+      <div
+        onClick={() => this.toUserPage(rowData.id)}
+        className={style.listItem}
+      >
         <img className={style.avatar} src={rowData.avatar} alt="" />
         <div className={style.content}>
           <div className={style.user}>
@@ -107,9 +134,12 @@ class List extends Component {
               <div className={style.name}>{rowData.nickname}</div>
               <div className={style.profession}>{rowData.profession}</div>
             </div>
-            <Button type="ghost" inline size="small">
+            <Button onClick={() => this.follow(rowData.id)} inline size="small">
               <span
-                style={{ display: rowData.isAttention ? "none" : "inline" }}
+                style={{
+                  display: rowData.isAttention ? "none" : "inline",
+                  color: "#00c58e",
+                }}
               >
                 关注
               </span>
@@ -175,4 +205,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default withRouter(List);

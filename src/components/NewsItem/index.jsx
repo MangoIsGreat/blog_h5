@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { WingBlank, Flex } from "antd-mobile";
 import { relativeTime } from "../../utils/day";
 
-function NewsItem({ listData }) {
+function NewsItem({ listData, history }) {
   return (
     <WingBlank
       size="md"
@@ -12,93 +13,95 @@ function NewsItem({ listData }) {
         padding: "0.15rem 0",
       }}
     >
-      <div
-        style={{
-          width: "calc(100vw - 0.4rem)",
-          marginBottom: "0.05rem",
-          fontSize: "0.16rem",
-          color: "#222528",
-          fontWeight: "600",
-          lineHeight: "0.22rem",
-        }}
-      >
-        {listData.title}
-      </div>
-      <div style={{ display: "flex", marginBottom: "0.08rem" }}>
-        <div style={{ flex: 1, paddingRight: "0.08rem" }}>
-          <div
-            style={{
-              display: "flex",
-              marginBottom: "0.05rem",
-              color: "#6C7584",
-              fontSize: "0.12rem",
-              lineHeight: "0.16rem",
-            }}
-          >
+      <div onClick={() => history.push(`/layout/news/${listData.id}`)}>
+        <div
+          style={{
+            width: "calc(100vw - 0.4rem)",
+            marginBottom: "0.05rem",
+            fontSize: "0.16rem",
+            color: "#222528",
+            fontWeight: "600",
+            lineHeight: "0.22rem",
+          }}
+        >
+          {listData.title}
+        </div>
+        <div style={{ display: "flex", marginBottom: "0.08rem" }}>
+          <div style={{ flex: 1, paddingRight: "0.08rem" }}>
             <div
               style={{
-                paddingRight: "0.08rem",
+                display: "flex",
+                marginBottom: "0.05rem",
+                color: "#6C7584",
+                fontSize: "0.12rem",
+                lineHeight: "0.16rem",
               }}
             >
-              {listData.User && listData.User.nickname}
+              <div
+                style={{
+                  paddingRight: "0.08rem",
+                }}
+              >
+                {listData.User && listData.User.nickname}
+              </div>
+              |
+              <div style={{ padding: "0 0.08rem" }}>
+                {relativeTime(listData.created_at)}
+              </div>
             </div>
-            |
-            <div style={{ padding: "0 0.08rem" }}>
-              {relativeTime(listData.created_at)}
+            <div
+              style={{
+                color: "#495261",
+                fontSize: "0.14rem",
+                lineHeight: "0.21rem",
+                wordBreak: "break-all",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "2",
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {listData.description}
             </div>
           </div>
-          <div
+          <img
             style={{
-              color: "#495261",
-              fontSize: "0.14rem",
-              lineHeight: "0.21rem",
-              wordBreak: "break-all",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: "2",
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
+              width: "0.84rem",
+              height: "0.65rem",
+              display: listData.titlePic ? "block" : "none",
             }}
-          >
-            {listData.description}
-          </div>
+            src={listData.titlePic}
+            alt=""
+          />
         </div>
-        <img
+        <Flex
           style={{
-            width: "0.84rem",
-            height: "0.65rem",
-            display: listData.titlePic ? "block" : "none",
+            fontSize: "0.12rem",
+            color: "#6C7583",
           }}
-          src={listData.titlePic}
-          alt=""
-        />
+        >
+          <Flex.Item>
+            <span style={{ color: "#6C7583" }}>
+              {listData.newsReadNum}&nbsp;阅读&nbsp;·&nbsp;
+            </span>
+            <span style={{ color: "#6C7583" }}>
+              &nbsp;{listData.newsLikeNum}&nbsp;赞
+            </span>
+          </Flex.Item>
+          <Flex.Item align="end">
+            <span
+              style={{
+                padding: "0.05rem 0.06rem",
+                backgroundColor: "#F4F5F5",
+                borderRadius: "0.05rem",
+              }}
+            >
+              {listData.NewsType && listData.NewsType.tagName}
+            </span>
+          </Flex.Item>
+        </Flex>
       </div>
-      <Flex
-        style={{
-          fontSize: "0.12rem",
-          color: "#6C7583",
-        }}
-      >
-        <Flex.Item>
-          <span style={{ color: "#6C7583" }}>
-            {listData.newsReadNum}&nbsp;阅读&nbsp;&nbsp;&nbsp;
-          </span>
-          <span style={{ color: "#6C7583" }}>
-            &nbsp;{listData.newsLikeNum}&nbsp;赞
-          </span>
-        </Flex.Item>
-        <Flex.Item align="end">
-          <span
-            style={{
-              padding: "0.05rem 0.06rem",
-              backgroundColor: "#F4F5F5",
-              borderRadius: "0.05rem",
-            }}
-          >
-            {listData.NewsType && listData.NewsType.tagName}
-          </span>
-        </Flex.Item>
-      </Flex>
     </WingBlank>
   );
 }
@@ -107,4 +110,4 @@ NewsItem.propTypes = {
   listData: PropTypes.object,
 };
 
-export default NewsItem;
+export default withRouter(NewsItem);

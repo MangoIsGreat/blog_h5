@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { withRouter } from "react-router-dom";
 import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import DynItem from "../../components/DynItem";
@@ -21,7 +22,6 @@ class List extends Component {
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
       publicInfoData: [], // 热门推荐数据
-      originData: [1, 1, 1], // 数据源
     };
   }
 
@@ -153,6 +153,10 @@ class List extends Component {
     }
   };
 
+  linkToNewPage = (id) => {
+    this.props.history.push(`/layout/interaction/${id}`);
+  };
+
   renderSeparator = () => {
     return (sectionID, rowID) => (
       <div
@@ -176,7 +180,11 @@ class List extends Component {
           {publicInfoData.length > 0 &&
             publicInfoData.map((item, index) => {
               return (
-                <div className="swiper-item" key={index}>
+                <div
+                  onClick={() => this.linkToNewPage(item.id)}
+                  className="swiper-item"
+                  key={index}
+                >
                   <div className="swiper-item-innerBox">
                     <div className="content">
                       <div className="title">
@@ -202,23 +210,42 @@ class List extends Component {
     );
   };
 
+  likeDyn = async (id) => {
+    const { dataSource } = this.state;
+
+    const data = await this.$axios.post("/dlike/like", {
+      dynamicId: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
+  };
+
   renderRow = () => {
     return (rowData, sectionID, rowID) => {
-      return <DynItem listData={rowData} />;
+      return <DynItem likeDyn={this.likeDyn} listData={rowData} />;
     };
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderHeader={() => this.renderHeader()}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -254,4 +281,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default withRouter(List);

@@ -49,6 +49,7 @@ class Interaction extends Component {
   };
 
   render() {
+    const { history } = this.props;
     const { tabs } = this.state;
 
     return (
@@ -62,7 +63,10 @@ class Interaction extends Component {
           renderTabsContent={this.renderTabsContent}
         />
         {/* 写动态快捷入口 */}
-        <div className={style.write}>
+        <div
+          onClick={() => history.push("/layout/interaction/publish")}
+          className={style.write}
+        >
           <i className="iconfont icon-pinglun1"></i>
         </div>
       </div>

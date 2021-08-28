@@ -88,7 +88,7 @@ class PublishComm extends Component {
       return Toast.info("评论失败!", 0.3);
     }
 
-    Toast.info("评论成功!", 0.5);
+    Toast.info("评论成功!", 0.3);
 
     setTimeout(() => {
       this.props.history.goBack();
@@ -120,24 +120,27 @@ class PublishComm extends Component {
   };
 
   // 评论动态评论
-  makeReplyToDynComment = () => {
-    // const data = await request({
-    //   url: "/dcomment/reply",
-    //   method: "POST",
-    //   data: {
-    //     dynamicId: this.id, // 博客id
-    //     content: this.value, // 评论内容
-    //     commentId: this.commentId, // 评论id
-    //     toUid: this.targetId, // 要回复的"评论"&"评论回复"的id
-    //   },
-    // });
-    // if (data.data.error_code !== 0) {
-    //   return this.$refs["toast"].open({
-    //     message: "评论失败！",
-    //   });
-    // }
-    // // 评论成功返回上一页
-    // uni.navigateBack();
+  makeReplyToDynComment = async () => {
+    const { id, value } = this.state;
+    const commentId = localStorage.getItem("commentId");
+    const replyCommentId = localStorage.getItem("replyCommentId");
+
+    const data = await this.$axios.post("/dcomment/reply", {
+      dynamicId: id, // 博客id
+      content: value, // 评论内容
+      commentId, // 评论id
+      toUid: replyCommentId, // 要回复的"评论"&"评论回复"的用户的id
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("评论失败!", 0.3);
+    }
+
+    Toast.info("评论成功!", 0.3);
+
+    setTimeout(() => {
+      this.props.history.goBack();
+    }, 500);
   };
 
   render() {

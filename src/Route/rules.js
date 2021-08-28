@@ -1,7 +1,10 @@
 import Home from "../views/Home";
 import Interaction from "../views/Interaction";
+import PublishDyn from "../views/PublishDyn";
+import InteractionPage from "../views/InteractionPage";
 import Find from "../views/Find";
 import News from "../views/News";
+import NewsPage from "../views/NewsPage";
 import My from "../views/My";
 import UserInfo from "../views/UserInfo";
 import MesCenter from "../views/MesCenter";
@@ -22,6 +25,8 @@ import ArticleRanking from "../views/ArticleRanking";
 import AuthorRanking from "../views/AuthorRanking";
 import Article from "../views/Article";
 import PublishComm from "../views/PublishComm";
+import ThemeList from "../views/ThemeList";
+import Qrcode from "../views/Qrcode";
 
 const routeRules = [
   {
@@ -33,12 +38,32 @@ const routeRules = [
     component: Interaction,
   },
   {
+    path: "/layout/interaction/publish",
+    component: PublishDyn,
+  },
+  {
+    path: "/layout/interaction/:id",
+    component: InteractionPage,
+  },
+  {
+    path: "/layout/theme",
+    component: ThemeList,
+  },
+  {
+    path: "/layout/qrcode/:id",
+    component: Qrcode,
+  },
+  {
     path: "/layout/find",
     component: Find,
   },
   {
     path: "/layout/news",
     component: News,
+  },
+  {
+    path: "/layout/news/:newsid",
+    component: NewsPage,
   },
   {
     path: "/layout/my",

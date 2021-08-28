@@ -1,0 +1,127 @@
+@import "../../assets/css/config/common.scss";
+
+.interactionPage {
+  .content {
+    height: calc(100vh - 0.45rem);
+    padding-bottom: 0.6rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    :global {
+      .list-row-top {
+        box-sizing: border-box;
+        padding: 0.12rem;
+        border: $borderLine;
+        background-color: #fff;
+
+        .list-row-header {
+          display: flex;
+          margin-bottom: 0.1rem;
+
+          .avatar {
+            @include setAvatar(0.4rem, 0.4rem);
+          }
+
+          .list-row-header-content {
+            .list-row-header-content-tit {
+              @include setTitle(0.16rem);
+            }
+
+            .list-row-header-content-desc {
+              @include setTitle(0.12rem, #9ca2ab, 0.24rem);
+            }
+          }
+        }
+
+        .list-row-content {
+          margin-bottom: 0.12rem;
+          @include setWord();
+        }
+
+        .list-row-pic {
+          display: flex;
+          margin-bottom: 0.12rem;
+
+          .list-row-pic-item {
+            width: 1.1rem;
+            height: 1.1rem;
+            margin-right: 0.1rem;
+          }
+        }
+      }
+    }
+
+    .comment {
+      margin-top: 0.1rem;
+      border-top: $borderLine;
+      background-color: #fff;
+
+      .commentItem {
+        display: flex;
+        padding: 0.15rem;
+        box-sizing: border-box;
+
+        .avatar {
+          width: 0.4rem;
+          height: 0.4rem;
+          margin-right: 0.1rem;
+          border-radius: 50%;
+        }
+
+        .comContent {
+          flex: 1;
+
+          .commTop {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.05rem;
+
+            .userinfo {
+              .nickname {
+                margin-bottom: 0.05rem;
+                color: $primary-color;
+              }
+
+              .profession {
+                font-size: 0.12rem;
+                color: $article-info-color;
+              }
+            }
+
+            .operate {
+              :global {
+                .iconfont {
+                  font-size: 0.13rem;
+                }
+              }
+
+              .pinlun {
+                margin-left: 0.2rem;
+              }
+            }
+          }
+
+          .word {
+            margin-bottom: 0.05rem;
+          }
+
+          .reply {
+            padding: 0.05rem 0.08rem;
+            box-sizing: border-box;
+            background-color: #eee;
+            color: $article-info-color;
+
+            .replyItem {
+              line-height: 0.24rem;
+
+              .name {
+                color: $primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

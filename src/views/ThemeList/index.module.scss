@@ -1,0 +1,16 @@
+@import "../../assets/css/config/common.scss";
+
+.themeList {
+  height: calc(100vh - 0.45rem);
+  background-color: #fff;
+
+  .content {
+    .themeItem {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.17rem 0.2rem;
+      border-bottom: $borderLine;
+      color: $article-desc-color;
+    }
+  }
+}

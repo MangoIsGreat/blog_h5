@@ -242,8 +242,27 @@ class List extends Component {
     );
   };
 
+  likeBlog = async (id) => {
+    const data = await this.$axios.post("/blike/like", {
+      blog: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
+  };
+
   renderRowList = () => {
-    return (rowData) => <BlogItem listData={rowData} />;
+    return (rowData) => (
+      <BlogItem likeBlog={this.likeBlog} listData={rowData} />
+    );
   };
 
   render() {

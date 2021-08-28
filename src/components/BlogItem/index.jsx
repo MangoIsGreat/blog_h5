@@ -3,8 +3,16 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { WingBlank, Flex } from "antd-mobile";
 import { relativeTime } from "../../utils/day";
+import LazyLoad from "react-lazyload";
+import classnames from "classnames";
 
-function BlogItem({ listData, history }) {
+function BlogItem({ listData, history, likeBlog }) {
+  const like = (e, id) => {
+    e.stopPropagation();
+
+    likeBlog(id);
+  };
+
   return (
     <WingBlank
       size="md"
@@ -65,15 +73,17 @@ function BlogItem({ listData, history }) {
               {listData.description}
             </div>
           </div>
-          <img
-            style={{
-              width: "0.84rem",
-              height: "0.65rem",
-              display: listData.titlePic ? "block" : "none",
-            }}
-            src={listData.titlePic}
-            alt=""
-          />
+          <LazyLoad overflow={true}>
+            <img
+              style={{
+                width: "0.84rem",
+                height: "0.65rem",
+                display: listData.titlePic ? "block" : "none",
+              }}
+              src={listData.titlePic}
+              alt=""
+            />
+          </LazyLoad>
         </div>
         <Flex
           style={{
@@ -89,8 +99,16 @@ function BlogItem({ listData, history }) {
               &nbsp;{listData.blogReadNum}
             </i>
             <i
-              style={{ marginRight: "0.13rem", color: "#6C7583" }}
-              className="iconfont icon-dianzan"
+              onClick={(e) => like(e, listData.id)}
+              className={classnames(
+                "iconfont",
+                { "icon-dianzan_": listData.isLike },
+                { "icon-dianzan": !listData.isLike }
+              )}
+              style={{
+                color: listData.isLike ? "#00c58e" : "#96909c",
+                marginRight: "0.13rem",
+              }}
             >
               &nbsp;{listData.blogLikeNum}
             </i>

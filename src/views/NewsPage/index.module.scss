@@ -1,0 +1,164 @@
+@import "../../assets/css/config/common.scss";
+
+.article {
+  background-color: #fff;
+
+  .page {
+    height: calc(100vh - 0.45rem);
+    padding-bottom: 0.6rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    .content {
+      padding: 0.15rem;
+      margin-bottom: 0.1rem;
+      box-sizing: border-box;
+      border-bottom: $borderLine;
+
+      .user {
+        display: flex;
+        justify-content: space-between;
+
+        .userInfo {
+          display: flex;
+
+          .avatar {
+            width: 0.45rem;
+            height: 0.45rem;
+            margin-right: 0.1rem;
+            border-radius: 50%;
+          }
+
+          .info {
+            .name {
+              line-height: 0.24rem;
+              color: $article-info-color;
+            }
+
+            .time {
+              font-size: 0.12rem;
+              color: $article-info-color;
+            }
+          }
+        }
+      }
+
+      .title {
+        margin: 0.2rem 0;
+        font-size: 0.16rem;
+        font-weight: 700;
+      }
+
+      .pic {
+        width: 100%;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 0.05rem 0.08rem;
+        margin-bottom: 0.1rem;
+        background-color: #eee;
+      }
+    }
+
+    .more {
+      margin-bottom: 0.1rem;
+      border-top: $borderLine;
+      color: $article-info-color;
+
+      .title {
+        padding: 0.12rem 0.15rem;
+        border-bottom: $borderLine;
+        font-size: 0.16rem;
+      }
+
+      .morecontent {
+        .item {
+          padding: 0.12rem 0.15rem;
+          border-bottom: $borderLine;
+          font-size: 0.16rem;
+
+          .itemTitle {
+            margin-bottom: 0.06rem;
+            font-size: 0.15rem;
+          }
+
+          .bottomLine {
+            font-size: 0.12rem;
+          }
+        }
+      }
+    }
+
+    .comment {
+      border-top: $borderLine;
+
+      .commentItem {
+        display: flex;
+        padding: 0.15rem;
+        box-sizing: border-box;
+
+        .avatar {
+          width: 0.4rem;
+          height: 0.4rem;
+          margin-right: 0.1rem;
+          border-radius: 50%;
+        }
+
+        .comContent {
+          flex: 1;
+
+          .commTop {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.05rem;
+
+            .userinfo {
+              .nickname {
+                margin-bottom: 0.05rem;
+                color: $primary-color;
+              }
+
+              .profession {
+                font-size: 0.12rem;
+                color: $article-info-color;
+              }
+            }
+
+            .operate {
+              :global {
+                .iconfont {
+                  font-size: 0.13rem;
+                }
+              }
+
+              .pinlun {
+                margin-left: 0.2rem;
+              }
+            }
+          }
+
+          .word {
+            margin-bottom: 0.05rem;
+          }
+
+          .reply {
+            padding: 0.05rem 0.08rem;
+            box-sizing: border-box;
+            background-color: #eee;
+            color: $article-info-color;
+
+            .replyItem {
+              line-height: 0.24rem;
+
+              .name {
+                color: $primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

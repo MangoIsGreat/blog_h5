@@ -169,6 +169,28 @@ class List extends Component {
     this.props.history.push(path);
   };
 
+  likeBlog = async (id) => {
+    const data = await this.$axios.post("/blike/like", {
+      blog: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    this.rData = await this.genData();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      refreshing: false,
+      isLoading: false,
+    });
+  };
+
+  // 进入用户信息页
+  toUserPage = (id) => {
+    this.props.history.push(`/layout/my/userInfo/${id}`);
+  };
+
   renderHeader = () => {
     const { groupList } = this.state;
 
@@ -230,7 +252,12 @@ class List extends Component {
               {groupList.length > 0 &&
                 groupList.map((item, index) => {
                   return (
-                    <img key={index} className="group-item" src={item.avatar} />
+                    <img
+                      onClick={() => this.toUserPage(item.id)}
+                      key={index}
+                      className="group-item"
+                      src={item.avatar}
+                    />
                   );
                 })}
             </div>
@@ -244,7 +271,9 @@ class List extends Component {
   };
 
   renderRowList = () => {
-    return (rowData, sectionID, rowID) => <BlogItem listData={rowData} />;
+    return (rowData, sectionID, rowID) => (
+      <BlogItem likeBlog={this.likeBlog} listData={rowData} />
+    );
   };
 
   render() {

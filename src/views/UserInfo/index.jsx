@@ -129,7 +129,6 @@ class AuthorInfo extends Component {
               <Button
                 className={style.btn}
                 style={{ display: userInfo.isSelf ? "block" : "none" }}
-                type="ghost"
                 inline
                 size="small"
                 onClick={() => this.goNewPage(userInfo.id)}
@@ -139,7 +138,6 @@ class AuthorInfo extends Component {
               <Button
                 className={style.btn}
                 style={{ display: !userInfo.isSelf ? "block" : "none" }}
-                type="ghost"
                 inline
                 size="small"
               >
