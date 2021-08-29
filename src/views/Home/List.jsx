@@ -154,7 +154,7 @@ class List extends Component {
   };
 
   toHotList = () => {
-    this.props.history.push("/layout/article/ranking");
+    this.props.history.push("/article/ranking");
   };
 
   renderHeader = () => {
@@ -191,7 +191,7 @@ class List extends Component {
               <div
                 key={index}
                 onClick={() =>
-                  this.props.history.push(`/layout/article/${item.id}`)
+                  this.props.history.push(`/article/${item.id}`)
                 }
                 style={{
                   display: "flex",

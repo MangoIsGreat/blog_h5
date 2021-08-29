@@ -21,7 +21,7 @@ function BlogItem({ listData, history, likeBlog }) {
         padding: "0.15rem 0",
       }}
     >
-      <div onClick={() => history.push(`/layout/article/${listData.id}`)}>
+      <div onClick={() => history.push(`/article/${listData.id}`)}>
         <div
           style={{
             width: "calc(100vw - 0.4rem)",

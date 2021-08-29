@@ -80,7 +80,7 @@ class NewsPage extends Component {
   };
 
   linkToPage = (id) => {
-    this.props.history.push(`/layout/news/${id}`);
+    this.props.history.push(`/news/${id}`);
   };
 
   follow = async (id) => {
@@ -109,7 +109,7 @@ class NewsPage extends Component {
   toUserPage = (e, id) => {
     e.stopPropagation();
 
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   render() {

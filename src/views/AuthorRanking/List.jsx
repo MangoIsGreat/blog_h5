@@ -100,7 +100,7 @@ class List extends Component {
 
   // 进入用户信息页
   toUserPage = (id) => {
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   // 关注

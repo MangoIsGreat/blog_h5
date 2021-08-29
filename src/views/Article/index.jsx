@@ -103,7 +103,7 @@ class Article extends Component {
   };
 
   linkToPage = (id) => {
-    this.props.history.push(`/layout/article/${id}`);
+    this.props.history.push(`/article/${id}`);
   };
 
   // 点赞评论
@@ -170,7 +170,7 @@ class Article extends Component {
     localStorage.setItem("commentId", commentId);
     localStorage.setItem("replyCommentId", replyCommentId);
 
-    this.props.history.push(`/layout/comment/publish/${blogId}/replyToComment`);
+    this.props.history.push(`/comment/publish/${blogId}/replyToComment`);
   };
 
   follow = async (id) => {
@@ -199,7 +199,7 @@ class Article extends Component {
   toUserPage = (e, id) => {
     e.stopPropagation();
 
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   render() {

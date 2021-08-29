@@ -74,14 +74,14 @@ class AuthorInfo extends Component {
         <Item
           arrow="horizontal"
           multipleLine
-          onClick={() => this.linkNewPage("/layout/my/likedList")}
+          onClick={() => this.linkNewPage("/my/likedList")}
         >
           赞过的
         </Item>
         <Item
           arrow="horizontal"
           multipleLine
-          onClick={() => this.linkNewPage("/layout/my/collection")}
+          onClick={() => this.linkNewPage("/my/collection")}
         >
           收藏集
         </Item>
@@ -90,7 +90,7 @@ class AuthorInfo extends Component {
   };
 
   goNewPage = (id) => {
-    this.props.history.push(`/layout/editinfo/${id}`);
+    this.props.history.push(`/editinfo/${id}`);
   };
 
   render() {

@@ -74,7 +74,7 @@ class My extends Component {
               arrow="horizontal"
               thumb={userInfo.avatar}
               multipleLine
-              onClick={() => this.linkUserPage("/layout/my/userInfo")}
+              onClick={() => this.linkUserPage("/my/userInfo")}
             >
               <div className="name">{userInfo.nickname}</div>
               <Brief>{userInfo.profession}</Brief>
@@ -85,7 +85,7 @@ class My extends Component {
               arrow="horizontal"
               thumb={avatar}
               multipleLine
-              onClick={() => this.linkNewPage("/layout/login")}
+              onClick={() => this.linkNewPage("/login")}
             >
               <div className="name">登录&nbsp;/&nbsp;注册</div>
             </Item>
@@ -94,7 +94,7 @@ class My extends Component {
           <Item
             onClick={() =>
               this.linkNewPage(
-                token ? "/layout/my/messageCenter" : "/layout/login"
+                token ? "/my/messageCenter" : "/login"
               )
             }
             thumb={
@@ -108,7 +108,7 @@ class My extends Component {
           </Item>
           <Item
             onClick={() =>
-              this.linkNewPage(token ? "/layout/my/likedList" : "/layout/login")
+              this.linkNewPage(token ? "/my/likedList" : "/login")
             }
             thumb={
               <i
@@ -122,7 +122,7 @@ class My extends Component {
           <Item
             onClick={() =>
               this.linkNewPage(
-                token ? "/layout/my/collection" : "/layout/login"
+                token ? "/my/collection" : "/login"
               )
             }
             thumb={
@@ -137,7 +137,7 @@ class My extends Component {
           <Item
             onClick={() =>
               this.linkNewPage(
-                token ? "/layout/my/readArticle" : "/layout/login"
+                token ? "/my/readArticle" : "/login"
               )
             }
             thumb={
@@ -152,7 +152,7 @@ class My extends Component {
           <Item
             onClick={() =>
               this.linkNewPage(
-                token ? "/layout/my/tagManagement" : "/layout/login"
+                token ? "/my/tagManagement" : "/login"
               )
             }
             thumb={

@@ -7,7 +7,7 @@ class Comment extends Component {
   publish = (id) => {
     const { type } = this.props;
 
-    this.props.history.push(`/layout/comment/publish/${id}/${type}`);
+    this.props.history.push(`/comment/publish/${id}/${type}`);
   };
 
   // 点赞博客

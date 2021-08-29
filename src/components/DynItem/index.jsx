@@ -43,13 +43,13 @@ class DynItem extends Component {
   share = (e, id) => {
     e.stopPropagation();
 
-    this.props.history.push(`/layout/qrcode/${id}`);
+    this.props.history.push(`/qrcode/${id}`);
   };
 
   toUserPage = (e, id) => {
     e.stopPropagation();
 
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   render() {
@@ -58,7 +58,7 @@ class DynItem extends Component {
 
     return (
       <div
-        onClick={() => history.push(`/layout/interaction/${listData.id}`)}
+        onClick={() => history.push(`/interaction/${listData.id}`)}
         className={style.listRow}
       >
         <div className="list-row-top">

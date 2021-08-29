@@ -36,7 +36,7 @@ class News extends Component {
 
   toArtList = (data) => {
     this.props.history.push({
-      pathname: `/layout/my/tagArtList/${data.tag_type}/${data.tag_name}`,
+      pathname: `/my/tagArtList/${data.tag_type}/${data.tag_name}`,
     });
   };
 

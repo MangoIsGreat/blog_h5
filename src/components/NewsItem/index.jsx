@@ -13,7 +13,7 @@ function NewsItem({ listData, history }) {
         padding: "0.15rem 0",
       }}
     >
-      <div onClick={() => history.push(`/layout/news/${listData.id}`)}>
+      <div onClick={() => history.push(`/news/${listData.id}`)}>
         <div
           style={{
             width: "calc(100vw - 0.4rem)",

@@ -64,7 +64,7 @@ class Interaction extends Component {
         />
         {/* 写动态快捷入口 */}
         <div
-          onClick={() => history.push("/layout/interaction/publish")}
+          onClick={() => history.push("/interaction/publish")}
           className={style.write}
         >
           <i className="iconfont icon-pinglun1"></i>

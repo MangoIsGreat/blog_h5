@@ -124,7 +124,7 @@ class InteractionPage extends Component {
   toUserPage = (e, id) => {
     e.stopPropagation();
 
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   makeLike = async () => {
@@ -158,7 +158,7 @@ class InteractionPage extends Component {
     localStorage.setItem("replyCommentId", replyCommentId);
 
     this.props.history.push(
-      `/layout/comment/publish/${dynId}/replyToDynComment`
+      `/comment/publish/${dynId}/replyToDynComment`
     );
   };
 

@@ -12,28 +12,28 @@ class My extends Component {
       className: "info-list-item",
       icon: "iconfont icon-pinglun",
       color: "#e6a23c",
-      path: "/layout/my/messageCenter/comment",
+      path: "/my/messageCenter/comment",
     },
     {
       name: "点赞",
       className: "info-list-item",
       icon: "iconfont icon-dianzan1",
       color: "#2de938",
-      path: "/layout/my/messageCenter/dianzan",
+      path: "/my/messageCenter/dianzan",
     },
     {
       name: "关注",
       className: "info-list-item",
       icon: "iconfont icon-wode",
       color: "#2f6df2",
-      path: "/layout/my/messageCenter/attention",
+      path: "/my/messageCenter/attention",
     },
     {
       name: "系统消息",
       className: "info-list-item info-list-item-sys",
       icon: "iconfont icon-xiaoxi",
       color: "#2f6df2",
-      path: "/layout/my/messageCenter/system",
+      path: "/my/messageCenter/system",
     },
   ];
 

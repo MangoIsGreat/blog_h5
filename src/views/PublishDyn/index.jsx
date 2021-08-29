@@ -76,7 +76,7 @@ class PublishDyn extends Component {
           rows={4}
           onChange={(value) => this.input(value)}
         />
-        <div onClick={() => history.push("/layout/theme")} style={style}>
+        <div onClick={() => history.push("/theme")} style={style}>
           {theme ? <span>{theme}</span> : <span>添加话题&nbsp;&gt;</span>}
         </div>
       </div>

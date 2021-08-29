@@ -111,7 +111,7 @@ class CList extends Component {
 
   toArtList = (value) => {
     this.props.history.push({
-      pathname: `/layout/my/artListPage/${value.type}/${value.id}`,
+      pathname: `/my/artListPage/${value.type}/${value.id}`,
     });
   };
 

@@ -5,9 +5,8 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import routes from "./Route";
 import "./App.css";
-
-import Layout from "./views/Layout";
 import NotFound from "./views/NotFound";
 
 function App() {
@@ -15,7 +14,11 @@ function App() {
     <Router>
       <div style={{ height: "100%" }}>
         <Switch>
-          <Route path="/layout" component={Layout} />
+          {routes.map((item, index) => {
+            return (
+              <Route key={index} path={item.path} component={item.component} />
+            );
+          })}
           <Redirect exact from="/" to="/layout" />
           <Route component={NotFound} />
         </Switch>

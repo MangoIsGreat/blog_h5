@@ -47,7 +47,7 @@ class Login extends Component {
           </Form>
           <Flex className={styles.backHome}>
             <Flex.Item>
-              <a href="#/layout/register">没有账号？点击注册</a>
+              <a href="#/register">没有账号？点击注册</a>
             </Flex.Item>
           </Flex>
         </WingBlank>

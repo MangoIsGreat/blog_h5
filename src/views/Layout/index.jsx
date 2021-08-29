@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import { TabBar } from "antd-mobile";
-import Routes from "../../Route";
 import style from "./index.module.scss";
 import "../../assets/css/iconfont/iconfont.css";
+import Home from "../Home/index";
+import Interaction from "../Interaction";
+import Find from "../Find";
+import News from "../News";
+import My from "../My";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 class Layout extends Component {
   constructor(props) {
@@ -72,7 +77,14 @@ class Layout extends Component {
     return (
       <div className={style.layout}>
         {/* 路由规则 */}
-        <Routes />
+        <Switch>
+          <Route path="/layout/index" component={Home} />
+          <Route path="/layout/interaction" component={Interaction} />
+          <Route path="/layout/find" component={Find} />
+          <Route path="/layout/news" component={News} />
+          <Route path="/layout/my" component={My} />
+          <Redirect exact from="/layout" to="/layout/index" />
+        </Switch>
 
         {/* 渲染TabBar */}
         {this.renderTabBar()}

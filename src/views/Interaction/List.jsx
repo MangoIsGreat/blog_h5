@@ -154,7 +154,7 @@ class List extends Component {
   };
 
   linkToNewPage = (id) => {
-    this.props.history.push(`/layout/interaction/${id}`);
+    this.props.history.push(`/interaction/${id}`);
   };
 
   renderSeparator = () => {

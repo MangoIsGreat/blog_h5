@@ -51,13 +51,13 @@ class List extends Component {
         type: "文章榜",
         pic: "pic1",
         icon: "icon-bangdan",
-        path: "/layout/article/ranking",
+        path: "/article/ranking",
       },
       {
         type: "作者榜",
         pic: "pic2",
         icon: "icon-huangguan",
-        path: "/layout/author/ranking",
+        path: "/author/ranking",
       },
     ],
   };
@@ -188,7 +188,7 @@ class List extends Component {
 
   // 进入用户信息页
   toUserPage = (id) => {
-    this.props.history.push(`/layout/my/userInfo/${id}`);
+    this.props.history.push(`/my/userInfo/${id}`);
   };
 
   renderHeader = () => {
