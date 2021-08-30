@@ -95,9 +95,19 @@ class NewsPage extends Component {
     }
 
     if (data.data.data === "ok") {
-      newsInfo.User.isAttention = true;
+      // newsInfo.User.isAttention = true;
+      this.setState((state) => {
+        return {
+          newsInfo: (state.newsInfo.user.isAttention = true),
+        };
+      });
     } else if (data.data.data === "cancel") {
-      newsInfo.User.isAttention = false;
+      // newsInfo.User.isAttention = false;
+      this.setState((state) => {
+        return {
+          newsInfo: (state.newsInfo.user.isAttention = false),
+        };
+      });
     }
 
     this.setState({

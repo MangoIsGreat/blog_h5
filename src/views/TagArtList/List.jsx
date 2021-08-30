@@ -4,8 +4,8 @@ import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import BlogItem from "../../components/BlogItem";
 
-const NUM_ROWS = 20;
-let pageIndex = 1;
+// const NUM_ROWS = 20;
+// let pageIndex = 1;
 
 class List extends Component {
   constructor(props) {
@@ -20,6 +20,8 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
+      NUM_ROWS: 20,
+      pageIndex: 1,
     };
   }
 
@@ -50,8 +52,8 @@ class List extends Component {
       params: {
         tag: type,
         rankingType: "new",
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
       },
     });
 
@@ -63,7 +65,7 @@ class List extends Component {
   };
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -78,7 +80,7 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = await this.genData(++pageIndex);
+    const newData = await this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -117,7 +119,7 @@ class List extends Component {
             dataSource={this.state.dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRowList()}

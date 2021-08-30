@@ -6,14 +6,14 @@ import * as searchActionCreator from "../../store/actionCreators/searchActionCre
 import List from "./List";
 import Header from "../../components/Header";
 
-class Found extends Component {
+class Collection extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div className={style.readArticle}>
+      <div className={style.collection}>
         <Header title="收藏集" isBack />
         {/* 列表页 */}
         <List />
@@ -26,4 +26,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(searchActionCreator, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(Found);
+export default connect(null, mapDispatchToProps)(Collection);

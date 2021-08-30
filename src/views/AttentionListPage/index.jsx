@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListView } from "antd-mobile";
+import { ListView, Icon } from "antd-mobile";
 import ReactDOM from "react-dom";
 import Header from "../../components/Header";
 import style from "./index.module.scss";
@@ -143,8 +143,8 @@ class AttentionListPage extends Component {
           ref={(el) => (this.lv = el)}
           dataSource={this.state.dataSource}
           renderFooter={() => (
-            <div style={{ padding: 30, textAlign: "center" }}>
-              {this.state.isLoading ? "Loading..." : "Loaded"}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {this.state.isLoading ? <Icon type="loading" /> : null}
             </div>
           )}
           renderRow={row}

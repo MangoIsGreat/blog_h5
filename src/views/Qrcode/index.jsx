@@ -17,7 +17,7 @@ class Qrcode extends Component {
 
     return (
       <div className={style.qrcodeWrapper}>
-        <Header isBack title="动态分享" />
+        <Header isBack title="分享" />
         <div className={style.content}>
           <QRCode
             id="qrCode"

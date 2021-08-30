@@ -5,8 +5,8 @@ import NoData from "../../components/NoData";
 import style from "./index.module.scss";
 import { withRouter } from "react-router-dom";
 
-const NUM_ROWS = 20;
-let pageIndex = 1;
+// const NUM_ROWS = 20;
+// let pageIndex = 1;
 
 class List extends Component {
   constructor(props) {
@@ -21,6 +21,8 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
+      pageIndex: 1,
+      NUM_ROWS: 20,
     };
   }
 
@@ -48,8 +50,8 @@ class List extends Component {
   genData = async () => {
     const listData = await this.$axios.get("/author/ranking", {
       params: {
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
       },
     });
 
@@ -61,7 +63,7 @@ class List extends Component {
   };
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -76,7 +78,7 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = await this.genData(++pageIndex);
+    const newData = await this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -173,7 +175,7 @@ class List extends Component {
             dataSource={dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRowList()}

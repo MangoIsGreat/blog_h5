@@ -6,9 +6,6 @@ import NoData from "../../components/NoData";
 
 const Item = List.Item;
 
-const NUM_ROWS = 20;
-let pageIndex = 1;
-
 class CList extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +19,9 @@ class CList extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      userInfo: JSON.parse(localStorage.getItem("user_info")) || {}, // 用户信息
+      uid: props.match.params.uid, // 用户id
+      NUM_ROWS: 20,
+      pageIndex: 1,
     };
   }
 
@@ -48,13 +47,13 @@ class CList extends Component {
 
   // 获取列表数据
   genData = async () => {
-    const { userInfo } = this.state;
+    const { uid } = this.state;
 
     const listData = await this.$axios.get("/author/collection", {
       params: {
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
-        uid: userInfo.id,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
+        uid,
       },
     });
 
@@ -66,7 +65,7 @@ class CList extends Component {
   };
 
   onRefresh = () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
     this.rData = this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -81,7 +80,7 @@ class CList extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = this.genData(++pageIndex);
+    const newData = this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -128,7 +127,7 @@ class CList extends Component {
             dataSource={this.state.dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRowList()}

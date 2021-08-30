@@ -74,7 +74,7 @@ const routeRules = [
     component: SysListPage,
   },
   {
-    path: "/my/likedList",
+    path: "/my/likedList/:uid",
     component: LikedListPage,
   },
   {
@@ -82,7 +82,7 @@ const routeRules = [
     component: ReadArticle,
   },
   {
-    path: "/my/collection",
+    path: "/my/collection/:uid",
     component: Collection,
   },
   {

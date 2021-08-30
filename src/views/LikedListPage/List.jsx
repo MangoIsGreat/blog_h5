@@ -3,9 +3,7 @@ import ReactDOM from "react-dom";
 import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import BlogItem from "../../components/BlogItem";
-
-const NUM_ROWS = 15;
-let pageIndex = 1;
+import { withRouter } from "react-router-dom";
 
 class List extends Component {
   constructor(props) {
@@ -20,9 +18,9 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
-      hotListData: [1, 1, 1],
-      originData: [1, 1, 1], // 数据源
-      userInfo: JSON.parse(localStorage.getItem("user_info")) || {}, // 用户信息
+      uid: props.match.params.uid, // 用户id
+      pageIndex: 1,
+      NUM_ROWS: 15,
     };
   }
 
@@ -49,12 +47,12 @@ class List extends Component {
 
   // 获取列表数据
   genData = async () => {
-    const { userInfo } = this.state;
+    const { uid } = this.state;
     const listData = await this.$axios.get("/author/likeBlog", {
       params: {
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
-        uid: userInfo.id,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
+        uid,
       },
     });
 
@@ -66,7 +64,7 @@ class List extends Component {
   };
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -81,7 +79,7 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = await this.genData(++pageIndex);
+    const newData = await this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -108,19 +106,19 @@ class List extends Component {
   };
 
   render() {
-    const { originData } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <>
-        {originData ? (
+        {dataSource ? (
           <ListView
             contentContainerStyle={{ backgroundColor: "#fff" }}
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRowList()}
@@ -152,4 +150,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default withRouter(List);

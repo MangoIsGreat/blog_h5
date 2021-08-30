@@ -93,9 +93,7 @@ class My extends Component {
 
           <Item
             onClick={() =>
-              this.linkNewPage(
-                token ? "/my/messageCenter" : "/login"
-              )
+              this.linkNewPage(token ? "/my/messageCenter" : "/login")
             }
             thumb={
               <i
@@ -108,7 +106,9 @@ class My extends Component {
           </Item>
           <Item
             onClick={() =>
-              this.linkNewPage(token ? "/my/likedList" : "/login")
+              this.linkNewPage(
+                token ? `/my/likedList/${userInfo.id}` : "/login"
+              )
             }
             thumb={
               <i
@@ -122,7 +122,7 @@ class My extends Component {
           <Item
             onClick={() =>
               this.linkNewPage(
-                token ? "/my/collection" : "/login"
+                token ? `/my/collection/${userInfo.id}` : "/login"
               )
             }
             thumb={
@@ -136,9 +136,7 @@ class My extends Component {
           </Item>
           <Item
             onClick={() =>
-              this.linkNewPage(
-                token ? "/my/readArticle" : "/login"
-              )
+              this.linkNewPage(token ? "/my/readArticle" : "/login")
             }
             thumb={
               <i
@@ -151,9 +149,7 @@ class My extends Component {
           </Item>
           <Item
             onClick={() =>
-              this.linkNewPage(
-                token ? "/my/tagManagement" : "/login"
-              )
+              this.linkNewPage(token ? "/my/tagManagement" : "/login")
             }
             thumb={
               <i

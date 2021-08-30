@@ -2,6 +2,9 @@
 
 .home {
   background-color: $bg-color;
+  height: 100%;
+  padding-bottom: 0.15rem;
+  box-sizing: border-box;
 
   :global {
     .am-list-view-scrollview {
@@ -52,7 +55,7 @@
               .list-row-pic-item {
                 width: 1.1rem;
                 height: 1.1rem;
-                margin-right: .13rem;
+                margin-right: 0.13rem;
               }
             }
           }

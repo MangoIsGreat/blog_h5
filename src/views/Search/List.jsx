@@ -240,7 +240,7 @@ class List extends Component {
           renderHeader={() => header}
           renderFooter={() => (
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Icon type="loading" />
+              {this.state.isLoading ? <Icon type="loading" /> : null}
             </div>
           )}
           renderRow={row}

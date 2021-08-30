@@ -56,7 +56,7 @@ class ArticleRanking extends Component {
     const { tabs } = this.state;
 
     return (
-      <div className={style.home}>
+      <div className={style.articleRanking}>
         <Header title="文章榜" isBack />
         {/* tab栏 */}
         <TabsCom

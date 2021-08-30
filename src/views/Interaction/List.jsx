@@ -5,9 +5,6 @@ import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import DynItem from "../../components/DynItem";
 
-const NUM_ROWS = 15;
-let pageIndex = 1;
-
 class List extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +19,8 @@ class List extends Component {
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
       publicInfoData: [], // 热门推荐数据
+      pageIndex: 1,
+      NUM_ROWS: 15,
     };
   }
 
@@ -53,12 +52,15 @@ class List extends Component {
 
     if (nextProps.type !== this.props.type) {
       // 重置pageIndex
-      pageIndex = 1;
+      // pageIndex = 1;
+      this.setState({
+        pageIndex: 1,
+      });
 
       const listData = await this.$axios.get("/dynamic/list", {
         params: {
-          pageSize: NUM_ROWS,
-          pageIndex: pageIndex,
+          pageSize: this.state.NUM_ROWS,
+          pageIndex: 1,
           theme: nextProps.type,
           type: "",
         },
@@ -84,7 +86,7 @@ class List extends Component {
   }
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
 
     this.rData = await this.genData();
     this.setState({
@@ -100,7 +102,7 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    this.newData = await this.genData(++pageIndex);
+    this.newData = await this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...this.newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -114,8 +116,8 @@ class List extends Component {
 
     const listData = await this.$axios.get("/dynamic/list", {
       params: {
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
         theme: type,
         type: "",
       },
@@ -249,7 +251,7 @@ class List extends Component {
             renderHeader={() => this.renderHeader()}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRow()}

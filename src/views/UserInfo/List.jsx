@@ -6,9 +6,6 @@ import BlogItem from "../../components/BlogItem";
 import DynItem from "../../components/DynItem";
 import DynamicItem from "./DynamicItem";
 
-const NUM_ROWS = 15; // 页容量
-let pageIndex = 1; // 当前页数
-
 class List extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +19,8 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
+      NUM_ROWS: 15,
+      pageIndex: 1,
     };
   }
 
@@ -36,9 +35,9 @@ class List extends Component {
   async componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    this.rData = await this.genData();
+    const rData = await this.genData();
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      dataSource: this.state.dataSource.cloneWithRows(rData),
       height: hei,
       refreshing: false,
       isLoading: false,
@@ -50,13 +49,15 @@ class List extends Component {
 
     if (nextProps.type !== this.props.type) {
       // 重置pageIndex
-      pageIndex = 1;
+      this.setState({
+        pageIndex: 1,
+      });
 
       const { uid } = this.props;
 
       const params = {
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: 1,
         uid,
       };
 
@@ -92,10 +93,10 @@ class List extends Component {
   }
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
-    this.rData = await this.genData();
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
+    const rData = await this.genData();
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      dataSource: this.state.dataSource.cloneWithRows(rData),
       refreshing: false,
       isLoading: false,
     });
@@ -107,10 +108,10 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = await this.genData(++pageIndex);
-    this.rData = [...this.rData, ...newData];
+    const newData = await this.genData(++this.state.pageIndex);
+    const rData = [...this.state.dataSource._dataBlob.s1, ...newData];
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      dataSource: this.state.dataSource.cloneWithRows(rData),
       isLoading: false,
     });
   };
@@ -119,8 +120,8 @@ class List extends Component {
   genData = async () => {
     const { type, uid } = this.props;
     const params = {
-      pageSize: NUM_ROWS,
-      pageIndex: pageIndex,
+      pageSize: this.state.NUM_ROWS,
+      pageIndex: this.state.pageIndex,
       uid,
     };
 
@@ -184,6 +185,8 @@ class List extends Component {
   render() {
     const { dataSource } = this.state;
 
+    console.log(111, this.state.isLoading);
+
     return (
       <>
         {dataSource ? (
@@ -193,9 +196,13 @@ class List extends Component {
             ref={(el) => (this.lv = el)}
             dataSource={dataSource}
             renderFooter={() => (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
-              </div>
+              <>
+                {this.state.isLoading ? (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Icon type="loading" />
+                  </div>
+                ) : null}
+              </>
             )}
             renderRow={this.renderRowList()}
             renderSeparator={this.renderSeparator()}

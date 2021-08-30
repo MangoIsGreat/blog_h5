@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { PullToRefresh, ListView, Flex, Icon, Toast } from "antd-mobile";
+import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import BlogItem from "../../components/BlogItem";
-
-const NUM_ROWS = 15; // 页容量
-let pageIndex = 1; // 当前页数
 
 class List extends Component {
   constructor(props) {
@@ -20,6 +17,8 @@ class List extends Component {
       isLoading: true,
       height: document.documentElement.clientHeight,
       useBodyScroll: false,
+      pageIndex: 1,
+      NUM_ROWS: 15,
     };
   }
 
@@ -48,14 +47,17 @@ class List extends Component {
 
     if (nextProps.type !== this.props.type) {
       // 重置pageIndex
-      pageIndex = 1;
+      // pageIndex = 1;
+      this.setState({
+        pageIndex: 1,
+      });
 
       const listData = await this.$axios.get("/blog/list", {
         params: {
           tag: nextProps.type,
           rankingType: "hot",
-          pageSize: NUM_ROWS,
-          pageIndex: pageIndex,
+          pageSize: this.state.NUM_ROWS,
+          pageIndex: 1,
         },
       });
 
@@ -69,7 +71,7 @@ class List extends Component {
   }
 
   onRefresh = async () => {
-    this.setState({ refreshing: true, isLoading: true });
+    this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -84,7 +86,7 @@ class List extends Component {
     }
 
     this.setState({ isLoading: true });
-    const newData = await this.genData(++pageIndex);
+    const newData = await this.genData(++this.state.pageIndex);
     this.rData = [...this.rData, ...newData];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -99,8 +101,8 @@ class List extends Component {
       params: {
         tag: type,
         rankingType: "hot",
-        pageSize: NUM_ROWS,
-        pageIndex: pageIndex,
+        pageSize: this.state.NUM_ROWS,
+        pageIndex: this.state.pageIndex,
       },
     });
 
@@ -161,7 +163,7 @@ class List extends Component {
             dataSource={dataSource}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Icon type="loading" />
+                {this.state.isLoading ? <Icon type="loading" /> : null}
               </div>
             )}
             renderRow={this.renderRowList()}

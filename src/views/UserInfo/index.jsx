@@ -74,14 +74,14 @@ class AuthorInfo extends Component {
         <Item
           arrow="horizontal"
           multipleLine
-          onClick={() => this.linkNewPage("/my/likedList")}
+          onClick={() => this.linkNewPage(`/my/likedList/${uid}`)}
         >
           赞过的
         </Item>
         <Item
           arrow="horizontal"
           multipleLine
-          onClick={() => this.linkNewPage("/my/collection")}
+          onClick={() => this.linkNewPage(`/my/collection/${uid}`)}
         >
           收藏集
         </Item>
@@ -91,6 +91,10 @@ class AuthorInfo extends Component {
 
   goNewPage = (id) => {
     this.props.history.push(`/editinfo/${id}`);
+  };
+
+  share = (id) => {
+    this.props.history.push(`/qrcode/${id}`);
   };
 
   render() {
@@ -106,7 +110,7 @@ class AuthorInfo extends Component {
                 className={ClassName(style.icon, "iconfont", "icon-xiangzuo")}
               ></i>
             </Flex.Item>
-            <Flex.Item align="end">
+            <Flex.Item align="end" onClick={() => this.share(userInfo.id)}>
               <i
                 className={ClassName(style.icon, "iconfont", "icon-fenxiang")}
               ></i>
