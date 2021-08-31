@@ -3,11 +3,6 @@ import PublishDyn from "../views/PublishDyn";
 import InteractionPage from "../views/InteractionPage";
 import NewsPage from "../views/NewsPage";
 import UserInfo from "../views/UserInfo";
-import MesCenter from "../views/MesCenter";
-import CommentListPage from "../views/CommentListPage";
-import DianzanListPage from "../views/DianzanListPage";
-import AttentionListPage from "../views/AttentionListPage";
-import SysListPage from "../views/SysListPage";
 import LikedListPage from "../views/LikedListPage";
 import ReadArticle from "../views/ReadArticle";
 import Collection from "../views/Collection";
@@ -52,34 +47,17 @@ const routeRules = [
   {
     path: "/my/userInfo/:uid",
     component: UserInfo,
-  },
-  {
-    path: "/my/messageCenter",
-    component: MesCenter,
-  },
-  {
-    path: "/my/messageCenter/comment",
-    component: CommentListPage,
-  },
-  {
-    path: "/my/messageCenter/dianzan",
-    component: DianzanListPage,
-  },
-  {
-    path: "/my/messageCenter/attention",
-    component: AttentionListPage,
-  },
-  {
-    path: "/my/messageCenter/system",
-    component: SysListPage,
+    cache: true,
   },
   {
     path: "/my/likedList/:uid",
     component: LikedListPage,
+    cache: true,
   },
   {
     path: "/my/readArticle",
     component: ReadArticle,
+    cache: true,
   },
   {
     path: "/my/collection/:uid",
@@ -96,6 +74,7 @@ const routeRules = [
   {
     path: "/my/tagArtList/:type/:name",
     component: TagArtList,
+    cache: true,
   },
   {
     path: "/login",
@@ -112,10 +91,12 @@ const routeRules = [
   {
     path: "/article/ranking",
     component: ArticleRanking,
+    cache: true,
   },
   {
     path: "/author/ranking",
     component: AuthorRanking,
+    cache: true,
   },
   {
     path: "/article/:blogId",

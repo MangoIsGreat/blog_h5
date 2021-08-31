@@ -15,6 +15,7 @@ class AuthorInfo extends Component {
       userInfo: {},
       checkedTab: 0,
       uid: props.match.params.uid, // 用户id
+      isAttention: false,
     };
   }
 
@@ -45,6 +46,7 @@ class AuthorInfo extends Component {
 
     this.setState({
       userInfo: data.data,
+      isAttention: data.data.isAttention,
     });
   };
 
@@ -62,6 +64,26 @@ class AuthorInfo extends Component {
     this.props.history.push({
       pathname: `${path}`,
     });
+  };
+
+  follow = async (id) => {
+    const data = await this.$axios.post("/fans/follow", {
+      leader: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("关注失败!", 0.3);
+    }
+
+    if (data.data === "ok") {
+      this.setState({
+        isAttention: true,
+      });
+    } else if (data.data === "cancel") {
+      this.setState({
+        isAttention: false,
+      });
+    }
   };
 
   renderTabsContent = () => {
@@ -98,7 +120,7 @@ class AuthorInfo extends Component {
   };
 
   render() {
-    const { userInfo } = this.state;
+    const { userInfo, isAttention } = this.state;
 
     return (
       <div className={style.userInfo}>
@@ -142,10 +164,26 @@ class AuthorInfo extends Component {
               <Button
                 className={style.btn}
                 style={{ display: !userInfo.isSelf ? "block" : "none" }}
+                onClick={() => this.follow(userInfo.id)}
                 inline
                 size="small"
               >
-                关注
+                <span
+                  style={{
+                    color: "#00c58e",
+                    display: !isAttention ? "block" : "none",
+                  }}
+                >
+                  +&nbsp;关注
+                </span>
+                <span
+                  style={{
+                    color: "#aeb4bb",
+                    display: isAttention ? "block" : "none",
+                  }}
+                >
+                  已关注
+                </span>
               </Button>
             </Flex.Item>
           </Flex>

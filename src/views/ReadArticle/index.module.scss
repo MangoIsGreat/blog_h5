@@ -1,6 +1,12 @@
 @import "../../assets/css/config/common.scss";
 
 .readArticle {
+  :global {
+    .am-list-footer {
+      padding: 0;
+    }
+  }
+
   .searchBox {
     display: flex;
     align-items: center;

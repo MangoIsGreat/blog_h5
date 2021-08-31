@@ -90,20 +90,6 @@ class My extends Component {
               <div className="name">登录&nbsp;/&nbsp;注册</div>
             </Item>
           )}
-
-          <Item
-            onClick={() =>
-              this.linkNewPage(token ? "/my/messageCenter" : "/login")
-            }
-            thumb={
-              <i
-                style={{ color: "#3274F6" }}
-                className="iconfont icon-xiaoxi"
-              ></i>
-            }
-          >
-            消息中心
-          </Item>
           <Item
             onClick={() =>
               this.linkNewPage(

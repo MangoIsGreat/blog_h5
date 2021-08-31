@@ -7,7 +7,8 @@ import Interaction from "../Interaction";
 import Find from "../Find";
 import News from "../News";
 import My from "../My";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+import CacheRoute, { CacheSwitch } from "react-router-cache-route";
 
 class Layout extends Component {
   constructor(props) {
@@ -46,6 +47,25 @@ class Layout extends Component {
     },
   ];
 
+  routes = [
+    {
+      path: "/layout/index",
+      component: Home,
+    },
+    {
+      path: "/layout/interaction",
+      component: Interaction,
+    },
+    {
+      path: "/layout/find",
+      component: Find,
+    },
+    {
+      path: "/layout/news",
+      component: News,
+    },
+  ];
+
   renderTabBar = () => {
     return (
       <TabBar tintColor="#00c58e" noRenderContent={true}>
@@ -77,14 +97,24 @@ class Layout extends Component {
     return (
       <div className={style.layout}>
         {/* 路由规则 */}
-        <Switch>
-          <Route path="/layout/index" component={Home} />
-          <Route path="/layout/interaction" component={Interaction} />
-          <Route path="/layout/find" component={Find} />
-          <Route path="/layout/news" component={News} />
+        <CacheSwitch>
+          {this.routes.map((item, index) => {
+            const Component = item.component;
+            return (
+              <CacheRoute path={item.path} key={index} exact when="back">
+                {(props) => {
+                  return (
+                    <div style={props.match ? null : { display: "none" }}>
+                      <Component {...props} />
+                    </div>
+                  );
+                }}
+              </CacheRoute>
+            );
+          })}
           <Route path="/layout/my" component={My} />
           <Redirect exact from="/layout" to="/layout/index" />
-        </Switch>
+        </CacheSwitch>
 
         {/* 渲染TabBar */}
         {this.renderTabBar()}

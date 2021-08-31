@@ -5,4 +5,10 @@
   padding-bottom: 0.3rem;
   box-sizing: border-box;
   height: 100%;
+
+  :global {
+    .am-list-footer {
+      height: 1rem;
+    }
+  }
 }

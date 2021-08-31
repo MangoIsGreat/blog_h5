@@ -9,7 +9,8 @@ class List extends Component {
   constructor(props) {
     super(props);
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+      // rowHasChanged: (row1, row2) => row1 !== row2,
+      rowHasChanged: (row1, row2) => true,
     });
 
     this.state = {
@@ -106,9 +107,41 @@ class List extends Component {
     );
   };
 
+  likeDyn = async (id) => {
+    const data = await this.$axios.post("/dlike/like", {
+      dynamicId: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    const listData = this.state.dataSource._dataBlob.s1;
+
+    if (data.data === "ok") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = true;
+          item.likeNum++;
+        }
+      });
+    } else if (data.data === "cancel") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = false;
+          item.likeNum--;
+        }
+      });
+    }
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(listData),
+    });
+  };
+
   renderRow = () => {
     return (rowData, sectionID, rowID) => {
-      return <DynItem listData={rowData} />;
+      return <DynItem likeDyn={this.likeDyn} listData={rowData} />;
     };
   };
 

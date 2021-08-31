@@ -4,14 +4,11 @@ import { PullToRefresh, ListView, Icon, Toast } from "antd-mobile";
 import NoData from "../../components/NoData";
 import BlogItem from "../../components/BlogItem";
 
-// const NUM_ROWS = 20;
-// let pageIndex = 1;
-
 class List extends Component {
   constructor(props) {
     super(props);
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+      rowHasChanged: (row1, row2) => true,
     });
 
     this.state = {
@@ -102,8 +99,42 @@ class List extends Component {
     );
   };
 
+  likeBlog = async (id) => {
+    const data = await this.$axios.post("/blike/like", {
+      blog: id,
+    });
+
+    if (data.error_code !== 0) {
+      return Toast.info("操作失败!", 0.3);
+    }
+
+    const listData = this.state.dataSource._dataBlob.s1;
+
+    if (data.data === "ok") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = true;
+          item.blogLikeNum++;
+        }
+      });
+    } else if (data.data === "cancel") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = false;
+          item.blogLikeNum--;
+        }
+      });
+    }
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(listData),
+    });
+  };
+
   renderRowList = () => {
-    return (rowData) => <BlogItem listData={rowData} />;
+    return (rowData) => (
+      <BlogItem likeBlog={this.likeBlog} listData={rowData} />
+    );
   };
 
   render() {

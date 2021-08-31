@@ -9,7 +9,7 @@ class List extends Component {
   constructor(props) {
     super(props);
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+      rowHasChanged: (row1, row2) => true,
     });
 
     this.state = {
@@ -51,7 +51,6 @@ class List extends Component {
 
     if (nextProps.type !== this.props.type) {
       // 重置pageIndex
-      // pageIndex = 1;
       this.setState({
         pageIndex: 1,
       });
@@ -251,11 +250,26 @@ class List extends Component {
       return Toast.info("操作失败!", 0.3);
     }
 
-    this.rData = await this.genData();
+    const listData = this.state.dataSource._dataBlob.s1;
+
+    if (data.data === "ok") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = true;
+          item.blogLikeNum++;
+        }
+      });
+    } else if (data.data === "cancel") {
+      listData.forEach((item) => {
+        if (item.id === id) {
+          item.isLike = false;
+          item.blogLikeNum--;
+        }
+      });
+    }
+
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
-      refreshing: false,
-      isLoading: false,
+      dataSource: this.state.dataSource.cloneWithRows(listData),
     });
   };
 

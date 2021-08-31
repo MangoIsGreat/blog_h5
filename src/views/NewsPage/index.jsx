@@ -14,6 +14,7 @@ class NewsPage extends Component {
       newsInfo: {}, // 博客详情
       mdContent: "",
       moreArt: [], // 更多相关文章推荐
+      isAttention: false,
     };
   }
 
@@ -57,6 +58,7 @@ class NewsPage extends Component {
 
     this.setState({
       newsInfo: data.data,
+      isAttention: data.data.User.isAttention,
       mdContent,
     });
   };
@@ -84,8 +86,6 @@ class NewsPage extends Component {
   };
 
   follow = async (id) => {
-    const { newsInfo } = this.state;
-
     const data = await this.$axios.post("/fans/follow", {
       leader: id,
     });
@@ -94,25 +94,15 @@ class NewsPage extends Component {
       return Toast.info("关注失败!", 0.3);
     }
 
-    if (data.data.data === "ok") {
-      // newsInfo.User.isAttention = true;
-      this.setState((state) => {
-        return {
-          newsInfo: (state.newsInfo.user.isAttention = true),
-        };
+    if (data.data === "ok") {
+      this.setState({
+        isAttention: true,
       });
-    } else if (data.data.data === "cancel") {
-      // newsInfo.User.isAttention = false;
-      this.setState((state) => {
-        return {
-          newsInfo: (state.newsInfo.user.isAttention = false),
-        };
+    } else if (data.data === "cancel") {
+      this.setState({
+        isAttention: false,
       });
     }
-
-    this.setState({
-      newsInfo,
-    });
   };
 
   // 进入用户信息页
@@ -123,9 +113,7 @@ class NewsPage extends Component {
   };
 
   render() {
-    const { newsInfo, mdContent, moreArt } = this.state;
-
-    console.log(888, moreArt);
+    const { newsInfo, mdContent, moreArt, isAttention } = this.state;
 
     return (
       <div className={style.article}>
@@ -163,23 +151,17 @@ class NewsPage extends Component {
                 <span
                   style={{
                     color: "#00c58e",
-                    display:
-                      newsInfo.User && !newsInfo.User.isAttention
-                        ? "block"
-                        : "none",
+                    display: !isAttention ? "block" : "none",
                   }}
                 >
                   +&nbsp;关注
                 </span>
                 <span
                   style={{
-                    display:
-                      newsInfo.User && newsInfo.User.isAttention
-                        ? "block"
-                        : "none",
+                    display: isAttention ? "block" : "none",
                   }}
                 >
-                  未关注
+                  已关注
                 </span>
               </Button>
             </div>
