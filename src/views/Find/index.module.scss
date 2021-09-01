@@ -14,29 +14,18 @@
     align-items: center;
     background-color: #f9f9f9;
 
+    .search {
+      flex: 1;
+      background-color: #f9f9f9;
+    }
+
     :global {
-      .am-input-item {
-        flex: 1;
-        height: 0.38rem;
-        min-height: auto;
-        padding-left: 0.15rem;
+      .am-search-input {
+        background-color: #eff2f5;
+      }
 
-        .am-list-line {
-          padding-right: 0.15rem;
-
-          .am-input-control {
-            input {
-              font-size: 0.16rem;
-            }
-          }
-
-          .am-input-label {
-            .icon-fangdajing {
-              color: #99a0a8;
-              font-size: 0.16rem;
-            }
-          }
-        }
+      .am-search-cancel {
+        color: $primary-color;
       }
     }
   }

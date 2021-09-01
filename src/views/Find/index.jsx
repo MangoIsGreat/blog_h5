@@ -1,41 +1,48 @@
 import React, { Component } from "react";
 import style from "./index.module.scss";
-import { InputItem } from "antd-mobile";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
-import SearchPage from "../Search/index";
+import { SearchBar } from "antd-mobile";
 import List from "./List";
 
 class Found extends Component {
-  onFocus = () => {
-    this.props.triggerShowState(true);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showHot: true, // 展示热门推荐
+      searchVal: "",
+    };
+  }
+
+  onSubmit = (val) => {
+    this.setState({
+      showHot: false,
+      searchVal: val,
+    });
+  };
+
+  onCancel = () => {
+    window.location.reload();
   };
 
   render() {
+    const { showHot, searchVal } = this.state;
+
     return (
       <div className={style.find}>
         <div className={style.searchBox}>
-          <InputItem
+          <SearchBar
             className={style.search}
             placeholder="搜索得到"
-            labelNumber={1}
-            onFocus={() => this.onFocus()}
-          >
-            <i className="iconfont icon-fangdajing" />
-          </InputItem>
+            maxLength={30}
+            onSubmit={(e) => this.onSubmit(e)}
+            onCancel={() => this.onCancel()}
+          />
         </div>
         {/* 列表页 */}
-        <List />
-        {/* 搜索页 */}
-        <SearchPage />
+        <List showHot={showHot} searchVal={searchVal} />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(searchActionCreator, dispatch);
-};
-
-export default connect(null, mapDispatchToProps)(Found);
+export default Found;

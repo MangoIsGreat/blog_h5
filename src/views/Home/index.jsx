@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as searchActionCreator from "../../store/actionCreators/searchActionCreator";
-import { InputItem, Toast } from "antd-mobile";
+import { Toast, SearchBar } from "antd-mobile";
 import style from "./index.module.scss";
-import SearchPage from "../Search/index";
 import List from "./List";
 import TabsCom from "../../components/TabsCom";
 
@@ -15,6 +11,8 @@ class Home extends Component {
     this.state = {
       tabs: [],
       tag_type: "", // 当前选中的文章类型
+      showHot: true, // 展示热门推荐
+      searchVal: "",
     };
   }
 
@@ -43,20 +41,27 @@ class Home extends Component {
     }
   };
 
-  onFocus = () => {
-    this.props.triggerShowState(true);
-  };
-
-  onChange = (tab, index) => {
+  onChange = (tab) => {
     this.setState({
       tag_type: tab.tag_type,
     });
   };
 
-  renderTabsContent = () => {
-    const { tag_type } = this.state;
+  onCancel = () => {
+    window.location.reload();
+  };
 
-    return <List type={tag_type} />;
+  renderTabsContent = () => {
+    const { tag_type, showHot, searchVal } = this.state;
+
+    return <List type={tag_type} showHot={showHot} searchVal={searchVal} />;
+  };
+
+  onSubmit = (val) => {
+    this.setState({
+      showHot: false,
+      searchVal: val,
+    });
   };
 
   render() {
@@ -65,17 +70,14 @@ class Home extends Component {
     return (
       <div className={style.home}>
         <div className={style.homeSearchBox}>
-          <InputItem
+          <SearchBar
             className={style.search}
             placeholder="搜索得到"
-            labelNumber={1}
-            onFocus={() => this.onFocus()}
-          >
-            <i className="iconfont icon-fangdajing" />
-          </InputItem>
+            maxLength={30}
+            onSubmit={(e) => this.onSubmit(e)}
+            onCancel={() => this.onCancel()}
+          />
         </div>
-        {/* 搜索页 */}
-        <SearchPage />
         {/* tab栏 */}
         <TabsCom
           tabs={tabs}
@@ -89,8 +91,4 @@ class Home extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(searchActionCreator, dispatch);
-};
-
-export default connect(null, mapDispatchToProps)(Home);
+export default Home;

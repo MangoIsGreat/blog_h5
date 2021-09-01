@@ -49,12 +49,16 @@ class List extends Component {
   async componentWillReceiveProps(nextProps) {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
 
-    if (nextProps.type !== this.props.type) {
-      // 重置pageIndex
-      this.setState({
-        pageIndex: 1,
-      });
+    // 重置pageIndex
+    this.setState({
+      pageIndex: 1,
+    });
 
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows([]),
+    });
+
+    if (nextProps.type !== this.props.type) {
       const listData = await this.$axios.get("/blog/list", {
         params: {
           tag: nextProps.type,
@@ -71,10 +75,42 @@ class List extends Component {
         isLoading: false,
       });
     }
+
+    if (!nextProps.showHot) {
+      const data = await this.$axios.get("/blog/search", {
+        params: {
+          content: nextProps.searchVal,
+          tag: nextProps.type,
+        },
+      });
+
+      if (data.error_code !== 0) {
+        return Toast.info("数据获取失败", 0.5);
+      }
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data.data.rows),
+        height: hei,
+        refreshing: false,
+        isLoading: false,
+      });
+    }
   }
 
   onRefresh = async () => {
     this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
+
+    if (!this.props.showHot) {
+      this.rData = await this.search();
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.rData),
+        refreshing: false,
+        isLoading: false,
+      });
+
+      return;
+    }
+
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -83,8 +119,8 @@ class List extends Component {
     });
   };
 
-  onEndReached = async (event) => {
-    if (this.state.isLoading) {
+  onEndReached = async () => {
+    if (this.state.isLoading || !this.props.showHot) {
       return;
     }
 
@@ -111,6 +147,22 @@ class List extends Component {
 
     if (listData.error_code === 0) {
       return listData.data.rows;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
+
+  // 搜索博客
+  search = async () => {
+    const data = await this.$axios.get("/blog/search", {
+      params: {
+        content: this.props.searchVal,
+        tag: this.props.type,
+      },
+    });
+
+    if (data.error_code === 0) {
+      return data.data.rows;
     } else {
       Toast.info("数据获取失败", 1.5);
     }
@@ -281,9 +333,9 @@ class List extends Component {
 
   render() {
     const { dataSource } = this.state;
-    const { type } = this.props;
+    const { type, showHot } = this.props;
 
-    const renderHeader = type === 10000 ? this.renderHeader() : null;
+    const renderHeader = type === 10000 && showHot ? this.renderHeader() : null;
 
     return (
       <>

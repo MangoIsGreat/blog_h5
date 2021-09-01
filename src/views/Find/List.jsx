@@ -11,7 +11,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     const dataSource = new ListView.DataSource({
-      // rowHasChanged: (row1, row2) => row1 !== row2,
       rowHasChanged: (row1, row2) => true,
     });
 
@@ -85,6 +84,30 @@ class List extends Component {
     this.getRecommend();
   }
 
+  async componentWillReceiveProps(nextProps) {
+    const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
+
+    if (nextProps.searchVal !== this.props.searchVal) {
+      const data = await this.$axios.get("/blog/search", {
+        params: {
+          content: nextProps.searchVal,
+          tag: 10000,
+        },
+      });
+
+      if (data.error_code !== 0) {
+        return Toast.info("数据获取失败", 0.5);
+      }
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data.data.rows),
+        height: hei,
+        refreshing: false,
+        isLoading: false,
+      });
+    }
+  }
+
   // 获取列表数据
   genData = async () => {
     const { type } = this.props;
@@ -125,6 +148,17 @@ class List extends Component {
   onRefresh = async () => {
     this.setState({ refreshing: true, isLoading: true, pageIndex: 1 });
 
+    if (!this.props.showHot) {
+      this.rData = await this.search();
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.rData),
+        refreshing: false,
+        isLoading: false,
+      });
+
+      return;
+    }
+
     this.rData = await this.genData();
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.rData),
@@ -133,8 +167,24 @@ class List extends Component {
     });
   };
 
-  onEndReached = async (event) => {
-    if (this.state.isLoading) {
+  // 搜索博客
+  search = async () => {
+    const data = await this.$axios.get("/blog/search", {
+      params: {
+        content: this.props.searchVal,
+        tag: 10000,
+      },
+    });
+
+    if (data.error_code === 0) {
+      return data.data.rows;
+    } else {
+      Toast.info("数据获取失败", 1.5);
+    }
+  };
+
+  onEndReached = async () => {
+    if (this.state.isLoading || !this.props.showHot) {
       return;
     }
 
@@ -293,6 +343,9 @@ class List extends Component {
 
   render() {
     const { dataSource } = this.state;
+    const { showHot } = this.props;
+
+    const renderHeader = showHot ? this.renderHeader() : null;
 
     return (
       <>
@@ -302,7 +355,7 @@ class List extends Component {
             key={this.state.useBodyScroll ? "0" : "1"}
             ref={(el) => (this.lv = el)}
             dataSource={dataSource}
-            renderHeader={() => this.renderHeader()}
+            renderHeader={() => renderHeader}
             renderFooter={() => (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {this.state.isLoading ? <Icon type="loading" /> : null}

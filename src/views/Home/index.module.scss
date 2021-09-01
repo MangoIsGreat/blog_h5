@@ -16,42 +16,36 @@
 
     .search {
       flex: 1;
+      background-color: #f9f9f9;
     }
 
     :global {
-      .am-input-item {
-        height: 0.38rem;
-        min-height: auto;
-        padding-left: 0.15rem;
-
-        .am-list-line {
-          padding-right: 0.15rem;
-
-          .am-input-control {
-            input {
-              font-size: 0.16rem;
-            }
-          }
-
-          .am-input-label {
-            .icon-fangdajing {
-              color: #99a0a8;
-              font-size: 0.16rem;
-            }
-          }
-        }
+      .am-search-input {
+        background-color: #eff2f5;
       }
 
-      .iconfont {
-        font-size: 0.16rem;
+      .am-search-cancel {
+        color: $primary-color;
       }
 
-      .icon-shezhi {
-        width: 0.55rem;
-        line-height: 0.54rem;
-        padding-left: 0.2rem;
-        color: #acb4be;
-      }
+      // .am-search-input {
+      //   height: 0.38rem;
+      //   /* line-height: 38px; */
+      //   display: flex;
+      //   align-items: center;
+      // }
+
+      // .am-search-synthetic-ph {
+      //   height: 0.38rem;
+      //   // padding: 0 0.1rem;
+      //   display: flex;
+      //   align-items: center;
+      // }
+
+      // .am-search-value {
+      //   height: 0.38rem;
+      //   line-height: 0.38rem;
+      // }
     }
   }
 
