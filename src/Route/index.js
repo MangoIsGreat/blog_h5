@@ -1,23 +1,24 @@
-import Layout from "../views/Layout";
-import PublishDyn from "../views/PublishDyn";
-import InteractionPage from "../views/InteractionPage";
-import NewsPage from "../views/NewsPage";
-import UserInfo from "../views/UserInfo";
-import LikedListPage from "../views/LikedListPage";
-import ReadArticle from "../views/ReadArticle";
-import Collection from "../views/Collection";
-import ArtListPage from "../views/ArtListPage";
-import TagManage from "../views/TagManage";
-import TagArtList from "../views/TagArtList";
-import Login from "../views/Login";
-import Register from "../views/Register";
-import EditUserInfo from "../views/EditUserInfo";
-import ArticleRanking from "../views/ArticleRanking";
-import AuthorRanking from "../views/AuthorRanking";
-import Article from "../views/Article";
-import PublishComm from "../views/PublishComm";
-import ThemeList from "../views/ThemeList";
-import Qrcode from "../views/Qrcode";
+import React from "react";
+const Layout = React.lazy(() => import("../views/Layout"));
+const PublishDyn = React.lazy(() => import("../views/PublishDyn"));
+const InteractionPage = React.lazy(() => import("../views/InteractionPage"));
+const NewsPage = React.lazy(() => import("../views/NewsPage"));
+const UserInfo = React.lazy(() => import("../views/UserInfo"));
+const LikedListPage = React.lazy(() => import("../views/LikedListPage"));
+const ReadArticle = React.lazy(() => import("../views/ReadArticle"));
+const Collection = React.lazy(() => import("../views/Collection"));
+const ArtListPage = React.lazy(() => import("../views/ArtListPage"));
+const TagManage = React.lazy(() => import("../views/TagManage"));
+const TagArtList = React.lazy(() => import("../views/TagArtList"));
+const Login = React.lazy(() => import("../views/Login"));
+const Register = React.lazy(() => import("../views/Register"));
+const EditUserInfo = React.lazy(() => import("../views/EditUserInfo"));
+const ArticleRanking = React.lazy(() => import("../views/ArticleRanking"));
+const AuthorRanking = React.lazy(() => import("../views/AuthorRanking"));
+const Article = React.lazy(() => import("../views/Article"));
+const PublishComm = React.lazy(() => import("../views/PublishComm"));
+const ThemeList = React.lazy(() => import("../views/ThemeList"));
+const Qrcode = React.lazy(() => import("../views/Qrcode"));
 
 const routeRules = [
   {

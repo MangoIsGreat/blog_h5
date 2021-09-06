@@ -2,6 +2,7 @@ import axios from "axios";
 import { Component } from "react";
 import { BASE_URL } from "./url";
 import { encode } from "./encode";
+import { Toast } from "antd-mobile";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -24,6 +25,12 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(
   function (response) {
+    if (response.data.error_code === 10006) {
+      Toast.info("请先登录！", 0.6);
+
+      response.data.error_code = 0;
+    }
+
     return response.data;
   },
   function (error) {

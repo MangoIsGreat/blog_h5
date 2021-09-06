@@ -211,7 +211,6 @@ class AuthorInfo extends Component {
         <TabsCom
           tabs={this.tabs}
           tabSize={4}
-          swipeable={true}
           renderTabsContent={this.renderTabsContent}
           onChange={this.onChange}
         />

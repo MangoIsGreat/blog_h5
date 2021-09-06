@@ -74,7 +74,7 @@ function BlogItem({ listData, history, likeBlog }) {
             </div>
           </div>
           <LazyLoad overflow={true}>
-            <img
+            {/* <img
               style={{
                 width: "0.84rem",
                 height: "0.65rem",
@@ -82,7 +82,18 @@ function BlogItem({ listData, history, likeBlog }) {
               }}
               src={listData.titlePic}
               alt=""
-            />
+            /> */}
+            <div
+              style={{
+                display: listData.titlePic ? "block" : "none",
+                width: "0.84rem",
+                height: "0.65rem",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundImage: `url('${listData.titlePic}')`,
+              }}
+            ></div>
           </LazyLoad>
         </div>
         <Flex

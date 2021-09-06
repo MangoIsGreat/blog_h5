@@ -3,6 +3,16 @@
 .article {
   background-color: #fff;
 
+  img {
+    width: 100%;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
   .page {
     // height: calc(100vh - 0.45rem);
     height: 100vh;

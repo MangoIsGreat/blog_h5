@@ -1,5 +1,5 @@
-import React from "react";
-import { HashRouter as Router, Route, Redirect } from "react-router-dom";
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import CacheRoute, { CacheSwitch } from "react-router-cache-route";
 import routes from "./Route";
 import "./App.css";
@@ -9,12 +9,25 @@ function App() {
   return (
     <Router>
       <div style={{ height: "100%" }}>
-        <CacheSwitch>
-          {routes.map((item, index) => {
-            const Component = item.component;
-            if (item.cache) {
+        <Suspense fallback={<div></div>}>
+          <CacheSwitch>
+            {routes.map((item, index) => {
+              const Component = item.component;
+              if (item.cache) {
+                return (
+                  <CacheRoute path={item.path} key={index} exact when="forward">
+                    {(props) => {
+                      return (
+                        <div style={props.match ? null : { display: "none" }}>
+                          <Component {...props} />
+                        </div>
+                      );
+                    }}
+                  </CacheRoute>
+                );
+              }
               return (
-                <CacheRoute path={item.path} key={index} exact when="forward">
+                <Route key={index} path={item.path}>
                   {(props) => {
                     return (
                       <div style={props.match ? null : { display: "none" }}>
@@ -22,24 +35,13 @@ function App() {
                       </div>
                     );
                   }}
-                </CacheRoute>
+                </Route>
               );
-            }
-            return (
-              <Route key={index} path={item.path}>
-                {(props) => {
-                  return (
-                    <div style={props.match ? null : { display: "none" }}>
-                      <Component {...props} />
-                    </div>
-                  );
-                }}
-              </Route>
-            );
-          })}
-          <Redirect exact from="/" to="/layout" />
-          <Route component={NotFound} />
-        </CacheSwitch>
+            })}
+            <Redirect exact from="/" to="/layout" />
+            <Route component={NotFound} />
+          </CacheSwitch>
+        </Suspense>
       </div>
     </Router>
   );

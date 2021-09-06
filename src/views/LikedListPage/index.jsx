@@ -48,7 +48,6 @@ class LikeList extends Component {
         <TabsCom
           tabs={tabs}
           tabSize={2}
-          swipeable={true}
           renderTabsContent={this.renderTabsContent}
           onChange={this.onTabChange}
         />

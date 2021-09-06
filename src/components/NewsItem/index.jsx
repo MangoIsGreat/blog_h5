@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import LazyLoad from "react-lazyload";
 import { withRouter } from "react-router-dom";
 import { WingBlank, Flex } from "antd-mobile";
 import { relativeTime } from "../../utils/day";
@@ -65,7 +66,7 @@ function NewsItem({ listData, history }) {
               {listData.description}
             </div>
           </div>
-          <img
+          {/* <img
             style={{
               width: "0.84rem",
               height: "0.65rem",
@@ -73,7 +74,20 @@ function NewsItem({ listData, history }) {
             }}
             src={listData.titlePic}
             alt=""
-          />
+          /> */}
+          <LazyLoad overflow={true}>
+            <div
+              style={{
+                display: listData.titlePic ? "block" : "none",
+                width: "0.84rem",
+                height: "0.65rem",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundImage: `url('${listData.titlePic}')`,
+              }}
+            ></div>
+          </LazyLoad>
         </div>
         <Flex
           style={{

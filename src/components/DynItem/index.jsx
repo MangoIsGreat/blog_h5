@@ -76,7 +76,11 @@ class DynItem extends Component {
                 {listData.userInfo && listData.userInfo.nickname}
               </div>
               <div className="list-row-header-content-desc">
-                {`${listData.userInfo && listData.userInfo.profession ? listData.userInfo.profession + ' · ' : ''}`}
+                {`${
+                  listData.userInfo && listData.userInfo.profession
+                    ? listData.userInfo.profession + " · "
+                    : ""
+                }`}
                 &nbsp;{relativeTime(listData.created_at)}
               </div>
             </div>
@@ -98,14 +102,27 @@ class DynItem extends Component {
               listData.picUrl.map((item, index) => {
                 return (
                   <LazyLoad key={index} overflow={true}>
-                    <img
+                    {/* <img
                       className="list-row-pic-item"
                       onClick={(e) =>
                         this.openViewer(e, listData.picUrl, index)
                       }
                       src={item}
                       alt=""
-                    />
+                    /> */}
+                    <div
+                      onClick={(e) =>
+                        this.openViewer(e, listData.picUrl, index)
+                      }
+                      className="list-row-pic-item"
+                      style={{
+                        display: item ? "block" : "none",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        backgroundImage: `url('${item}')`,
+                      }}
+                    ></div>
                   </LazyLoad>
                 );
               })}

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { TabBar } from "antd-mobile";
 import style from "./index.module.scss";
 import "../../assets/css/iconfont/iconfont.css";
-import Home from "../Home/index";
-import Interaction from "../Interaction";
-import Find from "../Find";
-import News from "../News";
-import My from "../My";
 import { Route, Redirect } from "react-router-dom";
 import CacheRoute, { CacheSwitch } from "react-router-cache-route";
+const Home = React.lazy(() => import("../Home/index"));
+const Interaction = React.lazy(() => import("../Interaction"));
+const Find = React.lazy(() => import("../Find"));
+const News = React.lazy(() => import("../News"));
+const My = React.lazy(() => import("../My"));
 
 class Layout extends Component {
   constructor(props) {
@@ -97,24 +97,26 @@ class Layout extends Component {
     return (
       <div className={style.layout}>
         {/* 路由规则 */}
-        <CacheSwitch>
-          {this.routes.map((item, index) => {
-            const Component = item.component;
-            return (
-              <CacheRoute path={item.path} key={index} exact when="back">
-                {(props) => {
-                  return (
-                    <div style={props.match ? null : { display: "none" }}>
-                      <Component {...props} />
-                    </div>
-                  );
-                }}
-              </CacheRoute>
-            );
-          })}
-          <Route path="/layout/my" component={My} />
-          <Redirect exact from="/layout" to="/layout/index" />
-        </CacheSwitch>
+        <Suspense fallback={<div></div>}>
+          <CacheSwitch>
+            {this.routes.map((item, index) => {
+              const Component = item.component;
+              return (
+                <CacheRoute path={item.path} key={index} exact when="back">
+                  {(props) => {
+                    return (
+                      <div style={props.match ? null : { display: "none" }}>
+                        <Component {...props} />
+                      </div>
+                    );
+                  }}
+                </CacheRoute>
+              );
+            })}
+            <Route path="/layout/my" component={My} />
+            <Redirect exact from="/layout" to="/layout/index" />
+          </CacheSwitch>
+        </Suspense>
 
         {/* 渲染TabBar */}
         {this.renderTabBar()}

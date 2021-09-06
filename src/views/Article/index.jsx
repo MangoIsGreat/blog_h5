@@ -1,11 +1,27 @@
 import React, { Component } from "react";
 import { Toast, Button } from "antd-mobile";
 import marked from "marked";
+import hljs from "highlight.js";
 import classnames from "classnames";
 import Header from "../../components/Header";
 import style from "./index.module.scss";
 import { relativeTime } from "../../utils/day";
 import Comment from "../../components/Comment";
+import "highlight.js/styles/monokai-sublime.css";
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  pedantic: false,
+  sanitize: false,
+  tables: true,
+  breaks: true,
+  smartLists: true,
+  smartypants: true,
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value;
+  },
+});
 
 class Article extends Component {
   constructor(props) {
